@@ -1,5 +1,5 @@
 # Blender: 3D-Icons für die Angebote-Leiste (Pizzastück, Cola-Dose, "12%").
-# Aufruf: python icons.py <font.ttf> <out_dir>
+# Aufruf (mit pip-Paket bpy): python icons.py <LilitaOne.ttf> <out_dir>
 import bpy, bmesh, math, sys
 from mathutils import Vector
 
@@ -227,6 +227,6 @@ def percent(text='12%'):
     render('rabatt-12')
 
 
-which = sys.argv[-3] if len(sys.argv) > 3 else 'all'
 pizza_slice()
 cola_can()
+percent()
