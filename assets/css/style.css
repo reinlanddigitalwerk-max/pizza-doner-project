@@ -123,6 +123,29 @@ a { color: inherit; }
 }
 .island:focus-visible { outline: 3px solid var(--yellow); outline-offset: 4px; }
 .island.is-bump { animation: island-bump .5s var(--spring); }
+
+/* Ein Lichtblitz läuft alle 5 Sekunden über die Box, dazu ein kurzes Aufleuchten des Rands */
+.island::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 43%, rgba(255, 220, 140, .4) 47.5%, rgba(255, 250, 230, .75) 50%, rgba(255, 220, 140, .4) 52.5%, transparent 57%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 130% 0;
+  opacity: 0;
+}
+.island.is-open::after { animation: island-flash 5s ease-in-out 1.6s infinite; }
+@keyframes island-flash {
+  0%   { background-position: 130% 0; opacity: 0; box-shadow: inset 0 0 0 0 rgba(249, 192, 21, 0); }
+  2%   { opacity: 1; }
+  13%  { box-shadow: inset 0 0 0 2px rgba(249, 192, 21, .9); }
+  24%  { background-position: -30% 0; opacity: 1; }
+  28%  { opacity: 0; box-shadow: inset 0 0 0 0 rgba(249, 192, 21, 0); }
+  100% { background-position: -30% 0; opacity: 0; }
+}
 @keyframes island-bump {
   0% { transform: scale(1); }
   35% { transform: scale(1.025, .96); }
@@ -190,7 +213,7 @@ a { color: inherit; }
 
 .island__cta {
   position: absolute;
-  right: 214px;
+  right: 226px;
   top: 50%;
   transform: translateY(-50%);
   background: var(--yellow);
@@ -204,10 +227,10 @@ a { color: inherit; }
 /* Feuer, Pizza, Cola: tauchen nacheinander aus der unteren Kante rechts auf */
 .island__pop {
   position: absolute;
-  right: 44px;
+  right: 40px;
   bottom: 0;
   height: 100%;
-  width: 180px;
+  width: 168px;
   pointer-events: none;
 }
 .island__pop img {
@@ -218,9 +241,10 @@ a { color: inherit; }
   transition: transform .7s var(--spring);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .5));
 }
-.island__pop img:nth-child(1) { left: -14px; height: 84px; --r: 0deg; bottom: -10px; filter: drop-shadow(0 0 10px rgba(255, 120, 20, .55)); }  /* echtes Feuer */
-.island__pop img:nth-child(2) { left: 66px;  height: 70px; --r: -8deg; bottom: 4px; }   /* Pizzastück */
-.island__pop img:nth-child(3) { left: 140px; height: 108px; --r: 8deg; bottom: -8px; }  /* Pepsi */
+/* eng zusammen als Gruppe: Feuer hinten, Pizzastück davor, Pepsi ganz vorne */
+.island__pop img:nth-child(1) { left: 0;     height: 80px;  --r: 0deg;  bottom: -10px; z-index: 1; filter: drop-shadow(0 0 10px rgba(255, 120, 20, .55)); }  /* echtes Feuer */
+.island__pop img:nth-child(2) { left: 64px;  height: 72px;  --r: -8deg; bottom: 0;     z-index: 2; }  /* Pizzastück */
+.island__pop img:nth-child(3) { left: 126px; height: 106px; --r: 6deg;  bottom: -8px;  z-index: 3; }  /* Pepsi */
 .island.is-popped .island__pop img { transform: translateY(0) rotate(var(--r, 0deg)); }
 .island.is-popped .island__pop img:nth-child(1) { transition-delay: 0s; }
 .island.is-popped .island__pop img:nth-child(2) { transition-delay: .18s; }
@@ -385,15 +409,15 @@ a { color: inherit; }
 @media (max-width: 600px) {
   .island { --h-open: 96px; }
   .island.is-open { border-radius: 32px; }
-  .island__slides { right: 112px; }
+  .island__slides { right: 126px; }
   .slide { gap: 10px; padding-left: 14px; }
   .slide__art { height: 62px; max-width: 92px; }
   .slide__art--pct { height: 58px; }
   .slide__text strong { font-size: 21px; }
   .slide__text span { font-size: 12.5px; }
-  .island__pop { right: 22px; width: 104px; }
-  .island__pop img:nth-child(1) { left: -10px; height: 54px; }
-  .island__pop img:nth-child(2) { left: 36px; height: 44px; }
+  .island__pop { right: 18px; width: 106px; }
+  .island__pop img:nth-child(1) { left: 0;    height: 52px; }
+  .island__pop img:nth-child(2) { left: 40px; height: 46px; }
   .island__pop img:nth-child(3) { left: 80px; height: 70px; }
   .carousel__caption { font-size: 22px; }
   .footer__inner { grid-template-columns: 1fr; gap: 24px; }
@@ -403,7 +427,7 @@ a { color: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .island, .island *, .dish { transition: none !important; animation: none !important; }
+  .island, .island *, .island::after, .dish { transition: none !important; animation: none !important; }
 }
 
 /* ---------- Öffnungsstatus ---------- */
