@@ -1,0 +1,58 @@
+{
+  "name": "Neusser Döner & Pizza",
+  "inhaber": "Negrvan Mahmoud",
+  "adresse": {
+    "strasse": "Further Str. 46",
+    "plz": "41462",
+    "ort": "Neuss"
+  },
+  "telefon": "0157 71066644",
+  "bestellen_url": "https://neusser-doener-pizza.de/bestellen",
+  "aufsichtsbehoerde": "Stadt Neuss",
+  "oeffnungszeiten": [
+    {
+      "tag": "Montag",
+      "zeit": "Ruhetag"
+    },
+    {
+      "tag": "Dienstag",
+      "zeit": "12:00 – 21:30"
+    },
+    {
+      "tag": "Mittwoch",
+      "zeit": "12:00 – 21:30"
+    },
+    {
+      "tag": "Donnerstag",
+      "zeit": "12:00 – 21:30"
+    },
+    {
+      "tag": "Freitag",
+      "zeit": "12:00 – 23:00"
+    },
+    {
+      "tag": "Samstag",
+      "zeit": "12:00 – 23:00"
+    },
+    {
+      "tag": "Sonn- & Feiertag",
+      "zeit": "12:00 – 21:30"
+    }
+  ],
+  "lieferung": {
+    "mindestbestellwert": 10.0,
+    "liefergebuehr_ab": 2.0,
+    "frei_haus_ab": 50.0,
+    "plz_gebiete": [
+      "41460",
+      "41462",
+      "41464",
+      "41468",
+      "41469",
+      "41472",
+      "40549",
+      "40667",
+      "41564"
+    ]
+  }
+}

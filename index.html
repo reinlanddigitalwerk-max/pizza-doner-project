@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Neusser Döner &amp; Pizza</title>
-  <meta name="description" content="Neusser Döner & Pizza – Döner, Pizza und mehr in Neuss. Online bestellen, abholen oder liefern lassen.">
+  <title>Neusser Döner &amp; Pizza – Further Str. 46, Neuss</title>
+  <meta name="description" content="Neusser Döner & Pizza in Neuss: Döner, Pizza, Lahmacun, Pide und mehr. Online bestellen, abholen oder liefern lassen.">
   <link rel="icon" href="assets/img/logo.webp" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,24 +20,33 @@
         <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
       </a>
       <nav class="nav" aria-label="Hauptmenü">
-        <a href="#speisekarte">Speisekarte</a>
-        <a href="#angebote">Angebote</a>
+        <a href="https://www.neusser-doener-und-pizza.de/">Speisekarte</a>
+        <a href="#angebote-liste">Angebote</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
+      <a class="topbar__phone" href="tel:+4915771066644">0157 71066644</a>
       <a class="btn btn--primary topbar__cta" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
     </div>
   </header>
 
-  <!-- Angebote direkt unter der Logo-Leiste -->
-  <section class="offers" id="angebote" aria-label="Aktuelle Angebote">
-    <div class="offers__track">
-      <!-- BEISPIEL-ANGEBOTE: werden durch die echten Angebote ersetzt -->
-      <ul class="offers__list">
-        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Mittagsmenü: Döner + Getränk</span><span class="offer__price">Preis folgt</span></li>
-        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">2 Pizzen nach Wahl</span><span class="offer__price">Preis folgt</span></li>
-        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Familienbox: Döner Teller für 4</span><span class="offer__price">Preis folgt</span></li>
-        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Dürüm + Pommes + Getränk</span><span class="offer__price">Preis folgt</span></li>
-      </ul>
+  <!-- Angebote: „Insel“ unter der Logo-Leiste. Öffnet sich beim Laden wie die Dynamic Island. -->
+  <section class="promo" id="angebote" aria-label="Aktuelle Angebote">
+    <div class="container promo__inner">
+      <a class="island" href="https://neusser-doener-pizza.de/bestellen" data-interval="5000">
+        <div class="island__slides">
+          <div class="slide is-active">
+            <img class="slide__art slide__art--pct" src="assets/img/icons/rabatt-12.webp" alt="12 %" width="480" height="244">
+            <p class="slide__text"><strong>Rabatt</strong><span>Jetzt online bestellen</span></p>
+          </div>
+        </div>
+        <span class="island__cta">Bestellen</span>
+        <!-- Feuer, Pizza und Cola tauchen nacheinander aus der unteren Kante rechts auf -->
+        <span class="island__pop" aria-hidden="true">
+          <img src="assets/img/icons/flamme.webp" alt="" width="240" height="317">
+          <img src="assets/img/icons/pizza.webp" alt="" width="240" height="179">
+          <img src="assets/img/icons/cola.webp" alt="" width="240" height="401">
+        </span>
+      </a>
     </div>
   </section>
 
@@ -49,38 +58,93 @@
         <!-- Links: 4 Hauptgerichte im Kreis, wechselt alle 3 Sekunden -->
         <div class="carousel" data-interval="3000" aria-roledescription="Karussell" aria-label="Unsere Hauptgerichte">
           <div class="carousel__ring">
-            <!-- Bilder: assets/img/dishes/*.png (freigestellt). Bis die Fotos da sind, zeigt der Teller den Namen. -->
-            <button class="dish" type="button" data-pos="0" data-name="Döner Kebab">
-              <span class="dish__plate"><span class="dish__placeholder">Döner<br>Kebab</span></span>
+            <button class="dish" type="button" data-pos="0" data-name="Döner-Sandwich" data-price="8,00 €">
+              <img src="assets/img/dishes/doener.webp" alt="Döner-Sandwich" width="549" height="391">
             </button>
-            <button class="dish" type="button" data-pos="1" data-name="Pizza">
-              <span class="dish__plate"><span class="dish__placeholder">Pizza</span></span>
+            <button class="dish" type="button" data-pos="1" data-name="Pizza" data-price="ab 6,00 €">
+              <img src="assets/img/dishes/pizza.webp" alt="Pizza" width="565" height="410">
             </button>
-            <button class="dish" type="button" data-pos="2" data-name="Döner Teller">
-              <span class="dish__plate"><span class="dish__placeholder">Döner<br>Teller</span></span>
+            <button class="dish" type="button" data-pos="2" data-name="Döner-Teller" data-price="12,50 €">
+              <img src="assets/img/dishes/doener-teller.webp" alt="Döner-Teller" width="584" height="382">
             </button>
-            <button class="dish" type="button" data-pos="3" data-name="Dürüm">
-              <span class="dish__plate"><span class="dish__placeholder">Dürüm</span></span>
+            <button class="dish" type="button" data-pos="3" data-name="Lahmacun mit Fleisch" data-price="9,00 €">
+              <img src="assets/img/dishes/lahmacun.webp" alt="Lahmacun mit Fleisch" width="547" height="406">
             </button>
           </div>
-          <p class="carousel__caption" aria-live="polite"><span class="carousel__name">Döner Kebab</span></p>
+          <p class="carousel__caption" aria-live="polite"><span class="carousel__name">Döner-Sandwich</span> <span class="carousel__price">8,00 €</span></p>
         </div>
 
         <!-- Rechts: Text -->
         <div class="hero__text">
           <p class="hero__eyebrow">Döner &amp; Pizza in Neuss</p>
           <h1 class="hero__title">Frisch vom Spieß.<br><span>Heiß aus dem Ofen.</span></h1>
-          <p class="hero__lead">Döner, Pizza und mehr – frisch zubereitet. Abholen oder liefern lassen.</p>
+          <p class="hero__lead">Döner, Pizza, Lahmacun, Pide und mehr. Abholen in der Further Straße oder liefern lassen.</p>
           <div class="hero__actions">
             <a class="btn btn--primary" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
-            <a class="btn btn--ghost" href="#speisekarte">Speisekarte ansehen</a>
+            <a class="btn btn--ghost" href="https://www.neusser-doener-und-pizza.de/">Speisekarte ansehen</a>
           </div>
+          <ul class="hero__facts">
+            <li class="open-state" data-open-state>Öffnungszeiten unten</li>
+            <li><strong>ab 10&nbsp;€</strong> Mindestbestellwert</li>
+            <li><strong>ab 2&nbsp;€</strong> Liefergebühr</li>
+            <li><strong>ab 50&nbsp;€</strong> frei Haus</li>
+          </ul>
         </div>
 
       </div>
     </section>
+
+    <!-- Angebote: Karten mit Bedingungen, gebaut aus assets/js/offers-data.js -->
+    <section class="offers" id="angebote-liste" aria-labelledby="offers-title">
+      <div class="container">
+        <div class="offers__head">
+          <h2 id="offers-title">Unsere Angebote</h2>
+          <div class="offer-filters" role="group" aria-label="Angebote filtern">
+            <button type="button" data-filter="alle" aria-pressed="true">Alle</button>
+            <button type="button" data-filter="rabatt" aria-pressed="false">Rabatte</button>
+            <button type="button" data-filter="menue" aria-pressed="false">Menüs</button>
+            <button type="button" data-filter="lieferung" aria-pressed="false">Lieferung</button>
+            <button type="button" data-filter="stempelkarte" aria-pressed="false">Stempelkarte</button>
+          </div>
+        </div>
+        <div class="offer-grid"></div>
+      </div>
+    </section>
   </main>
 
-  <script src="assets/js/hero-carousel.js" defer></script>
+  <!-- Kontakt, Öffnungszeiten, Impressum -->
+  <footer class="footer" id="kontakt">
+    <div class="container footer__inner">
+      <div class="footer__col">
+        <h2>Kontakt</h2>
+        <address>
+          Neusser Döner &amp; Pizza<br>
+          Further Str. 46<br>
+          41462 Neuss<br>
+          Tel.: <a href="tel:+4915771066644">0157 71066644</a>
+        </address>
+      </div>
+      <div class="footer__col">
+        <h2>Öffnungs- &amp; Lieferzeiten</h2>
+        <table class="hours">
+          <tr><th scope="row">Montag</th><td>Ruhetag</td></tr>
+          <tr><th scope="row">Dienstag – Donnerstag</th><td>12:00 – 21:30</td></tr>
+          <tr><th scope="row">Freitag &amp; Samstag</th><td>12:00 – 23:00</td></tr>
+          <tr><th scope="row">Sonn- &amp; Feiertag</th><td>12:00 – 21:30</td></tr>
+        </table>
+      </div>
+      <div class="footer__col">
+        <h2>Liefergebiete</h2>
+        <p>PLZ 41460, 41462, 41464, 41468, 41469, 41472, 40549, 40667, 41564</p>
+      </div>
+      <div class="footer__col footer__legal">
+        <h2>Impressum</h2>
+        <p>Inhaber und verantwortlich nach § 5 TMG: Negrvan Mahmoud, Further Str. 46, 41462 Neuss. Zuständige Aufsichtsbehörde: Stadt Neuss.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/offers-data.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
