@@ -102,7 +102,15 @@ def codes(item):
     return f'<sup class="codes" title="{esc(", ".join(names))}">{esc(", ".join(parts))}</sup>'
 
 
-def item_html(item, sizes):
+def allergen_namen(item):
+    raw = item.get("allergene", "")
+    parts = [c.strip() for c in raw.split(",") if c.strip()]
+    al = [menu["allergene"][c] for c in parts if c in menu["allergene"]]
+    zs = [menu["zusatzstoffe"][c] for c in parts if c in menu["zusatzstoffe"]]
+    return al, zs
+
+
+def item_html(item, sizes, basis=(), kategorie=""):
     name = item["name"]
     if sizes and "preise" in item:
         prices = "".join(f'<span class="price"><small>{esc(s)}</small>{euro(item["preise"][s])}</span>' for s in sizes)
@@ -110,19 +118,33 @@ def item_html(item, sizes):
         prices = f'<span class="price">{euro(item["preis"])}</span>'
     pfand = '<span class="pfand">zzgl. Pfand</span>' if item.get("pfand") else ""
     z = zutaten(item)
-    chips = '<ul class="chips">' + "".join(f"<li>{esc(x)}</li>" for x in z) + "</ul>" if z else ""
+    base = [b for b in basis if b not in z]
+    chips = ('<ul class="chips">' + "".join(f'<li class="chip--basis">{esc(x)}</li>' for x in base)
+             + "".join(f"<li>{esc(x)}</li>" for x in z) + "</ul>") if (z or base) else ""
+    al, zs = allergen_namen(item)
+    more = ""
+    if al or zs:
+        more = ('<div class="card__more" hidden>'
+                + (f'<p><b>Allergene:</b> {esc(", ".join(al))}</p>' if al else "")
+                + (f'<p><b>Zusatzstoffe:</b> {esc(", ".join(zs))}</p>' if zs else "")
+                + "</div>")
+    search = " ".join([name, kategorie, item["nr"]] + list(base) + z).lower()
     note = f'<p class="card__info">{esc(info(item))}</p>' if info(item) else ""
     key = BILD.get(item["nr"])
-    img = (f'<img class="card__img" src="assets/img/menu/{key}.webp" alt="" width="192" height="192" loading="lazy">'
-           if key and (ROOT / f"assets/img/menu/{key}.webp").exists() else '<span class="card__img card__img--none"></span>')
+    has_img = key and (ROOT / f"assets/img/menu/{key}.webp").exists()
+    img = (f'<img class="card__img" src="assets/img/menu/{key}.webp" alt="" width="192" height="192" loading="lazy"'
+           f' data-large="assets/img/menu/{key}-l.webp">'
+           if has_img else '<span class="card__img card__img--none"></span>')
     return (
-        '<li class="card">'
+        f'<li class="card" data-search="{esc(search)}">'
         f"{img}"
         '<div class="card__body">'
         f'<h3 class="card__name"><span class="card__nr">{esc(item["nr"])}</span>{esc(name)}{codes(item)}</h3>'
         f"{chips}{note}"
         f'<div class="card__foot">{pfand}<div class="card__prices">{prices}</div></div>'
         "</div>"
+        f"{more}"
+        f'<button class="card__open" type="button" aria-label="Details zu {esc(name)}"></button>'
         "</li>"
     )
 
@@ -141,7 +163,8 @@ def section_html(cat):
         + f'<h2 id="h-{slug(name)}">{esc(name)}</h2>'
         + head_sizes
         + "</header>"
-        '<ul class="cards">' + "".join(item_html(i, sizes) for i in cat["artikel"]) + "</ul>"
+        + (f'<p class="cat__note">{esc(cat["hinweis"])}</p>' if cat.get("hinweis") else "")
+        + '<ul class="cards">' + "".join(item_html(i, sizes, cat.get("basis", []), name) for i in cat["artikel"]) + "</ul>"
         "</section>"
     )
 
@@ -192,16 +215,34 @@ page = f"""{head}<body class="page-menu">
       </div>
     </section>
 
-    <nav class="cat-nav" aria-label="Kategorien">
-      <div class="container cat-nav__inner">{nav}</div>
-    </nav>
+    <div class="cat-nav">
+      <div class="container cat-nav__wrap">
+        <div class="search">
+          <label class="visually-hidden" for="menu-search">Speisekarte durchsuchen</label>
+          <input id="menu-search" type="search" placeholder="Gericht oder Zutat suchen …" autocomplete="off">
+        </div>
+        <nav class="cat-nav__inner" aria-label="Kategorien">{nav}</nav>
+      </div>
+    </div>
 
     <div class="container menu">
+      <p class="search-empty" hidden>Nichts gefunden. Versuch es mit einem anderen Wort, z. B. „Käse“ oder „Hähnchen“.</p>
+      <p class="search-count" aria-live="polite"></p>
       {"".join(section_html(c) for c in cats)}
       {legend_html()}
       <p class="menu__note">Abbildungen sind Beispielfotos und können vom Gericht abweichen.</p>
     </div>
   </main>
+
+  <dialog class="dish-dialog" aria-labelledby="dish-dialog-title">
+    <button class="dish-dialog__close" type="button" aria-label="Schließen">×</button>
+    <img class="dish-dialog__img" src="" alt="">
+    <div class="dish-dialog__body">
+      <h2 id="dish-dialog-title"></h2>
+      <div class="dish-dialog__content"></div>
+      <a class="btn btn--primary" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
+    </div>
+  </dialog>
 
 {footer}  <script src="assets/js/menu.js" defer></script>
 </body>

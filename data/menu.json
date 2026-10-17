@@ -205,7 +205,12 @@
           "allergene": "G,2,D,13",
           "preis": 10.0
         }
-      ]
+      ],
+      "basis": [
+        "Tomatensauce",
+        "Käse"
+      ],
+      "hinweis": "Alle Pizzen mit Tomatensauce und Käse"
     },
     {
       "kategorie": "Salate",
