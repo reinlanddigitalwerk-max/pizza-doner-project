@@ -8,7 +8,8 @@ Neue Website für Neusser Döner & Pizza (Further Str. 46, 41462 Neuss) mit dem 
 ## Seiten
 
 - `index.html` – Startseite
-- `speisekarte.html` – komplette Speisekarte mit Preisen, Größen, Allergenen und Zusatzstoffen.
+- `speisekarte.html` – komplette Speisekarte als Karten: Foto, Zutaten, Preise, Größen, Allergene und Zusatzstoffe.
+  Bild je Artikel: Zuordnung `BILD` in `tools/build_menu.py`, Dateien in `assets/img/menu/`.
   Wird aus `data/menu.json` gebaut: `python3 tools/build_menu.py` (nach jeder Änderung an der Speisekarte ausführen)
 
 ## Lokal ansehen

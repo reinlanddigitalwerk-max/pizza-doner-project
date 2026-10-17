@@ -21,6 +21,63 @@ KATEGORIE_BILD = {
 }
 
 
+# Bild je Artikel (Nummer → Datei in assets/img/menu/). Fotos sind Beispielbilder.
+BILD = {
+    "38": "pizza-margherita", "39": "pizza-salami", "40": "pizza-schinken", "41": "pizza-funghi",
+    "42": "pizza-tonno", "43": "pizza-hawaii", "44": "pizza-diavolo", "45": "pizza-sucuk",
+    "46": "pizza-salami", "47": "pizza-paprika", "48": "pizza-spinat", "49": "pizza-vegetaria",
+    "50": "pizza-nepal", "51": "pizza-sucuk", "52": "pizza-quattro-stagioni", "53": "pizza-chicken",
+    "54": "pizza-bbq-chicken", "55": "pizza-chicken", "56": "pizza-quattro-formaggi", "57": "calzone",
+    "19": "salat-gemischt", "20": "salat-doener", "21": "salat-thunfisch", "22": "salat-bauern",
+    "17": "salat-tasche", "18": "salat-wrap",
+    "1": "doener-sandwich", "2": "doener-sandwich", "3": "doener-wrap", "4": "doener-fleisch",
+    "5": "doener-teller", "6": "doener-box", "7": "doener-box", "8": "doener-reis",
+    "9": "doener-ueberbacken", "10": "doener-ueberbacken",
+    "11": "lahmacun", "12": "lahmacun-salat", "13": "lahmacun-salat",
+    "14": "falafel-sandwich", "15": "falafel-wrap", "16": "falafel-teller",
+    "23": "pide", "24": "pide", "25": "pide", "26": "pide", "27": "pide",
+    "58": "schnitzel", "59": "jaegerschnitzel", "60": "paprikaschnitzel",
+    "28": "hamburger", "29": "cheeseburger", "30": "chili-cheeseburger", "31": "chickenburger", "32": "chickenburger",
+    "33": "pizzabroetchen", "34": "pizzabroetchen", "35": "pizzabroetchen", "36": "pizzabroetchen", "37": "pizzabroetchen",
+    "63": "chicken-nuggets", "64": "currywurst", "65": "currywurst-pommes", "66": "currywurst-pommes",
+    "67": "chicken-bowl", "61": "pommes", "62": "reis", "62a": "peperoni", "62b": "oliven",
+    "S1": "ketchup", "S2": "mayonnaise", "S3": "tzatziki", "S4": "cocktailsauce", "S5": "currysauce",
+    "S6": "pilzsauce", "S7": "paprikasauce", "S8": "scharfe-sauce", "S9": "aioli", "S10": "kraeuterbutter",
+    "M1": "doener-sandwich", "M2": "doener-wrap-menue", "M3": "lahmacun-salat", "M4": "falafel-sandwich",
+    "K1": "kinder-menue",
+    "68a": "cola", "68b": "orangenlimonade", "68c": "zitronenlimonade", "68d": "zitronenlimonade",
+    "68e": "cola", "70": "wasser", "71": "ayran", "72": "eistee",
+}
+
+
+def zutaten(item):
+    """Zutaten als Liste aus der Beschreibung der alten Seite (nichts dazu erfunden)."""
+    d = item.get("beschreibung", "")
+    if not d or d.startswith("Literpreis") or d.startswith("auf Wunsch"):
+        m = re.search(r" mit (.+)$", item["name"])
+        return [m.group(1)] if m and not d.startswith("Literpreis") else []
+    d = d.replace("Ihrer Wahl", "nach Wahl").replace("einer Sauce", "Sauce").replace("(0,33l)", "(0,33 l)")
+    d = re.sub(r"^nur ", "", d)
+    d = d.replace("panierten, frittierten Chicken-Stripes", "Chicken-Stripes (paniert, frittiert)")
+    first = []
+    if " mit " in d and not d.startswith("mit "):
+        head, d = d.split(" mit ", 1)
+        first = [head[0].upper() + head[1:]]
+    d = re.sub(r"^mit ", "", d)
+    d = d.replace(" dazu,", ",").replace(", dazu ", ", ").replace(" und ", ", ")
+    parts = [p.strip() for p in re.split(r",(?![^()]*\))", d) if p.strip()]
+    return first + [p[0].upper() + p[1:] if p[0].islower() and not p.startswith(("frisch", "türk", "paniert")) else p for p in parts]
+
+
+def info(item):
+    d = item.get("beschreibung", "")
+    if d.startswith("Literpreis"):
+        return d.replace("Literpreis:", "Literpreis").replace("Pfand:", "Pfand").replace(".", ",").replace("€", "\u00a0€")
+    if d.startswith("auf Wunsch"):
+        return d[0].upper() + d[1:]
+    return ""
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -47,20 +104,25 @@ def codes(item):
 
 def item_html(item, sizes):
     name = item["name"]
-    desc = item.get("beschreibung", "")
     if sizes and "preise" in item:
         prices = "".join(f'<span class="price"><small>{esc(s)}</small>{euro(item["preise"][s])}</span>' for s in sizes)
     else:
         prices = f'<span class="price">{euro(item["preis"])}</span>'
-    pfand = ' <span class="pfand">zzgl. Pfand</span>' if item.get("pfand") else ""
+    pfand = '<span class="pfand">zzgl. Pfand</span>' if item.get("pfand") else ""
+    z = zutaten(item)
+    chips = '<ul class="chips">' + "".join(f"<li>{esc(x)}</li>" for x in z) + "</ul>" if z else ""
+    note = f'<p class="card__info">{esc(info(item))}</p>' if info(item) else ""
+    key = BILD.get(item["nr"])
+    img = (f'<img class="card__img" src="assets/img/menu/{key}.webp" alt="" width="192" height="192" loading="lazy">'
+           if key and (ROOT / f"assets/img/menu/{key}.webp").exists() else '<span class="card__img card__img--none"></span>')
     return (
-        '<li class="item">'
-        f'<span class="item__nr">{esc(item["nr"])}</span>'
-        '<div class="item__main">'
-        f'<h3 class="item__name">{esc(name)}{codes(item)}{pfand}</h3>'
-        + (f'<p class="item__desc">{esc(desc)}</p>' if desc else "")
-        + "</div>"
-        f'<div class="item__prices">{prices}</div>'
+        '<li class="card">'
+        f"{img}"
+        '<div class="card__body">'
+        f'<h3 class="card__name"><span class="card__nr">{esc(item["nr"])}</span>{esc(name)}{codes(item)}</h3>'
+        f"{chips}{note}"
+        f'<div class="card__foot">{pfand}<div class="card__prices">{prices}</div></div>'
+        "</div>"
         "</li>"
     )
 
@@ -79,7 +141,7 @@ def section_html(cat):
         + f'<h2 id="h-{slug(name)}">{esc(name)}</h2>'
         + head_sizes
         + "</header>"
-        '<ul class="items">' + "".join(item_html(i, sizes) for i in cat["artikel"]) + "</ul>"
+        '<ul class="cards">' + "".join(item_html(i, sizes) for i in cat["artikel"]) + "</ul>"
         "</section>"
     )
 
@@ -137,6 +199,7 @@ page = f"""{head}<body class="page-menu">
     <div class="container menu">
       {"".join(section_html(c) for c in cats)}
       {legend_html()}
+      <p class="menu__note">Abbildungen sind Beispielfotos und können vom Gericht abweichen.</p>
     </div>
   </main>
 

@@ -9,4 +9,6 @@
 | `icons/pizza.webp`, `icons/cola.webp`, `icons/rabatt-12.webp` | selbst in Blender gerendert (`tools/blender/icons.py`) | eigenes Werk |
 | `logo.webp`, `logo-original.jpg` | Logo von Neusser Döner & Pizza | Inhaber |
 
+| `menu/*.webp` | Beispielfotos für die Speisekarte über Openverse (Flickr, Wikimedia Commons, rawpixel u. a.); Quelle, Urheber und Lizenz je Bild in `menu/quellen.json` | CC0 oder Public Domain Mark |
+
 Nicht übernommen: die Kategorie-Fotos der alten Seite (Fotolia-Stockfotos über das Pizza-Taxi-Shopsystem lizenziert).
