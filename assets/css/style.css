@@ -540,3 +540,144 @@ a { color: inherit; }
     overflow: hidden;
   }
 }
+
+/* ---------- Speisekarte ---------- */
+.menu-hero { background: var(--green); color: var(--cream); }
+.menu-hero__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding-block: 36px;
+}
+.menu-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1;
+}
+.menu-hero p { margin: 0; flex: 1 1 260px; opacity: .9; }
+
+.cat-nav {
+  position: sticky;
+  top: 84px;
+  z-index: 40;
+  background: var(--cream);
+  border-bottom: 1px solid #EADFCF;
+}
+.cat-nav__inner {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-block: 10px;
+  scrollbar-width: none;
+}
+.cat-nav__inner::-webkit-scrollbar { display: none; }
+.cat-nav a {
+  flex: none;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px #E3D4C2;
+}
+.cat-nav a.is-active { background: var(--brown); color: var(--cream); box-shadow: none; }
+.cat-nav a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-block: 36px 64px;
+}
+.cat { scroll-margin-top: 150px; }
+.cat__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--yellow);
+}
+.cat__img { width: 74px; height: 56px; object-fit: contain; }
+.cat__head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, 3.6vw, 38px);
+  line-height: 1.1;
+}
+.cat__sizes { display: flex; gap: 8px; margin-left: auto; }
+.cat__sizes span {
+  width: 74px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.items { margin: 0; padding: 0; list-style: none; }
+.item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding-block: 14px;
+  border-bottom: 1px solid #EADFCF;
+}
+.item__nr {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8A7563;
+  padding-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.item__main { min-width: 0; }
+.item__name { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.35; }
+.codes { margin-left: 4px; font-size: 11px; font-weight: 500; color: #8A7563; cursor: help; }
+.pfand { font-size: 12px; font-weight: 500; color: #8A7563; }
+.item__desc { margin: 2px 0 0; font-size: 14.5px; color: #6B5A4A; }
+.item__prices { display: flex; gap: 8px; }
+.price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 74px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.price small { display: none; font-family: var(--font-body); font-size: 11px; font-weight: 600; color: #8A7563; }
+
+.legend {
+  padding: 24px;
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 0 1px 0 #EADFCF;
+  font-size: 14px;
+}
+.legend h2 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 400; font-size: 26px; }
+.legend h3 { margin: 0 0 6px; font-size: 15px; }
+.legend__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 12px; }
+.legend ul { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 20px; }
+.legend li { break-inside: avoid; padding-block: 2px; }
+.legend b { display: inline-block; min-width: 22px; }
+.legend p { margin: 4px 0 0; color: #6B5A4A; }
+
+@media (max-width: 860px) {
+  .cat-nav { top: 70px; }
+  .cat { scroll-margin-top: 130px; }
+}
+@media (max-width: 600px) {
+  .item { grid-template-columns: 34px minmax(0, 1fr); }
+  .item__prices { grid-column: 2; justify-content: flex-start; gap: 16px; }
+  .price { align-items: flex-start; min-width: 0; }
+  .price small { display: block; }
+  .cat__sizes { display: none; }
+  .legend__cols { grid-template-columns: 1fr; }
+}

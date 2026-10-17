@@ -14,6 +14,6 @@ for f in files:
     mask = Image.fromarray((pred * 255).astype(np.uint8)).resize(img.size, Image.LANCZOS)
     out = img.convert('RGBA'); out.putalpha(mask)
     out = out.crop(out.getbbox())
-    dst = f"{out_dir}/{f.rsplit('/', 1)[-1]}"
+    dst = f"{out_dir}/{f.rsplit('/', 1)[-1].rsplit('.', 1)[0]}.png"
     out.save(dst)
     print(dst, out.size)

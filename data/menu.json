@@ -625,7 +625,7 @@
       "artikel": [
         {
           "nr": "M1",
-          "name": "Döner-Menu",
+          "name": "Döner-Menü",
           "beschreibung": "Döner-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
           "preis": 12.0
         },
@@ -637,14 +637,14 @@
         },
         {
           "nr": "M3",
-          "name": "Lahmacun-Menu",
+          "name": "Lahmacun-Menü",
           "beschreibung": "Lahmacun mit Drehspießfleisch und Pommes frites dazu, 1 Softdrink (0,33l) Ihrer Wahl",
           "preis": 13.0
         },
         {
           "nr": "M4",
-          "name": "Falafel-Menu",
-          "beschreibung": "Falafel-Sandwich mir Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
+          "name": "Falafel-Menü",
+          "beschreibung": "Falafel-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
           "preis": 12.0
         }
       ]
@@ -721,5 +721,43 @@
         }
       ]
     }
+  ],
+  "zusatzstoffe": {
+    "1": "mit Konservierungsstoff",
+    "2": "mit Farbstoff",
+    "3": "mit Phosphat",
+    "4": "mit Geschmacksverstärker",
+    "5": "mit Antioxidationsmittel",
+    "6": "mit Süßungsmittel",
+    "7": "mit Milcheiweiß",
+    "8": "geschwärzt",
+    "9": "mit Tomatenketchup",
+    "10": "genetisch verändert",
+    "11": "mit Salat-Mayonnaise (enthält Sojaöl aus gentechnisch veränderter Soja)",
+    "12": "mit Drehspieß nach Döner Art (Hähnchen- oder Kalb-/Putenfleisch)",
+    "13": "mit Rindfleisch",
+    "14": "mit Putenschinken (Putenfleisch)",
+    "15": "mit Rindfleisch",
+    "16": "mit Verdickungsmittel"
+  },
+  "allergene": {
+    "A": "Glutenhaltiges Getreide (Weizen)",
+    "B": "Krebstiere",
+    "C": "Eier",
+    "D": "Fisch",
+    "E": "Erdnüsse",
+    "F": "Soja",
+    "G": "Milch / Laktose",
+    "H": "Schalenfrüchte (Nüsse)",
+    "L": "Sellerie",
+    "M": "Senf",
+    "N": "Sesamsamen",
+    "O": "Schwefeldioxid / Sulfite",
+    "P": "Lupinen",
+    "R": "Weichtiere"
+  },
+  "hinweise": [
+    "Für Zusatzstoffe und Allergene der Getränke schauen Sie bitte auf die Etiketten der Flaschen.",
+    "Bei Fragen zu Allergenen und Zutaten, die eine Unverträglichkeit auslösen, wenden Sie sich bitte an unser Team."
   ]
 }
