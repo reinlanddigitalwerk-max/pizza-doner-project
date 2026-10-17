@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Neusser Döner &amp; Pizza</title>
+  <meta name="description" content="Neusser Döner & Pizza – Döner, Pizza und mehr in Neuss. Online bestellen, abholen oder liefern lassen.">
+  <link rel="icon" href="assets/img/logo.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Logo-Leiste -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="#" aria-label="Neusser Döner &amp; Pizza – Startseite">
+        <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
+      </a>
+      <nav class="nav" aria-label="Hauptmenü">
+        <a href="#speisekarte">Speisekarte</a>
+        <a href="#angebote">Angebote</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <a class="btn btn--primary topbar__cta" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
+    </div>
+  </header>
+
+  <!-- Angebote direkt unter der Logo-Leiste -->
+  <section class="offers" id="angebote" aria-label="Aktuelle Angebote">
+    <div class="offers__track">
+      <!-- BEISPIEL-ANGEBOTE: werden durch die echten Angebote ersetzt -->
+      <ul class="offers__list">
+        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Mittagsmenü: Döner + Getränk</span><span class="offer__price">Preis folgt</span></li>
+        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">2 Pizzen nach Wahl</span><span class="offer__price">Preis folgt</span></li>
+        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Familienbox: Döner Teller für 4</span><span class="offer__price">Preis folgt</span></li>
+        <li class="offer"><span class="offer__tag">Angebot</span><span class="offer__text">Dürüm + Pommes + Getränk</span><span class="offer__price">Preis folgt</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <!-- Startseite: Header -->
+    <section class="hero">
+      <div class="container hero__inner">
+
+        <!-- Links: 4 Hauptgerichte im Kreis, wechselt alle 3 Sekunden -->
+        <div class="carousel" data-interval="3000" aria-roledescription="Karussell" aria-label="Unsere Hauptgerichte">
+          <div class="carousel__ring">
+            <!-- Bilder: assets/img/dishes/*.png (freigestellt). Bis die Fotos da sind, zeigt der Teller den Namen. -->
+            <button class="dish" type="button" data-pos="0" data-name="Döner Kebab">
+              <span class="dish__plate"><span class="dish__placeholder">Döner<br>Kebab</span></span>
+            </button>
+            <button class="dish" type="button" data-pos="1" data-name="Pizza">
+              <span class="dish__plate"><span class="dish__placeholder">Pizza</span></span>
+            </button>
+            <button class="dish" type="button" data-pos="2" data-name="Döner Teller">
+              <span class="dish__plate"><span class="dish__placeholder">Döner<br>Teller</span></span>
+            </button>
+            <button class="dish" type="button" data-pos="3" data-name="Dürüm">
+              <span class="dish__plate"><span class="dish__placeholder">Dürüm</span></span>
+            </button>
+          </div>
+          <p class="carousel__caption" aria-live="polite"><span class="carousel__name">Döner Kebab</span></p>
+        </div>
+
+        <!-- Rechts: Text -->
+        <div class="hero__text">
+          <p class="hero__eyebrow">Döner &amp; Pizza in Neuss</p>
+          <h1 class="hero__title">Frisch vom Spieß.<br><span>Heiß aus dem Ofen.</span></h1>
+          <p class="hero__lead">Döner, Pizza und mehr – frisch zubereitet. Abholen oder liefern lassen.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
+            <a class="btn btn--ghost" href="#speisekarte">Speisekarte ansehen</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/hero-carousel.js" defer></script>
+</body>
+</html>

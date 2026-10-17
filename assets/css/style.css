@@ -1,0 +1,269 @@
+/* Neusser Döner & Pizza – Farbpalette „Mediterran frisch“ */
+:root {
+  --yellow: #F9C015;   /* Logo-Gelb: Buttons, Hervorhebungen */
+  --green: #4F7A2C;    /* Olivgrün: Angebote, Header-Fläche */
+  --green-dark: #3C5F20;
+  --red: #B8321F;      /* Paprikarot: Angebots-Tags, Preise */
+  --brown: #3A1C05;    /* Dunkelbraun: Text */
+  --cream: #FAF3E8;    /* Seitenhintergrund */
+  --white: #FFFFFF;
+
+  --font-display: "Lilita One", "Rubik", system-ui, sans-serif;
+  --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --container: 1200px;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--brown);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: inherit; }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.btn:focus-visible { outline: 3px solid var(--brown); outline-offset: 3px; }
+.btn--primary { background: var(--yellow); color: var(--brown); box-shadow: 0 3px 0 #C7790F; }
+.btn--primary:hover { transform: translateY(-1px); box-shadow: 0 4px 0 #C7790F; }
+.btn--ghost { color: var(--cream); box-shadow: inset 0 0 0 2px var(--cream); }
+.btn--ghost:hover { background: rgba(250, 243, 232, .12); }
+
+/* ---------- Logo-Leiste ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--cream);
+  border-bottom: 1px solid #EADFCF;
+}
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 84px;
+}
+.brand img { height: 68px; width: auto; }
+.nav {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+  font-weight: 600;
+}
+.nav a { text-decoration: none; padding-block: 6px; border-bottom: 2px solid transparent; }
+.nav a:hover { border-bottom-color: var(--yellow); }
+.nav a:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+
+/* ---------- Angebote-Leiste ---------- */
+.offers {
+  background: var(--brown);
+  color: var(--cream);
+  overflow: hidden;
+}
+.offers__track {
+  display: flex;
+  width: max-content;
+  animation: offers-scroll 32s linear infinite;
+}
+.offers:hover .offers__track { animation-play-state: paused; }
+.offers__list {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 10px 6px;
+  list-style: none;
+}
+.offer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 99px;
+  background: rgba(250, 243, 232, .08);
+  white-space: nowrap;
+  font-size: 15px;
+}
+.offer__tag {
+  background: var(--red);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.offer__price { font-family: var(--font-display); color: var(--yellow); letter-spacing: .02em; }
+
+@keyframes offers-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Header / Hero ---------- */
+.hero {
+  background:
+    radial-gradient(120% 90% at 0% 100%, var(--green-dark) 0%, transparent 60%),
+    var(--green);
+  color: var(--cream);
+  overflow: hidden;
+}
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  padding-block: 48px 56px;
+}
+.hero__text { min-width: 0; }
+.hero__eyebrow {
+  margin: 0 0 10px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: .98;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+.hero__title span { color: var(--yellow); }
+.hero__lead { margin: 18px 0 26px; font-size: 18px; max-width: 34ch; opacity: .92; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- Karussell: 4 Gerichte im Kreis ---------- */
+.carousel { position: relative; min-width: 0; }
+.carousel__ring {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1 / .86;
+  margin-inline: auto;
+}
+/* Bühne: helle Ellipse, auf der sich die Gerichte drehen */
+.carousel__ring::before {
+  content: "";
+  position: absolute;
+  left: 6%; right: 6%; top: 34%; bottom: 4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(250, 243, 232, .22), rgba(250, 243, 232, 0));
+}
+
+.dish {
+  --x: 0%; --y: 0%; --s: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(var(--s));
+  transition: transform .9s cubic-bezier(.65, 0, .35, 1), filter .9s ease, opacity .9s ease;
+}
+.dish:focus-visible { outline: 3px solid var(--yellow); outline-offset: 6px; border-radius: 50%; }
+
+/* Positionen im Ring (im Uhrzeigersinn von vorne gesehen):
+   0 = vorne groß, 1 = links klein, 2 = hinten klein, 3 = rechts klein
+   Wechsel: vorne → links, links → hinten, hinten → rechts, rechts → vorne */
+.dish[data-pos="0"] { --x: 0%;    --y: 14%;  --s: 1;   z-index: 4; }
+.dish[data-pos="1"] { --x: -66%;  --y: -16%; --s: .46; z-index: 3; }
+.dish[data-pos="2"] { --x: 0%;    --y: -48%; --s: .36; z-index: 1; filter: saturate(.8) brightness(.92); }
+.dish[data-pos="3"] { --x: 66%;   --y: -16%; --s: .46; z-index: 2; }
+
+.dish__plate {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #FFFFFF 0 52%, #F1E6D6 53% 62%, #FFFFFF 63% 68%, #E9DCC8 69% 100%);
+  box-shadow:
+    0 30px 40px -18px rgba(20, 30, 10, .55),
+    inset 0 -6px 12px rgba(58, 28, 5, .12);
+}
+.dish__plate img {
+  position: absolute;
+  inset: 4%;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 12px rgba(58, 28, 5, .35));
+}
+.dish__placeholder {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.2vw, 38px);
+  line-height: 1;
+  color: var(--brown);
+  text-align: center;
+}
+
+.carousel__caption {
+  margin: 4px 0 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--yellow);
+}
+
+/* ---------- Mobil ---------- */
+@media (max-width: 860px) {
+  .nav { display: none; }
+  .topbar__cta { margin-left: auto; }
+  .brand img { height: 54px; }
+  .topbar__inner { min-height: 70px; }
+  .hero__inner { grid-template-columns: 1fr; padding-block: 28px 44px; gap: 8px; }
+  .hero__text { text-align: center; }
+  .hero__lead { margin-inline: auto; }
+  .hero__actions { justify-content: center; }
+}
+@media (max-width: 420px) {
+  .topbar__cta { padding: 10px 14px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offers__track { animation: none; }
+  .offers { overflow-x: auto; }
+  .dish { transition: none; }
+}
