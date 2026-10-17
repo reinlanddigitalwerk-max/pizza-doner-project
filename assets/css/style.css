@@ -204,7 +204,7 @@ a { color: inherit; }
 /* Feuer, Pizza, Cola: tauchen nacheinander aus der unteren Kante rechts auf */
 .island__pop {
   position: absolute;
-  right: 22px;
+  right: 44px;
   bottom: 0;
   height: 100%;
   width: 180px;
@@ -218,9 +218,9 @@ a { color: inherit; }
   transition: transform .7s var(--spring);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .5));
 }
-.island__pop img:nth-child(1) { left: 0;    height: 88px;  --r: -8deg; }
-.island__pop img:nth-child(2) { left: 52px; height: 64px;  --r: 6deg;  bottom: 6px; }
-.island__pop img:nth-child(3) { left: 118px; height: 98px; --r: 10deg; }
+.island__pop img:nth-child(1) { left: -14px; height: 84px; --r: 0deg; bottom: -10px; filter: drop-shadow(0 0 10px rgba(255, 120, 20, .55)); }  /* echtes Feuer */
+.island__pop img:nth-child(2) { left: 66px;  height: 70px; --r: -8deg; bottom: 4px; }   /* Pizzastück */
+.island__pop img:nth-child(3) { left: 140px; height: 108px; --r: 8deg; bottom: -8px; }  /* Pepsi */
 .island.is-popped .island__pop img { transform: translateY(0) rotate(var(--r, 0deg)); }
 .island.is-popped .island__pop img:nth-child(1) { transition-delay: 0s; }
 .island.is-popped .island__pop img:nth-child(2) { transition-delay: .18s; }
@@ -364,6 +364,7 @@ a { color: inherit; }
 .hours th { text-align: left; font-weight: 400; padding: 2px 16px 2px 0; opacity: .85; }
 .hours td { padding: 2px 0; white-space: nowrap; }
 .footer__legal p { opacity: .8; font-size: 14px; }
+.footer__credits { margin-top: 10px !important; font-size: 12px !important; opacity: .65 !important; }
 
 /* ---------- Tablet / Mobil ---------- */
 @media (max-width: 960px) {
@@ -390,10 +391,10 @@ a { color: inherit; }
   .slide__art--pct { height: 58px; }
   .slide__text strong { font-size: 21px; }
   .slide__text span { font-size: 12.5px; }
-  .island__pop { right: 10px; width: 104px; }
-  .island__pop img:nth-child(1) { height: 56px; }
-  .island__pop img:nth-child(2) { left: 32px; height: 40px; }
-  .island__pop img:nth-child(3) { left: 68px; height: 62px; }
+  .island__pop { right: 22px; width: 104px; }
+  .island__pop img:nth-child(1) { left: -10px; height: 54px; }
+  .island__pop img:nth-child(2) { left: 36px; height: 44px; }
+  .island__pop img:nth-child(3) { left: 80px; height: 70px; }
   .carousel__caption { font-size: 22px; }
   .footer__inner { grid-template-columns: 1fr; gap: 24px; }
 }

@@ -192,10 +192,41 @@ def cola_can():
 
 
 # ---------- "12%" ----------
+def fire_mat():
+    """Feuer-Verlauf von unten nach oben: Rot → Orange → Gelb, leicht leuchtend."""
+    m = bpy.data.materials.new('fire')
+    m.use_nodes = True
+    nt = m.node_tree
+    b = nt.nodes['Principled BSDF']
+    b.inputs['Roughness'].default_value = 0.3
+    b.inputs['Coat Weight'].default_value = 0.8
+    b.inputs['Coat Roughness'].default_value = 0.12
+    tc = nt.nodes.new('ShaderNodeTexCoord')
+    sep = nt.nodes.new('ShaderNodeSeparateXYZ')
+    rng = nt.nodes.new('ShaderNodeMapRange')
+    rng.inputs['From Min'].default_value = -0.45
+    rng.inputs['From Max'].default_value = 0.65
+    ramp = nt.nodes.new('ShaderNodeValToRGB')
+    cr = ramp.color_ramp
+    cr.elements[0].position = 0.0
+    cr.elements[0].color = (*hexc('#C81E10'), 1)
+    cr.elements[1].position = 1.0
+    cr.elements[1].color = (*hexc('#FFE14A'), 1)
+    mid = cr.elements.new(0.42)
+    mid.color = (*hexc('#FF7A12'), 1)
+    nt.links.new(tc.outputs['Object'], sep.inputs[0])
+    nt.links.new(sep.outputs['Y'], rng.inputs['Value'])
+    nt.links.new(rng.outputs['Result'], ramp.inputs['Fac'])
+    nt.links.new(ramp.outputs['Color'], b.inputs['Base Color'])
+    nt.links.new(ramp.outputs['Color'], b.inputs['Emission Color'])
+    b.inputs['Emission Strength'].default_value = 0.5
+    return m
+
+
 def percent(text='12%'):
     reset()
     font = bpy.data.fonts.load(FONT)
-    yellow = mat('yellow', hexc('#F9C015'), 0.3, 0.8)
+    fire = fire_mat()
     brown = mat('brown', hexc('#3A1C05'), 0.45, 0.4)
 
     def txt(name, offset, extrude, z, material):
@@ -215,7 +246,7 @@ def percent(text='12%'):
         ob.data.materials.append(material)
         return ob
 
-    front = txt('front', 0.0, 0.16, 0.0, yellow)
+    front = txt('front', 0.0, 0.16, 0.0, fire)
     back = txt('back', 0.09, 0.2, -0.12, brown)
     bpy.ops.object.empty_add(location=(0, 0, 0))
     root = bpy.context.object

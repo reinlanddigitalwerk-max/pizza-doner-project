@@ -17,7 +17,7 @@ KATEGORIE_BILD = {
     "Pizza": "assets/img/dishes/pizza.webp",
     "Döner": "assets/img/dishes/doener.webp",
     "Lahmacun": "assets/img/dishes/lahmacun.webp",
-    "Getränke": "assets/img/icons/cola.webp",
+    "Getränke": "assets/img/icons/pepsi.webp",
 }
 
 
