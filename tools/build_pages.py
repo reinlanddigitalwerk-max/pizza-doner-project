@@ -219,7 +219,8 @@ def legend_html():
 # ---------- Rahmen aus index.html ----------
 HEAD = index[: index.index("<body>")]
 TOPBAR = index[index.index("  <!-- Logo-Leiste -->"): index.index("  <!-- Angebote:")]
-FOOTER = index[index.index("  <!-- Kontakt, Öffnungszeiten, Impressum -->"): index.index("  <script")]
+_f = index.index("  <!-- Kontakt, Öffnungszeiten, Impressum -->")
+FOOTER = index[_f: index.index("  <script", _f)]
 
 
 def topbar(filename):
@@ -266,13 +267,17 @@ def ab_preis(cat):
     return min(p) if p else None
 
 
+GROSS = ("pizza", "doener-drehspiess")  # große Kacheln, stehen vorne
+
+
 def kat_kachel(cat):
     items = [a for a in cat["artikel"] if a.get("aktiv", True)]
-    img = cat.get("bild") or next((b for b, _ in map(bild, items) if b), "")
+    img = cat.get("bild") or next((l for _, l in map(bild, items) if l), "")
     preis = ab_preis(cat)
     n = len(items)
+    gross = slug(cat["kategorie"]) in GROSS
     return (
-        f'<li><a class="cat-tile" href="speisekarte.html#{slug(cat["kategorie"])}">'
+        f'<li class="{"cat-cell cat-cell--big" if gross else "cat-cell"}"><a class="cat-tile" href="speisekarte.html#{slug(cat["kategorie"])}">'
         + (f'<img src="{img}" alt="" loading="lazy" width="400" height="300">' if img else "")
         + f'<span class="cat-tile__name">{esc(cat["kategorie"])}</span>'
         + f'<span class="cat-tile__meta">{n} {"Gericht" if n == 1 else "Gerichte"}'
@@ -281,7 +286,7 @@ def kat_kachel(cat):
 
 
 START, END = "<!-- KATEGORIEN:START – wird von tools/build_pages.py erzeugt -->", "        <!-- KATEGORIEN:END -->"
-grid = '\n        <ul class="cat-grid">\n          ' + "\n          ".join(kat_kachel(c) for c in cats) + "\n        </ul>\n"
+grid = '\n        <ul class="cat-grid">\n          ' + "\n          ".join(kat_kachel(c) for c in sorted(cats, key=lambda c: slug(c["kategorie"]) not in GROSS)) + "\n        </ul>\n"
 i, j = index.index(START) + len(START), index.index(END)
 index = index[:i] + grid + index[j:]
 (ROOT / "index.html").write_text(index, encoding="utf-8")

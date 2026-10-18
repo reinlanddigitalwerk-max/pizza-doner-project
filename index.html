@@ -36,6 +36,63 @@
     </div>
     <script src="assets/js/nav.js" defer></script>
   </header>
+  <nav class="quickbar" aria-label="Schnellzugriff">
+    <a class="quickbar__call" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>Anrufen</a>
+    <a class="quickbar__order" href="bestellen.html">Jetzt bestellen</a>
+  </nav>
+
+  <!-- Kontakt: Dönerspieß rechts am Rand, dreht sich, Feuer darunter, das Fleisch wird weniger.
+       Antippen öffnet WhatsApp, Instagram, Facebook und Telefon.
+       Instagram und Facebook erscheinen erst, wenn unten ein Link eingetragen ist (href="" = ausgeblendet). -->
+  <div class="spiess">
+    <ul class="spiess__links" id="spiess-links">
+      <li><a class="spiess__link spiess__link--wa" href="https://wa.me/4915771066644" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.8c-.4 0-.9.5-.9 1.3 0 2.7 3.6 6.6 6.6 6.6.8 0 1.4-.6 1.4-1.1l-.1-.6-1.9-.9-.9.9c-1.1-.4-2.4-1.7-2.9-2.9l.8-.9-.8-1.9-.6-.4z" fill="currentColor"/></svg></a></li>
+      <li><a class="spiess__link spiess__link--ig" href="" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></a></li>
+      <li><a class="spiess__link spiess__link--fb" href="" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.3-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H8.2v2.9h2.5V21z" fill="currentColor"/></svg></a></li>
+      <li><a class="spiess__link spiess__link--tel" href="tel:+4921313166137" aria-label="Anrufen: 02131 3166137"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></a></li>
+    </ul>
+    <button class="spiess__btn" type="button" aria-expanded="false" aria-controls="spiess-links">
+      <svg class="spiess__svg" viewBox="0 0 80 150" aria-hidden="true">
+        <defs>
+          <linearGradient id="sp-stange" x1="0" x2="1"><stop offset="0" stop-color="#7D868E"/><stop offset=".5" stop-color="#EEF2F5"/><stop offset="1" stop-color="#7D868E"/></linearGradient>
+          <pattern id="sp-dreh" width="30" height="42" patternUnits="userSpaceOnUse">
+            <rect width="30" height="42" fill="#A9561D"/>
+            <rect width="6" height="42" fill="#6E3410"/><rect x="11" width="4" height="42" fill="#C97A33"/><rect x="19" width="7" height="42" fill="#8A4215"/><rect x="26" width="2" height="42" fill="#D9934A"/>
+            <ellipse cx="9" cy="9" rx="2.4" ry="1.4" fill="#E9B477"/><ellipse cx="22" cy="27" rx="2" ry="1.2" fill="#E9B477"/><ellipse cx="4" cy="34" rx="1.6" ry="1" fill="#4A1F07"/><ellipse cx="16" cy="18" rx="1.4" ry=".9" fill="#4A1F07"/>
+          </pattern>
+          <pattern id="sp-lagen" width="80" height="7" patternUnits="userSpaceOnUse"><path d="M0 6.2h80" stroke="#3E1A05" stroke-opacity=".35" stroke-width="1.3"/></pattern>
+          <linearGradient id="sp-licht" x1="0" x2="1">
+            <stop offset="0" stop-color="#1E0A00" stop-opacity=".6"/><stop offset=".32" stop-color="#1E0A00" stop-opacity="0"/>
+            <stop offset=".55" stop-color="#FFD08A" stop-opacity=".22"/><stop offset=".8" stop-color="#1E0A00" stop-opacity=".1"/>
+            <stop offset="1" stop-color="#FF7A1A" stop-opacity=".6"/>
+          </linearGradient>
+          <linearGradient id="sp-flamme" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFF4B0"/><stop offset=".45" stop-color="#FFB21E"/><stop offset="1" stop-color="#E2401C"/></linearGradient>
+          <clipPath id="sp-kegel"><path d="M6 25 Q8 15 40 14 Q72 15 74 25 Q73 62 57 106 Q40 113 23 106 Q7 62 6 25 Z"/></clipPath>
+        </defs>
+        <rect x="38.6" y="2" width="2.8" height="130" rx="1.4" fill="url(#sp-stange)"/>
+        <rect x="33" y="7" width="14" height="5" rx="2.5" fill="#B9C0C6"/>
+        <g class="sp-fleisch">
+          <g clip-path="url(#sp-kegel)">
+            <rect class="sp-drehen" x="-30" y="0" width="140" height="150" fill="url(#sp-dreh)"/>
+            <rect x="0" y="0" width="80" height="150" fill="url(#sp-lagen)"/>
+            <rect x="0" y="0" width="80" height="150" fill="url(#sp-licht)"/>
+          </g>
+        </g>
+        <ellipse cx="40" cy="15.5" rx="22" ry="3.2" fill="#F1D7A8" opacity=".85"/>
+        <g class="sp-krumen" fill="#9A4A17">
+          <ellipse cx="56" cy="98" rx="2.4" ry="1.4"/><ellipse cx="60" cy="80" rx="2" ry="1.2"/><ellipse cx="63" cy="62" rx="2.2" ry="1.3"/>
+        </g>
+        <ellipse cx="40" cy="134" rx="24" ry="5.5" fill="#5E656C"/>
+        <ellipse cx="40" cy="132.5" rx="24" ry="5" fill="#A7AFB6"/>
+        <g class="sp-feuer" fill="url(#sp-flamme)">
+          <path class="sp-f1" d="M26 128 C20 120 22 112 27 104 C28 112 33 114 32 121 C31 126 29 128 26 128 Z"/>
+          <path class="sp-f2" d="M40 129 C32 119 35 108 41 98 C42 108 49 112 47 121 C46 127 43 129 40 129 Z"/>
+          <path class="sp-f3" d="M54 128 C49 121 50 113 55 106 C56 113 61 116 60 122 C59 126 57 128 54 128 Z"/>
+        </g>
+      </svg>
+      <span class="spiess__label">Contact us</span>
+    </button>
+  </div>
 
   <!-- Angebote: „Insel“ unter der Logo-Leiste. Öffnet sich beim Laden wie die Dynamic Island. -->
   <section class="promo" id="angebote" aria-label="Aktuelle Angebote">
@@ -124,6 +181,14 @@
       </ul>
     </section>
 
+    <!-- Laufband: was uns ausmacht -->
+    <div class="ticker">
+      <div class="ticker__track">
+        <ul class="ticker__group"><li>Frisch vom Spieß</li><li>Pizza aus dem Steinofen</li><li>Halal</li><li>Vegetarische Gerichte</li><li>Abholung in ca. 15 Minuten</li><li>Lieferung bis 5 km</li><li>Sitzplätze im Laden</li></ul>
+        <ul class="ticker__group" aria-hidden="true"><li>Frisch vom Spieß</li><li>Pizza aus dem Steinofen</li><li>Halal</li><li>Vegetarische Gerichte</li><li>Abholung in ca. 15 Minuten</li><li>Lieferung bis 5 km</li><li>Sitzplätze im Laden</li></ul>
+      </div>
+    </div>
+
     <!-- Angebote: Karten mit Bedingungen, gebaut aus assets/js/offers-data.js -->
     <section class="offers" id="angebote-liste" aria-labelledby="offers-title">
       <div class="container">
@@ -156,22 +221,37 @@
         </div>
         <!-- KATEGORIEN:START – wird von tools/build_pages.py erzeugt -->
         <ul class="cat-grid">
-          <li><a class="cat-tile" href="speisekarte.html#pizzabroetchen"><img src="assets/img/menu/pizzabroetchen.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizzabrötchen</span><span class="cat-tile__meta">5 Gerichte · ab 4,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#pizza"><img src="assets/img/kategorien/pizza.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizza</span><span class="cat-tile__meta">20 Gerichte · ab 6,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#doener-drehspiess"><img src="assets/img/kategorien/doener-drehspiess.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner &amp; Drehspieß</span><span class="cat-tile__meta">7 Gerichte · ab 7,80 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#doener-ueberbacken"><img src="assets/img/kategorien/doener-ueberbacken.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner überbacken</span><span class="cat-tile__meta">1 Gericht · ab 11,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#lahmacun"><img src="assets/img/kategorien/lahmacun.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Lahmacun</span><span class="cat-tile__meta">3 Gerichte · ab 3,50 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#falafel"><img src="assets/img/kategorien/falafel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Falafel</span><span class="cat-tile__meta">5 Gerichte · ab 6,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#salate"><img src="assets/img/kategorien/salate.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Salate</span><span class="cat-tile__meta">5 Gerichte · ab 7,50 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#pide"><img src="assets/img/kategorien/pide.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pide</span><span class="cat-tile__meta">5 Gerichte · ab 7,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#schnitzel"><img src="assets/img/kategorien/schnitzel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Schnitzel</span><span class="cat-tile__meta">3 Gerichte · ab 11,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#burger"><img src="assets/img/kategorien/burger.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Burger</span><span class="cat-tile__meta">5 Gerichte · ab 8,50 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#imbiss-saucen"><img src="assets/img/kategorien/imbiss-saucen.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Imbiss &amp; Saucen</span><span class="cat-tile__meta">18 Gerichte · ab 1,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#fuer-kids"><img src="assets/img/kategorien/fuer-kids.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Für Kids</span><span class="cat-tile__meta">1 Gericht · ab 9,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#spar-menues"><img src="assets/img/kategorien/spar-menues.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Spar-Menüs</span><span class="cat-tile__meta">4 Gerichte · ab 12,00 €</span></a></li>
-          <li><a class="cat-tile" href="speisekarte.html#getraenke"><img src="assets/img/kategorien/getraenke.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Getränke</span><span class="cat-tile__meta">13 Gerichte · ab 1,50 €</span></a></li>
+          <li class="cat-cell cat-cell--big"><a class="cat-tile" href="speisekarte.html#pizza"><img src="assets/img/kategorien/pizza.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizza</span><span class="cat-tile__meta">20 Gerichte · ab 6,00 €</span></a></li>
+          <li class="cat-cell cat-cell--big"><a class="cat-tile" href="speisekarte.html#doener-drehspiess"><img src="assets/img/kategorien/doener-drehspiess.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner &amp; Drehspieß</span><span class="cat-tile__meta">7 Gerichte · ab 7,80 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#pizzabroetchen"><img src="assets/img/menu/pizzabroetchen-l.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizzabrötchen</span><span class="cat-tile__meta">5 Gerichte · ab 4,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#doener-ueberbacken"><img src="assets/img/kategorien/doener-ueberbacken.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner überbacken</span><span class="cat-tile__meta">1 Gericht · ab 11,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#lahmacun"><img src="assets/img/kategorien/lahmacun.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Lahmacun</span><span class="cat-tile__meta">3 Gerichte · ab 3,50 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#falafel"><img src="assets/img/kategorien/falafel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Falafel</span><span class="cat-tile__meta">5 Gerichte · ab 6,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#salate"><img src="assets/img/kategorien/salate.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Salate</span><span class="cat-tile__meta">5 Gerichte · ab 7,50 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#pide"><img src="assets/img/kategorien/pide.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pide</span><span class="cat-tile__meta">5 Gerichte · ab 7,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#schnitzel"><img src="assets/img/kategorien/schnitzel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Schnitzel</span><span class="cat-tile__meta">3 Gerichte · ab 11,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#burger"><img src="assets/img/kategorien/burger.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Burger</span><span class="cat-tile__meta">5 Gerichte · ab 8,50 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#imbiss-saucen"><img src="assets/img/kategorien/imbiss-saucen.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Imbiss &amp; Saucen</span><span class="cat-tile__meta">18 Gerichte · ab 1,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#fuer-kids"><img src="assets/img/kategorien/fuer-kids.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Für Kids</span><span class="cat-tile__meta">1 Gericht · ab 9,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#spar-menues"><img src="assets/img/kategorien/spar-menues.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Spar-Menüs</span><span class="cat-tile__meta">4 Gerichte · ab 12,00 €</span></a></li>
+          <li class="cat-cell"><a class="cat-tile" href="speisekarte.html#getraenke"><img src="assets/img/kategorien/getraenke.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Getränke</span><span class="cat-tile__meta">13 Gerichte · ab 1,50 €</span></a></li>
         </ul>
         <!-- KATEGORIEN:END -->
+      </div>
+    </section>
+
+    <!-- Hunger? Bestellen oder anrufen -->
+    <section class="cta-band" aria-labelledby="cta-title">
+      <div class="container cta-band__inner">
+        <div class="cta-band__text">
+          <p class="eyebrow">Hunger?</p>
+          <h2 class="section-title" id="cta-title">Heiß, frisch und in ca. 15&nbsp;Minuten abholbereit.</h2>
+          <p>Online bestellen oder einfach anrufen – Further Straße 46, Neuss.</p>
+        </div>
+        <div class="cta-band__actions">
+          <a class="btn btn--primary btn--big" href="bestellen.html">Jetzt bestellen</a>
+          <a class="btn btn--ghost btn--big" href="tel:+4921313166137">02131 3166137</a>
+        </div>
       </div>
     </section>
   </main>
@@ -180,6 +260,7 @@
   <footer class="footer" id="kontakt">
     <div class="container footer__inner">
       <div class="footer__col">
+        <img class="footer__logo" src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375" loading="lazy">
         <h2>Kontakt</h2>
         <address>
           Neusser Döner &amp; Pizza<br>
