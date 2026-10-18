@@ -40,6 +40,7 @@ function tageText(tage) {
 }
 
 function istGeoeffnet(now) {
+  if ((DATA.geschlossen || []).indexOf(now.datum) !== -1) return false;
   var z = DATA.oeffnungszeiten[now.tag];
   return !!z && now.minuten >= minuten(z[0]) && now.minuten < minuten(z[1]);
 }
@@ -55,7 +56,7 @@ function giltJetzt(a, now) {
 
 function bedingungen(a) {
   var b = [];
-  if (a.mindestwert && a.typ !== 'lieferung') b.push('ab ' + euroKurz(a.mindestwert) + ' Bestellwert');
+  if (a.mindestwert) b.push('ab ' + euroKurz(a.mindestwert) + ' Bestellwert');
   if (a.tage && a.tage.length) b.push('nur ' + tageText(a.tage));
   if (a.von || a.bis) b.push((a.von || '') + '–' + (a.bis || '') + ' Uhr');
   if (a.gueltigBis) {
@@ -67,7 +68,7 @@ function bedingungen(a) {
 
 function badge(a) {
   if (a.typ === 'rabatt') return '−' + a.prozent + ' %';
-  if (a.typ === 'menue') return euro(a.preis);
+  if (a.typ === 'menue') return a.preisAb != null ? '+ ' + euro(a.preisAb) : euro(a.preis);
   if (a.typ === 'lieferung') return 'Gratis Lieferung';
   if (a.typ === 'stempelkarte') return 'Stempelkarte';
   return 'Angebot';
@@ -95,10 +96,15 @@ var ANGEBOTE = (DATA.angebote || []).filter(function (a) { return a.aktiv; });
   if (!out) return;
   var z = DATA.oeffnungszeiten[NOW.tag];
   var text;
-  if (istGeoeffnet(NOW)) text = '<strong>Jetzt geöffnet</strong> bis ' + z[1] + ' Uhr';
+  if (istGeoeffnet(NOW)) {
+    var l = (DATA.lieferzeiten || {})[NOW.tag];
+    var liefert = l && NOW.minuten >= minuten(l[0]) && NOW.minuten < minuten(l[1]);
+    text = '<strong>Jetzt geöffnet</strong> bis ' + z[1] + ' Uhr' + (l ? (liefert ? ' · Lieferung bis ' + l[1] + ' Uhr' : (NOW.minuten < minuten(l[0]) ? ' · Lieferung ab ' + l[0] + ' Uhr' : ' · nur Abholung')) : '');
+  }
   else if (!z) text = '<strong>Heute Ruhetag</strong>';
   else if (NOW.minuten < minuten(z[0])) text = '<strong>Öffnet heute</strong> um ' + z[0] + ' Uhr';
-  else text = '<strong>Geschlossen</strong> – morgen wieder da';
+  else if ((DATA.geschlossen || []).indexOf(NOW.datum) !== -1) text = '<strong>Heute geschlossen</strong>';
+  else text = '<strong>Geschlossen</strong> – öffnet morgen wieder';
   out.innerHTML = text;
   out.classList.toggle('is-open', istGeoeffnet(NOW));
 })();
@@ -120,8 +126,8 @@ var ANGEBOTE = (DATA.angebote || []).filter(function (a) { return a.aktiv; });
       var titel = esc(a.titel);
       var art = a.bild ? '<img class="slide__art' + (a.typ === 'rabatt' ? ' slide__art--pct' : '') +
         '" src="' + esc(a.bild) + '" alt="' + (a.typ === 'rabatt' ? a.prozent + ' %' : '') + '">' : '';
-      if (a.typ === 'menue') titel += ' <em>' + euro(a.preis) + '</em>';
-      if (a.typ === 'lieferung') titel += ' <em>ab ' + euroKurz(a.mindestwert) + '</em>';
+      if (a.typ === 'menue') titel += ' <em>' + (a.preisAb != null ? 'ab +' + euro(a.preisAb) : euro(a.preis)) + '</em>';
+      if (a.typ === 'lieferung') titel += ' <em>bis 2&nbsp;km</em>';
       if (a.typ === 'rabatt' && !a.bild) titel = '<em>' + a.prozent + ' %</em> ' + titel;
       var sub = [a.text].concat(bedingungen(a)).filter(Boolean).join(' · ');
       var s = el('div', 'slide' + (i === 0 ? ' is-active' : ''),
@@ -201,7 +207,7 @@ var ANGEBOTE = (DATA.angebote || []).filter(function (a) { return a.aktiv; });
         '<p>' + esc(a.text || '') + '</p>' +
         (conds.length ? '<ul class="conds">' + conds.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' : '') +
         '<div class="offer-card__foot">' + status +
-          '<a class="btn btn--primary btn--small" href="https://neusser-doener-pizza.de/bestellen">Bestellen</a>' +
+          '<a class="btn btn--primary btn--small" href="bestellen.html">Bestellen</a>' +
         '</div>' +
       '</div>';
     grid.appendChild(card);

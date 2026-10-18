@@ -7,10 +7,21 @@ Neue Website für Neusser Döner & Pizza (Further Str. 46, 41462 Neuss) mit dem 
 
 ## Seiten
 
-- `index.html` – Startseite
-- `speisekarte.html` – komplette Speisekarte als Karten: Foto, Zutaten, Preise, Größen, Allergene und Zusatzstoffe.
-  Bild je Artikel: Zuordnung `BILD` in `tools/build_menu.py`, Dateien in `assets/img/menu/`.
-  Wird aus `data/menu.json` gebaut: `python3 tools/build_menu.py` (nach jeder Änderung an der Speisekarte ausführen)
+- `index.html` – Startseite mit Angebote-Insel, Karussell und Angebotskarten
+- `speisekarte.html` – komplette Speisekarte als Karten: Foto, Zutaten, Preise, Größen, Extras/Wünsche mit Aufpreisen, Allergene
+- `bestellen.html` – der Bestellshop (Speisebaron, neusser-doener-pizza.de/bestellen) eingebettet; Bestellungen gehen weiter an Drucker/PayPal des Shops
+- `ueber-uns.html` – Über uns, Kontakt, Öffnungs- und Lieferzeiten, Liefergebiete
+- `impressum.html`, `datenschutz.html`
+
+Alle Unterseiten werden gebaut mit `python3 tools/build_pages.py` (Logo-Leiste und Footer kommen aus `index.html`).
+
+## Daten aktualisieren
+
+1. Aktuelle Shop-Daten speichern als `data/quellen/speisebaron-restaurant.json` (so, wie die Seite neusser-doener-pizza.de/bestellen sie lädt)
+2. `python3 tools/import_speisebaron.py` → schreibt `data/menu.json` und `data/shop.json`
+3. `python3 tools/build_pages.py` → baut die Unterseiten neu
+
+Allergene/Zusatzstoffe stehen im Shop nicht je Gericht; sie kommen aus der alten Pizza-Taxi-Seite (`data/quellen/pizza-taxi-menu.json`), Zuordnung `ALT_NR` im Import-Skript.
 
 ## Lokal ansehen
 
@@ -26,8 +37,9 @@ Rabatte müssen zusätzlich im Bestellsystem (neusser-doener-pizza.de/bestellen)
 
 ## Daten
 
-- `data/menu.json` – komplette Speisekarte (13 Kategorien, 92 Artikel) von neusser-doener-und-pizza.de
-- `data/shop.json` – Adresse, Telefon, Öffnungszeiten, Liefergebiete, Impressum-Angaben
+- `data/menu.json` – Speisekarte aus dem aktuellen Bestellshop (15 Kategorien, 101 Artikel, davon 95 aktiv)
+- `data/shop.json` – Adresse, Telefon, Öffnungs-/Lieferzeiten, Liefergebiete, Zahlarten, Impressum-Angaben
+- `data/quellen/` – Rohdaten beider alten Seiten (Speisebaron-Shop, Pizza-Taxi-Speisekarte, Datenschutztext)
 
 ## Bilder
 

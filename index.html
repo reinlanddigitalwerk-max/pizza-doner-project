@@ -21,18 +21,18 @@
       </a>
       <nav class="nav" aria-label="Hauptmenü">
         <a href="speisekarte.html">Speisekarte</a>
-        <a href="#angebote-liste">Angebote</a>
-        <a href="#kontakt">Kontakt</a>
+        <a href="index.html#angebote-liste">Angebote</a>
+        <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
       </nav>
-      <a class="topbar__phone" href="tel:+4915771066644">0157 71066644</a>
-      <a class="btn btn--primary topbar__cta" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
+      <a class="topbar__phone" href="tel:+4921313166137">02131 3166137</a>
+      <a class="btn btn--primary topbar__cta" href="bestellen.html">Jetzt bestellen</a>
     </div>
   </header>
 
   <!-- Angebote: „Insel“ unter der Logo-Leiste. Öffnet sich beim Laden wie die Dynamic Island. -->
   <section class="promo" id="angebote" aria-label="Aktuelle Angebote">
     <div class="container promo__inner">
-      <a class="island" href="https://neusser-doener-pizza.de/bestellen" data-interval="5000">
+      <a class="island" href="bestellen.html" data-interval="5000">
         <div class="island__slides">
           <div class="slide is-active">
             <img class="slide__art slide__art--pct" src="assets/img/icons/rabatt-12.webp" alt="12 %" width="480" height="244">
@@ -40,11 +40,11 @@
           </div>
         </div>
         <span class="island__cta">Bestellen</span>
-        <!-- Feuer, Pizzastück und Pepsi tauchen nacheinander aus der unteren Kante rechts auf -->
+        <!-- Feuer, Pizzastück und Coca-Cola tauchen nacheinander aus der unteren Kante rechts auf -->
         <span class="island__pop" aria-hidden="true">
           <img src="assets/img/icons/flamme.webp" alt="" width="358" height="260">
           <img src="assets/img/icons/pizza.webp" alt="" width="269" height="260">
-          <img src="assets/img/icons/pepsi.webp" alt="" width="102" height="300">
+          <img src="assets/img/icons/cola.webp" alt="" width="85" height="300">
         </span>
       </a>
     </div>
@@ -80,14 +80,14 @@
           <h1 class="hero__title">Frisch vom Spieß.<br><span>Heiß aus dem Ofen.</span></h1>
           <p class="hero__lead">Döner, Pizza, Lahmacun, Pide und mehr. Abholen in der Further Straße oder liefern lassen.</p>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="https://neusser-doener-pizza.de/bestellen">Jetzt bestellen</a>
+            <a class="btn btn--primary" href="bestellen.html">Jetzt bestellen</a>
             <a class="btn btn--ghost" href="speisekarte.html">Speisekarte ansehen</a>
           </div>
           <ul class="hero__facts">
             <li class="open-state" data-open-state>Öffnungszeiten unten</li>
-            <li><strong>ab 10&nbsp;€</strong> Mindestbestellwert</li>
-            <li><strong>ab 2&nbsp;€</strong> Liefergebühr</li>
-            <li><strong>ab 50&nbsp;€</strong> frei Haus</li>
+            <li><strong>10&nbsp;€</strong> Mindestbestellwert</li>
+            <li><strong>bis 2&nbsp;km</strong> Lieferung kostenlos</li>
+            <li><strong>2–5&nbsp;km</strong> 2&nbsp;€ Liefergebühr</li>
           </ul>
         </div>
 
@@ -119,27 +119,36 @@
         <h2>Kontakt</h2>
         <address>
           Neusser Döner &amp; Pizza<br>
-          Further Str. 46<br>
+          Further Straße 46<br>
           41462 Neuss<br>
-          Tel.: <a href="tel:+4915771066644">0157 71066644</a>
+          Tel.: <a href="tel:+4921313166137">02131 3166137</a>
         </address>
+        <p class="footer__pay">Bezahlen: Bar, PayPal, EC- und Kreditkarte</p>
       </div>
       <div class="footer__col">
-        <h2>Öffnungs- &amp; Lieferzeiten</h2>
+        <h2>Öffnungszeiten</h2>
         <table class="hours">
           <tr><th scope="row">Montag</th><td>Ruhetag</td></tr>
-          <tr><th scope="row">Dienstag – Donnerstag</th><td>12:00 – 21:30</td></tr>
-          <tr><th scope="row">Freitag &amp; Samstag</th><td>12:00 – 23:00</td></tr>
-          <tr><th scope="row">Sonn- &amp; Feiertag</th><td>12:00 – 21:30</td></tr>
+          <tr><th scope="row">Dienstag – Samstag</th><td>11:00 – 22:00</td></tr>
+          <tr><th scope="row">Sonntag</th><td>12:00 – 22:00</td></tr>
+        </table>
+        <h3 class="footer__sub">Lieferzeiten</h3>
+        <table class="hours">
+          <tr><th scope="row">Dienstag – Sonntag</th><td>14:30 – 21:30</td></tr>
         </table>
       </div>
       <div class="footer__col">
-        <h2>Liefergebiete</h2>
-        <p>PLZ 41460, 41462, 41464, 41468, 41469, 41472, 40549, 40667, 41564</p>
+        <h2>Lieferung</h2>
+        <table class="hours">
+          <tr><th scope="row">bis 2 km</th><td>kostenlos</td></tr>
+          <tr><th scope="row">2 – 5 km</th><td>2,00 € Liefergebühr</td></tr>
+          <tr><th scope="row">Mindestbestellwert</th><td>10,00 €</td></tr>
+        </table>
+        <p class="footer__pay">Abholung: in ca. 15 Minuten fertig</p>
       </div>
       <div class="footer__col footer__legal">
-        <h2>Impressum</h2>
-        <p>Inhaber und verantwortlich nach § 5 TMG: Negrvan Mahmoud, Further Str. 46, 41462 Neuss. Zuständige Aufsichtsbehörde: Stadt Neuss.</p>
+        <h2>Rechtliches</h2>
+        <p><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="speisekarte.html#allergene">Allergene</a></p>
         <p class="footer__credits">Fotos: Feuer von <a href="https://commons.wikimedia.org/wiki/File:Fire-Mehdi-1.JPG">Mehdi</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>), Pizzastück von <a href="https://commons.wikimedia.org/wiki/File:Paulie_Gee%27s_Slice_Shop_(35386).jpg">Rhododendrites</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), jeweils freigestellt. Weitere Fotos: CC0 / Public Domain. Abbildungen können abweichen.</p>
       </div>
     </div>

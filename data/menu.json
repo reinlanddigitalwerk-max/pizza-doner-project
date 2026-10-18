@@ -1,730 +1,2274 @@
 {
-  "quelle": "https://www.neusser-doener-und-pizza.de (Stand: 17.10.2026)",
+  "quelle": "Bestellshop neusser-doener-pizza.de (Speisebaron), Stand der Daten: 2026-05-11",
   "kategorien": [
     {
+      "kategorie": "Pizzabrötchen",
+      "beschreibung": "Alle Pizzabrötchen sind frisch hausgemacht!\nFür die Pizzabrötchen können keine Extra Zutaten gewählt werden.",
+      "bild_quelle": null,
+      "optionen": [
+        {
+          "titel": "Wähle deinen Dip zu den Pizzabrötchen",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "mit Aioli",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "mit Kräuterbutter",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Dip",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Extra Saucen",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne extra Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Currysauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Kräuterbutter",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Aioli",
+              "aufpreis": 1.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normale Zubereitung",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        }
+      ],
+      "artikel": [
+        {
+          "nr": "024",
+          "name": "6 Pizzabrötchen",
+          "beschreibung": "6 Stück",
+          "preis": 4.0,
+          "aktiv": true,
+          "allergene": "A",
+          "alt_nr": "33"
+        },
+        {
+          "nr": "025",
+          "name": "6 Pizzabrötchen mit Weißkäse",
+          "beschreibung": "6 Stück mit Weißkäse",
+          "preis": 6.0,
+          "aktiv": true,
+          "allergene": "A,G,2",
+          "alt_nr": "34"
+        },
+        {
+          "nr": "026",
+          "name": "6 Pizzabrötchen mit Thunfisch und Zwiebeln",
+          "beschreibung": "6 Stück mit Thunfisch und Zwiebeln",
+          "preis": 7.5,
+          "aktiv": true,
+          "allergene": "A,D",
+          "alt_nr": "35"
+        },
+        {
+          "nr": "027",
+          "name": "6 Pizzabrötchen mit Spinat und Käse",
+          "beschreibung": "6 Stück mit Spinat und Käse",
+          "preis": 7.5,
+          "aktiv": true,
+          "allergene": "A,G,2",
+          "alt_nr": "36"
+        },
+        {
+          "nr": "028",
+          "name": "6 Pizzabrötchen mit Drehspießfleisch",
+          "beschreibung": "6 Stück mit Drehspießfleisch",
+          "preis": 8.0,
+          "aktiv": true,
+          "allergene": "A,12",
+          "alt_nr": "37"
+        }
+      ]
+    },
+    {
       "kategorie": "Pizza",
+      "beschreibung": "Alle Pizzen sind frisch und hausgemacht und werden mit Tomatensauce, Gouda und Oregano zubereitet.",
       "groessen": [
         "Ø24cm",
         "Ø30cm"
       ],
+      "basis": [
+        "Tomatensauce",
+        "Gouda",
+        "Oregano"
+      ],
+      "hinweis": "Alle Pizzen sind frisch und hausgemacht und werden mit Tomatensauce, Gouda und Oregano zubereitet.",
+      "bild_quelle": "687a1bfd4a8c740011767aad",
+      "optionen": [
+        {
+          "titel": "Wähle deine Extra Zutaten",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "Rindersalami",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Putenschinken",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Champignons",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Thunfisch",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Zwiebeln",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Ananas",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Peperoni",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Sucuk",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Paprika",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Spinat",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Feta",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Broccoli",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "frische Tomaten",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Mozzarella",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Basilikum",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Drehspießfleisch",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Hähnchenbrustfilet",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Sauce Hollandaise",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "BBQ-Sauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Mais",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Extra Gouda",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Weißkäse",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "extra Knoblauch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "38",
+          "nr": "029",
           "name": "Pizza Margherita",
-          "beschreibung": "mit Tomatensauce, Käse und Oregano",
+          "beschreibung": "mit Tomatensauce, Gouda und Oregano zubereitet.",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "38",
           "preise": {
             "Ø24cm": 6.0,
             "Ø30cm": 8.0
           }
         },
         {
-          "nr": "39",
+          "nr": "030",
           "name": "Pizza Salami",
           "beschreibung": "mit Rindersalami",
+          "aktiv": true,
           "allergene": "G,2,15",
+          "alt_nr": "39",
           "preise": {
             "Ø24cm": 6.9,
             "Ø30cm": 8.5
           }
         },
         {
-          "nr": "40",
+          "nr": "033",
           "name": "Pizza Prosciutto",
           "beschreibung": "mit Putenschinken",
+          "aktiv": true,
           "allergene": "G,2,13",
+          "alt_nr": "40",
           "preise": {
             "Ø24cm": 6.9,
             "Ø30cm": 8.5
           }
         },
         {
-          "nr": "41",
+          "nr": "034",
           "name": "Pizza Funghi",
-          "beschreibung": "mit Champignons",
+          "beschreibung": "mit frischen Champignons",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "41",
           "preise": {
             "Ø24cm": 6.9,
             "Ø30cm": 8.5
           }
         },
         {
-          "nr": "42",
+          "nr": "035",
           "name": "Pizza Tonno",
-          "beschreibung": "mit Thunfisch",
+          "beschreibung": "mit Thunfisch und Zwiebeln",
+          "aktiv": true,
           "allergene": "G,2,D",
+          "alt_nr": "42",
           "preise": {
             "Ø24cm": 7.0,
             "Ø30cm": 9.0
           }
         },
         {
-          "nr": "43",
+          "nr": "036",
           "name": "Pizza Hawaii",
-          "beschreibung": "mit Putenschinken",
+          "beschreibung": "mit Putenschinken und Ananas",
+          "aktiv": true,
           "allergene": "G,2,13",
+          "alt_nr": "43",
           "preise": {
             "Ø24cm": 7.0,
             "Ø30cm": 9.0
           }
         },
         {
-          "nr": "44",
+          "nr": "037",
           "name": "Pizza Diavolo",
           "beschreibung": "mit Peperoni und Rindersalami",
+          "aktiv": true,
           "allergene": "G,2,15",
+          "alt_nr": "44",
           "preise": {
             "Ø24cm": 7.0,
             "Ø30cm": 9.0
           }
         },
         {
-          "nr": "45",
+          "nr": "038",
           "name": "Pizza Sucuk",
           "beschreibung": "mit türkischer Knoblauchwurst",
+          "aktiv": true,
           "allergene": "G,2,15",
+          "alt_nr": "45",
           "preise": {
             "Ø24cm": 7.5,
             "Ø30cm": 9.0
           }
         },
         {
-          "nr": "46",
+          "nr": "039",
           "name": "Pizza Mista",
           "beschreibung": "mit Putenschinken, Champignons und Rindersalami",
+          "aktiv": true,
           "allergene": "G,2,15,13",
+          "alt_nr": "46",
           "preise": {
             "Ø24cm": 7.5,
             "Ø30cm": 10.0
           }
         },
         {
-          "nr": "47",
+          "nr": "031",
           "name": "Pizza Paprika",
           "beschreibung": "mit Paprika",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "47",
           "preise": {
             "Ø24cm": 6.9,
             "Ø30cm": 8.5
           }
         },
         {
-          "nr": "48",
+          "nr": "032",
           "name": "Pizza Spinat",
           "beschreibung": "mit Spinat und Fetakäse",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "48",
           "preise": {
             "Ø24cm": 6.9,
             "Ø30cm": 8.5
           }
         },
         {
-          "nr": "49",
+          "nr": "040",
           "name": "Pizza Vegetaria",
-          "beschreibung": "mit Brokkoli, Zwiebeln, Champignons und frischen Tomaten",
+          "beschreibung": "mit Broccoli, Zwiebeln, Champignons und frischen Tomaten",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "49",
           "preise": {
             "Ø24cm": 7.0,
             "Ø30cm": 9.5
           }
         },
         {
-          "nr": "50",
+          "nr": "041",
           "name": "Pizza Nepal",
-          "beschreibung": "mit frischen Tomaten, Mozzarella und frischem Basilikum",
+          "beschreibung": "mit frischen Tomaten, Mozzarella und Basilikum",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "50",
           "preise": {
             "Ø24cm": 7.5,
             "Ø30cm": 9.5
           }
         },
         {
-          "nr": "51",
+          "nr": "042",
           "name": "Pizza Döner",
           "beschreibung": "mit Drehspießfleisch, Peperoni und Zwiebeln",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "51",
           "preise": {
             "Ø24cm": 7.5,
             "Ø30cm": 10.0
           }
         },
         {
-          "nr": "52",
+          "nr": "043",
           "name": "Pizza Quattro Stagioni",
           "beschreibung": "mit Putenschinken, Rindersalami, Champignons und Thunfisch",
+          "aktiv": true,
           "allergene": "G,2,D,13,15",
+          "alt_nr": "52",
           "preise": {
             "Ø24cm": 8.0,
             "Ø30cm": 10.5
           }
         },
         {
-          "nr": "53",
+          "nr": "044",
           "name": "Pizza Deluxe",
           "beschreibung": "mit Hähnchenbrustfilet, Sauce Hollandaise und Ananas",
+          "aktiv": true,
           "allergene": "G,2,3,11",
+          "alt_nr": "53",
           "preise": {
             "Ø24cm": 7.5,
             "Ø30cm": 10.0
           }
         },
         {
-          "nr": "54",
+          "nr": "045",
           "name": "Pizza California",
           "beschreibung": "mit BBQ-Sauce, Zwiebeln, Mais und Hähnchenbrustfilet",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "54",
           "preise": {
             "Ø24cm": 7.9,
             "Ø30cm": 10.9
           }
         },
         {
-          "nr": "55",
+          "nr": "046",
           "name": "Neusser Pizza",
-          "beschreibung": "mit Brokkoli, frischen Champignons, Hähnchenbrustfilet und Sauce Hollandaise",
+          "beschreibung": "mit Broccoli, Champignons, Hähnchenbrust und Sauce Hollandaise",
+          "aktiv": true,
           "allergene": "G,2,11",
+          "alt_nr": "55",
           "preise": {
             "Ø24cm": 7.9,
             "Ø30cm": 10.9
           }
         },
         {
-          "nr": "56",
+          "nr": "047",
           "name": "Pizza Quattro Formaggi",
           "beschreibung": "mit Goudakäse, Gorgonzola, Mozzarella und Weißkäse",
+          "aktiv": true,
           "allergene": "G,2",
+          "alt_nr": "56",
           "preise": {
             "Ø24cm": 7.9,
             "Ø30cm": 10.9
           }
         },
         {
-          "nr": "57",
-          "name": "Calzone",
-          "beschreibung": "mit Putenschinken, Thunfisch und Champignons",
+          "nr": "048",
+          "name": "Pizza Calzone",
+          "beschreibung": "gefüllt mit Putenschinken, Thunfisch und Champignons",
+          "aktiv": true,
           "allergene": "G,2,D,13",
-          "preis": 10.0
+          "alt_nr": "57",
+          "preise": {
+            "Ø30cm": 10.0
+          }
         }
       ],
-      "basis": [
-        "Tomatensauce",
-        "Käse"
-      ],
-      "hinweis": "Alle Pizzen mit Tomatensauce und Käse"
+      "bild": "assets/img/kategorien/pizza.webp"
     },
     {
-      "kategorie": "Salate",
+      "kategorie": "Pasta",
+      "beschreibung": "Wahlweise mit Spaghetti oder Rigatoni",
+      "bild_quelle": "694e8e9bb537420011e60e1a",
+      "optionen": [],
       "artikel": [
         {
-          "nr": "19",
-          "name": "Gemischter Salat",
-          "beschreibung": "mit Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
-          "allergene": "G,2",
-          "preis": 7.5
+          "nr": "110",
+          "name": "Pasta Napoli",
+          "beschreibung": "mit hausgemachter Tomatensauce",
+          "preis": 8.7,
+          "aktiv": false
         },
         {
-          "nr": "20",
-          "name": "Döner-Salat",
-          "beschreibung": "mit Drehspießfleisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
-          "allergene": "G,12,2",
-          "preis": 11.0
+          "nr": "111",
+          "name": "Pasta Bolognese",
+          "beschreibung": "mit Hackfleisch und Tomatensauce",
+          "preis": 10.0,
+          "aktiv": false
         },
         {
-          "nr": "21",
-          "name": "Thunfisch-Salat",
-          "beschreibung": "mit Thunfisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni, Oliven und Goudakäse",
-          "allergene": "G,2,D,8",
-          "preis": 10.0
+          "nr": "112",
+          "name": "Pasta Carbonara",
+          "beschreibung": "mit Putenschinken, Ei in Sahnesauce",
+          "preis": 10.0,
+          "aktiv": false
         },
         {
-          "nr": "22",
-          "name": "Bauernsalat",
-          "beschreibung": "mit Gurken, Tomaten, Oliven, Peperoni und Käse",
-          "allergene": "G,2,8",
-          "preis": 8.9
+          "nr": "113",
+          "name": "Pasta Pollo Special",
+          "beschreibung": "mit Hähnchenbruststreifen, Champignons, Broccoli, Knoblauch in Sahnesauce",
+          "preis": 12.0,
+          "aktiv": false
         },
         {
-          "nr": "17",
-          "name": "Salat-Tasche",
-          "beschreibung": "Fladenbrot mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
-          "allergene": "A,2,G",
-          "preis": 6.0
+          "nr": "114",
+          "name": "Pasta vegetarisch",
+          "beschreibung": "mit Paprika, Zwiebeln, Champignons, Knoblauch, Broccoli in Tomatensauce",
+          "preis": 11.5,
+          "aktiv": false
         },
         {
-          "nr": "18",
-          "name": "Salat-Wrap",
-          "beschreibung": "Wrap mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
-          "allergene": "A,2,G",
-          "preis": 6.0
+          "nr": "115",
+          "name": "Pasta Quattro Formaggi",
+          "beschreibung": "mit 4 Käsesorten in Sahnesauce-überbacken",
+          "preis": 10.0,
+          "aktiv": false
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/pasta.webp"
     },
     {
-      "kategorie": "Döner",
+      "kategorie": "Döner & Drehspieß",
+      "beschreibung": "Drehspießfleisch zur Wahl",
+      "bild_quelle": "687e35637d5cce0011d2b372",
+      "optionen": [
+        {
+          "titel": "Wähle deine Fleischsorte",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "Hähnchen",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Kalb",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Rotkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Weißkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Eisbergsalat",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine weitere Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normal zubereitet",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Du willst mehr?",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normale Portion",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Extra Fleisch",
+              "aufpreis": 2.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Zusatzsauce",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne Zusatzsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Cocktail",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "1",
+          "nr": "001",
           "name": "Döner-Sandwich",
-          "beschreibung": "Fladenbrot mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "beschreibung": "mit Drehspießfleisch im Fladenbrot, dazu Salatsauce und Käse",
+          "preis": 8.0,
+          "aktiv": true,
           "allergene": "A,G,12,2",
-          "preis": 8.0
+          "alt_nr": "1",
+          "optionen": [
+            {
+              "titel": "Willst du mehr",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "normal",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "mit extra Fleisch",
+                  "aufpreis": 2.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "2",
-          "name": "Döner-Sandwich mit extra Fleisch",
-          "beschreibung": "Fladenbrot mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "nr": "003",
+          "name": "Döner Wrap (hausgemacht)",
+          "beschreibung": "mit Drehspießfleisch im Blätterteig, dazu Salatsauce und Käse",
+          "preis": 8.0,
+          "aktiv": true,
           "allergene": "A,G,12,2",
-          "preis": 8.0
+          "alt_nr": "3"
         },
         {
-          "nr": "3",
-          "name": "Döner-Wrap",
-          "beschreibung": "selbstgemachter Blätterteig mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
-          "allergene": "A,G,12,2",
-          "preis": 8.0
-        },
-        {
-          "nr": "4",
-          "name": "Portion Fleisch",
-          "beschreibung": "nur Drehspießfleisch",
+          "nr": "004",
+          "name": "Portion Drehspießfleisch",
+          "beschreibung": "1 Portion Fleisch",
+          "preis": 11.0,
+          "aktiv": true,
           "allergene": "12",
-          "preis": 11.0
+          "alt_nr": "4"
         },
         {
-          "nr": "5",
-          "name": "Döner-Teller",
-          "beschreibung": "mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl, dazu Pommes Frites oder Reis",
+          "nr": "005",
+          "name": "Döner Teller",
+          "beschreibung": "mit Drehspießfleisch, Pommes frites oder Reis zur Wahl, dazu Salatsauce und Käse",
+          "preis": 12.5,
+          "aktiv": true,
           "allergene": "A,G,12,2",
-          "preis": 12.5
+          "alt_nr": "5",
+          "optionen": [
+            {
+              "titel": "Wähle deine Beilage",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Pommes frites",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Reis",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "6",
+          "nr": "006",
           "name": "Pomm-Döner mit Salat",
-          "beschreibung": "Box mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "beschreibung": "Drehspießfleisch in der Box, mit Salat und Sauce",
+          "preis": 7.8,
+          "aktiv": true,
           "allergene": "G,12,2",
-          "preis": 7.8
+          "alt_nr": "6"
         },
         {
-          "nr": "7",
+          "nr": "007",
           "name": "Pomm-Döner mit Pommes Frites",
-          "beschreibung": "Box mit Drehspießfleisch, Pommes Frites und einer Sauce Ihrer Wahl",
+          "beschreibung": "Drehspießfleisch in der Box, mit Pommes frites, Salat und Sauce",
+          "preis": 7.8,
+          "aktiv": true,
           "allergene": "G,12,2",
-          "preis": 7.8
+          "alt_nr": "7"
         },
         {
-          "nr": "8",
+          "nr": "008",
           "name": "Pomm-Döner mit Reis",
-          "beschreibung": "Box mit Drehspießfleisch, Reis und einer Sauce Ihrer Wahl",
-          "preis": 7.8
-        },
-        {
-          "nr": "9",
-          "name": "Döner Überbacken mit Tomatensauce",
-          "beschreibung": "mit Drehspießfleisch, Tomatensauce und Käse",
-          "allergene": "G,12,2",
-          "preis": 11.0
-        },
-        {
-          "nr": "10",
-          "name": "Döner Überbacken mit Sauce Hollandaise",
-          "beschreibung": "mit Drehspießfleisch, Sauce Hollandaise und Käse",
-          "allergene": "G,12,2",
-          "preis": 11.0
+          "beschreibung": "Drehspießfleisch in der Box, mit Reis, Salat und Sauce",
+          "preis": 7.8,
+          "aktiv": true,
+          "alt_nr": "8"
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/doener-drehspiess.webp"
+    },
+    {
+      "kategorie": "Döner überbacken",
+      "bild_quelle": "687e77997783650011e3704d",
+      "optionen": [
+        {
+          "titel": "Wähle deine Fleischsorte",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "Hähnchen",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Kalb",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normale Zubereitung",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        }
+      ],
+      "artikel": [
+        {
+          "nr": "009",
+          "name": "Döner überbacken",
+          "beschreibung": "Drehspießfleisch mit Tomatensauce und Käse überbacken",
+          "preis": 11.0,
+          "aktiv": true,
+          "allergene": "G,12,2",
+          "alt_nr": "9",
+          "optionen": [
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": true,
+              "auswahl": [
+                {
+                  "name": "Tomatensauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Sauce Hollandaise",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "bild": "assets/img/kategorien/doener-ueberbacken.webp"
     },
     {
       "kategorie": "Lahmacun",
+      "beschreibung": "Alle Lahmacun (türkische Pizza)- Gerichte sind frisch und hausgemacht",
+      "bild_quelle": "687e384f7d5cce0011d2b373",
+      "optionen": [
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Rotkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Weißkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Oliven",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Knoblauch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Blattsalat",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine weitere Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normal zubereitet",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "Tzatziki",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Extrasauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne extra Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Cocktail",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "11",
+          "nr": "015",
           "name": "Lahmacun",
+          "beschreibung": "natur, ohne alles",
+          "preis": 3.5,
+          "aktiv": true,
           "allergene": "A",
-          "preis": 3.5
+          "alt_nr": "11"
         },
         {
-          "nr": "12",
-          "name": "Lahmacun mit Salat",
-          "beschreibung": "mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "nr": "016",
+          "name": "Lahmacun Salat",
+          "beschreibung": "mit Salat und Sauce",
+          "preis": 7.8,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 7.8
+          "alt_nr": "12"
         },
         {
-          "nr": "13",
-          "name": "Lahmacun mit Fleisch",
-          "beschreibung": "mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "nr": "017",
+          "name": "Lahmacun Fleisch",
+          "beschreibung": "mit Drehspießfleisch, Salat und Sauce",
+          "preis": 9.0,
+          "aktiv": true,
           "allergene": "G,12,2",
-          "preis": 9.0
+          "alt_nr": "13",
+          "optionen": [
+            {
+              "titel": "Wähle deine Fleischsorte",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Hähnchen",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Kalb",
+                  "aufpreis": 0.0
+                }
+              ]
+            },
+            {
+              "titel": "Du willst mehr?",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "normale Portion",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Extra Fleisch",
+                  "aufpreis": 2.0
+                }
+              ]
+            }
+          ]
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/lahmacun.webp"
     },
     {
       "kategorie": "Falafel",
+      "bild_quelle": "687e3af37d5cce0011d2b374",
+      "optionen": [
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Rotkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Weißkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Oliven",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Knoblauch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Blattsalat",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine weitere Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normal zubereitet",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Extra Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Extra",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Cocktail",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "14",
-          "name": "Falafel-Sandwich",
-          "beschreibung": "Fladenbrot mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "nr": "020",
+          "name": "Falafel Sandwich",
+          "beschreibung": "mit Falafel im Fladenbrot, dazu Salatsauce und Käse",
+          "preis": 7.5,
+          "aktiv": true,
           "allergene": "A,2,G",
-          "preis": 7.5
+          "alt_nr": "14"
         },
         {
-          "nr": "15",
-          "name": "Falafel-Wrap",
-          "beschreibung": "Blätterteig mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "nr": "021",
+          "name": "Falafel Wrap (hausgemacht)",
+          "beschreibung": "mit Falafel im Blätterteig, dazu Salatsauce und Käse",
+          "preis": 7.8,
+          "aktiv": true,
           "allergene": "A,2,G",
-          "preis": 7.8
+          "alt_nr": "15"
         },
         {
-          "nr": "16",
-          "name": "Falafel-Teller",
-          "beschreibung": "mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse, Pommes Frites und einer Sauce Ihrer Wahl",
+          "nr": "022",
+          "name": "Falafel Teller",
+          "beschreibung": "mit Falafel, Pommes frites, dazu Salatsauce und Käse",
+          "preis": 12.0,
+          "aktiv": true,
           "allergene": "A,2,G",
-          "preis": 12.0
+          "alt_nr": "16"
+        },
+        {
+          "nr": "023",
+          "name": "Salat Tasche",
+          "beschreibung": "im Fladenbrot, dazu Salatsauce und Käse",
+          "preis": 6.0,
+          "aktiv": true,
+          "allergene": "A,2,G",
+          "alt_nr": "17"
+        },
+        {
+          "nr": "024",
+          "name": "Salat Wrap",
+          "beschreibung": "im Wrap mit Salatsauce und Käse",
+          "preis": 6.0,
+          "aktiv": true,
+          "allergene": "A,2,G",
+          "alt_nr": "18"
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/falafel.webp"
+    },
+    {
+      "kategorie": "Salate",
+      "bild_quelle": "687e41134a8c740011768929",
+      "optionen": [
+        {
+          "titel": "Wähle dein Dressing",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "Essig-Öl Dressing",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Dressing",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Krautsalat",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Oliven",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Blattsalat",
+              "aufpreis": 0.0
+            }
+          ]
+        }
+      ],
+      "artikel": [
+        {
+          "nr": "030",
+          "name": "Gemischter Salat",
+          "beschreibung": "mit Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
+          "preis": 7.5,
+          "aktiv": true,
+          "allergene": "G,2",
+          "alt_nr": "19"
+        },
+        {
+          "nr": "031",
+          "name": "Döner Salat",
+          "beschreibung": "mit Drehspießfleisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
+          "preis": 11.0,
+          "aktiv": true,
+          "allergene": "G,12,2",
+          "alt_nr": "20"
+        },
+        {
+          "nr": "032",
+          "name": "Thunfisch Salat",
+          "beschreibung": "mit Thunfisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Goudakäse",
+          "preis": 10.0,
+          "aktiv": true,
+          "allergene": "G,2,D,8",
+          "alt_nr": "21"
+        },
+        {
+          "nr": "033",
+          "name": "Bauernsalat",
+          "beschreibung": "mit Feta, Tomaten und Gurken, Peperoni und Oliven",
+          "preis": 8.9,
+          "aktiv": true,
+          "allergene": "G,2,8",
+          "alt_nr": "22"
+        },
+        {
+          "nr": "",
+          "name": "Neusser Salat",
+          "beschreibung": "gemischter Salat mit Hähnchen, Käse und Ei",
+          "preis": 10.0,
+          "aktiv": true
+        }
+      ],
+      "bild": "assets/img/kategorien/salate.webp"
     },
     {
       "kategorie": "Pide",
+      "bild_quelle": "687e427e4a8c740011768936",
+      "optionen": [
+        {
+          "titel": "Wähle deine Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne Ei",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "mit extra Ei",
+              "aufpreis": 1.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine weitere Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normal zubereitet",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Extra zutaten",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "Eier extra",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Sucuk",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Spinat",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Zwiebeln",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Feta",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "23",
-          "name": "Pide mit Käse",
+          "nr": "036",
+          "name": "Pide Käse",
+          "beschreibung": "mit Käse",
+          "preis": 7.0,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 7.0
+          "alt_nr": "23"
         },
         {
-          "nr": "24",
-          "name": "Pide mit Hackfleisch",
+          "nr": "037",
+          "name": "Pide Hackfleisch",
+          "beschreibung": "mit Hackfleisch",
+          "preis": 8.0,
+          "aktiv": true,
           "allergene": "A,15",
-          "preis": 8.0
+          "alt_nr": "24"
         },
         {
-          "nr": "25",
-          "name": "Pide mit Spinat",
+          "nr": "038",
+          "name": "Pide Spinat",
           "beschreibung": "mit Spinat und Käse",
+          "preis": 8.0,
+          "aktiv": true,
           "allergene": "A,2,G",
-          "preis": 8.0
+          "alt_nr": "25"
         },
         {
-          "nr": "26",
-          "name": "Pide mit Dönerfleisch",
-          "beschreibung": "mit Dönerfleisch, Peperoni und Zwiebeln",
+          "nr": "039",
+          "name": "Pide Döner",
+          "beschreibung": "mit Drehspießfleisch, Peperoni und Zwiebeln",
+          "preis": 8.5,
+          "aktiv": true,
           "allergene": "A,12",
-          "preis": 8.5
+          "alt_nr": "26"
         },
         {
-          "nr": "27",
-          "name": "Pide mit Sucuk",
+          "nr": "040",
+          "name": "Pide Sucuk",
+          "beschreibung": "mit türkischer Knoblauchwurst",
+          "preis": 8.5,
+          "aktiv": true,
           "allergene": "A,12",
-          "preis": 8.5
+          "alt_nr": "27"
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/pide.webp"
     },
     {
       "kategorie": "Schnitzel",
+      "beschreibung": "Alle Schnitzel werden aus Putenfleisch zubereitet",
+      "bild_quelle": "687e44047d5cce0011d2b3aa",
+      "optionen": [
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Kraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Eisberg",
+              "aufpreis": 0.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "58",
+          "nr": "049",
           "name": "Schnitzel Wiener Art",
-          "beschreibung": "mit Pommes frites und Salat",
-          "preis": 11.0
+          "beschreibung": "Putenschnitzel, paniert, mit Pommes frites und Salat",
+          "preis": 11.0,
+          "aktiv": true,
+          "alt_nr": "58"
         },
         {
-          "nr": "59",
+          "nr": "050",
           "name": "Jägerschnitzel",
-          "beschreibung": "mit Jägersauce, Pommes frites und Salat",
-          "preis": 12.0
+          "beschreibung": "Putenschnitzel, paniert, mit Jägersauce, Pommes frites und Salat",
+          "preis": 12.0,
+          "aktiv": true,
+          "alt_nr": "59"
         },
         {
-          "nr": "60",
+          "nr": "051",
           "name": "Paprikaschnitzel",
-          "beschreibung": "mit Paprikasauce, Pommes frites und Sauce",
-          "preis": 12.0
+          "beschreibung": "Putenschnitzel, paniert, mit Paprikasauce, Pommes frites und Salat",
+          "preis": 12.0,
+          "aktiv": true,
+          "alt_nr": "60"
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/schnitzel.webp"
     },
     {
       "kategorie": "Burger",
+      "beschreibung": "Alle Burger auch als Menü mit Pommes und Softdrink (0,33 L) erhältlich",
+      "bild_quelle": "694e7e4cb537420011e60dee",
+      "optionen": [
+        {
+          "titel": "Was möchtest du nicht",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Salat",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse (wenn vorgesehen)",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Jalapeños",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Du willst mehr Fleisch",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "Ohne extra Fleisch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "extra Fleisch",
+              "aufpreis": 1.7
+            },
+            {
+              "name": "extra Käse",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
       "artikel": [
         {
-          "nr": "28",
+          "nr": "100",
           "name": "Hamburger",
-          "beschreibung": "mit 140g Rindfleisch, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "beschreibung": "mit 150 g Rinderpatty, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "preis": 8.5,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 8.5
+          "alt_nr": "28",
+          "optionen": [
+            {
+              "titel": "Wähle deine Zubereitung",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "als Single-Burger",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "mit Pommes und Coke",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Coke Zero",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Fanta Orange",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Fanta Exotik",
+                  "aufpreis": 2.5
+                }
+              ]
+            },
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Burgersauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Andalousesauce",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "29",
+          "nr": "101",
           "name": "Cheeseburger",
-          "beschreibung": "mit 140g Rindfleisch, Käse, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "beschreibung": "mit 150 g Rinderpatty, Käse, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "preis": 9.5,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 9.5
+          "alt_nr": "29",
+          "optionen": [
+            {
+              "titel": "Wähle deine Zubereitung",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "als Single-Burger",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "mit Pommes und Coke",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Coke Zero",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Fanta Orange",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "mit Pommes und Fanta Exotik",
+                  "aufpreis": 3.5
+                }
+              ]
+            },
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Burgersauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Andalousesauce",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "30",
+          "nr": "102",
           "name": "Chili-Cheeseburger",
-          "beschreibung": "mit 140g Rindfleisch, Käse, Jalapenos, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "beschreibung": "mit 150 g Rinderpatty, Käse, Jalapeños, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "preis": 10.0,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 10.0
+          "alt_nr": "30",
+          "optionen": [
+            {
+              "titel": "Wähle deine Zubereitung",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "als Single-Burger",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Mit Pommes und Coke",
+                  "aufpreis": 3.0
+                },
+                {
+                  "name": "Mit Pommes und Coke Zero",
+                  "aufpreis": 3.0
+                },
+                {
+                  "name": "Mit Pommes und Fanta Orange",
+                  "aufpreis": 3.5
+                },
+                {
+                  "name": "Mit Pommes und Fanta Exotik",
+                  "aufpreis": 3.5
+                }
+              ]
+            },
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Burgersauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Andalousesauce",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "31",
+          "nr": "103",
           "name": "Crispy Chickenburger",
-          "beschreibung": "mit Crispy Chicken, Tomaten, Salat und Burgersauce",
+          "beschreibung": "mit knusprigem Hähnchen, Tomaten, Salat und Burgersauce",
+          "preis": 8.5,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 8.5
+          "alt_nr": "31",
+          "optionen": [
+            {
+              "titel": "Wähle deine Zubereitung",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "als Single Burger",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Mit Pommes und Coke",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "Mit Pommes und Coke Zero",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "Mit Pommes und Fanta Orange",
+                  "aufpreis": 3.0
+                },
+                {
+                  "name": "Mit Pommes und Fanta Exotik",
+                  "aufpreis": 2.5
+                }
+              ]
+            },
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Burgersauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Andalousesauce",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         },
         {
-          "nr": "32",
-          "name": "Crispy Cheeseburger",
-          "beschreibung": "mit Crispy Chicken, Käse, Salat, Tomaten und Burgersauce",
+          "nr": "104",
+          "name": "Crispy Chicken-Cheeseburger",
+          "beschreibung": "mit knusprigem Hähnchen, Käse, Tomaten, Salat und Burgersauce",
+          "preis": 9.5,
+          "aktiv": true,
           "allergene": "G,2",
-          "preis": 9.5
+          "alt_nr": "32",
+          "optionen": [
+            {
+              "titel": "Wähle deine Zubereitung",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "als Single Burger",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Mit Pommes und Coke",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "Mit Pommes und Coke Zero",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "Mit Pommes und Fanta Orange",
+                  "aufpreis": 2.5
+                },
+                {
+                  "name": "Mit Pommes und Fanta Exotik",
+                  "aufpreis": 2.5
+                }
+              ]
+            },
+            {
+              "titel": "Wähle deine Sauce",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Burgersauce",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Andalousesauce",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/burger.webp"
     },
     {
-      "kategorie": "Pizzabrötchen",
+      "kategorie": "Imbiss & Saucen",
+      "bild_quelle": "687e7c297d5cce0011d2b597",
       "artikel": [
         {
-          "nr": "33",
-          "name": "6 Pizzabrötchen",
-          "beschreibung": "auf Wunsch mit Aioli oder Kräuterbutter",
-          "allergene": "A",
-          "preis": 4.0
+          "nr": "052",
+          "name": "Pommes frites",
+          "beschreibung": "1 Portion",
+          "preis": 4.5,
+          "aktiv": true,
+          "alt_nr": "61"
         },
         {
-          "nr": "34",
-          "name": "6 Pizzabrötchen Weisskäse",
-          "beschreibung": "mit Weißkäse",
-          "allergene": "A,G,2",
-          "preis": 6.0
+          "nr": "053",
+          "name": "Reis",
+          "beschreibung": "1 Portion",
+          "preis": 6.0,
+          "aktiv": true,
+          "alt_nr": "62"
         },
         {
-          "nr": "35",
-          "name": "6 Pizzabrötchen Thunfisch",
-          "beschreibung": "mit Thunfisch",
-          "allergene": "A,D",
-          "preis": 7.5
+          "nr": "054",
+          "name": "Chicken Nuggets",
+          "beschreibung": "6 er Portion",
+          "preis": 6.0,
+          "aktiv": true,
+          "alt_nr": "63"
         },
         {
-          "nr": "36",
-          "name": "6 Pizzabrötchen Spinat",
-          "beschreibung": "mit Spinat und Käse",
-          "allergene": "A,G,2",
-          "preis": 7.5
-        },
-        {
-          "nr": "37",
-          "name": "6 Pizzabrötchen Dönerfleisch",
-          "beschreibung": "mit Dönerfleisch",
-          "allergene": "A,12",
-          "preis": 8.0
-        }
-      ]
-    },
-    {
-      "kategorie": "Imbiss & Co.",
-      "artikel": [
-        {
-          "nr": "63",
-          "name": "6 Chicken Nuggets",
-          "preis": 6.0
-        },
-        {
-          "nr": "64",
+          "nr": "055",
           "name": "Currywurst",
-          "preis": 4.0
+          "beschreibung": "von der Pute",
+          "preis": 4.0,
+          "aktiv": true,
+          "alt_nr": "64"
         },
         {
-          "nr": "65",
-          "name": "Currywurst mit Pommes Frites",
-          "preis": 6.5
+          "nr": "056",
+          "name": "Currywurst mit Pommes frites",
+          "preis": 6.5,
+          "aktiv": true,
+          "alt_nr": "65"
         },
         {
-          "nr": "66",
-          "name": "Currywurst mit Pommes Frites (Doppelt)",
-          "preis": 9.0
+          "nr": "057",
+          "name": "Doppelte Currywurst mit Pommes",
+          "preis": 9.0,
+          "aktiv": true,
+          "alt_nr": "66"
         },
         {
-          "nr": "67",
-          "name": "Chicken Bowl",
-          "beschreibung": "mit panierten, frittierten Chicken-Stripes, Sauce, Käse, Pommes Frites und Salat",
-          "preis": 11.0
-        },
-        {
-          "nr": "61",
-          "name": "Pommes Frites",
-          "preis": 4.5
-        },
-        {
-          "nr": "62",
-          "name": "Portion Reis",
-          "preis": 6.0
-        },
-        {
-          "nr": "62a",
-          "name": "Peperoni",
-          "preis": 3.5
-        },
-        {
-          "nr": "62b",
-          "name": "Oliven",
-          "preis": 3.5
-        },
-        {
-          "nr": "S1",
+          "nr": "",
           "name": "Ketchup",
-          "preis": 1.0
+          "preis": 1.0,
+          "aktiv": true,
+          "alt_nr": "S1"
         },
         {
-          "nr": "S2",
+          "nr": "",
           "name": "Mayonnaise",
-          "preis": 1.0
+          "preis": 1.0,
+          "aktiv": true,
+          "alt_nr": "S2"
         },
         {
-          "nr": "S3",
+          "nr": "",
           "name": "Tzatziki",
-          "preis": 1.0
+          "preis": 1.0,
+          "aktiv": true,
+          "alt_nr": "S3"
         },
         {
-          "nr": "S4",
+          "nr": "",
           "name": "Cocktailsauce",
-          "preis": 1.0
+          "preis": 1.0,
+          "aktiv": true,
+          "alt_nr": "S4"
         },
         {
-          "nr": "S5",
+          "nr": "",
+          "name": "scharfe Sauce",
+          "preis": 1.0,
+          "aktiv": true,
+          "alt_nr": "S8"
+        },
+        {
+          "nr": "",
           "name": "Currysauce",
-          "preis": 1.5
+          "preis": 1.5,
+          "aktiv": true,
+          "alt_nr": "S5"
         },
         {
-          "nr": "S6",
+          "nr": "",
           "name": "Jägersauce",
-          "preis": 2.0
+          "preis": 2.0,
+          "aktiv": true,
+          "alt_nr": "S6"
         },
         {
-          "nr": "S7",
+          "nr": "",
           "name": "Paprikasauce",
-          "preis": 2.0
+          "preis": 2.0,
+          "aktiv": true,
+          "alt_nr": "S7"
         },
         {
-          "nr": "S8",
-          "name": "Scharfe Sauce",
-          "preis": 1.0
-        },
-        {
-          "nr": "S9",
+          "nr": "",
           "name": "Aioli",
-          "preis": 1.5
+          "preis": 1.5,
+          "aktiv": true,
+          "alt_nr": "S9"
         },
         {
-          "nr": "S10",
+          "nr": "",
           "name": "Kräuterbutter",
-          "preis": 1.5
+          "preis": 1.5,
+          "aktiv": true,
+          "alt_nr": "S10"
+        },
+        {
+          "nr": "",
+          "name": "Peperoni",
+          "preis": 3.5,
+          "aktiv": true,
+          "alt_nr": "62a"
+        },
+        {
+          "nr": "",
+          "name": "Oliven",
+          "preis": 3.5,
+          "aktiv": true,
+          "alt_nr": "62b"
         }
-      ]
-    },
-    {
-      "kategorie": "Menüs",
-      "artikel": [
-        {
-          "nr": "M1",
-          "name": "Döner-Menü",
-          "beschreibung": "Döner-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
-          "preis": 12.0
-        },
-        {
-          "nr": "M2",
-          "name": "Wrap-Menü",
-          "beschreibung": "Döner-Wrap mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
-          "preis": 12.0
-        },
-        {
-          "nr": "M3",
-          "name": "Lahmacun-Menü",
-          "beschreibung": "Lahmacun mit Drehspießfleisch und Pommes frites dazu, 1 Softdrink (0,33l) Ihrer Wahl",
-          "preis": 13.0
-        },
-        {
-          "nr": "M4",
-          "name": "Falafel-Menü",
-          "beschreibung": "Falafel-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
-          "preis": 12.0
-        }
-      ]
+      ],
+      "bild": "assets/img/kategorien/imbiss-saucen.webp"
     },
     {
       "kategorie": "Für Kids",
+      "bild_quelle": "687e5a3e7d5cce0011d2b481",
       "artikel": [
         {
-          "nr": "K1",
-          "name": "Kinder-Menü",
-          "beschreibung": "6 Chicken Nuggets mit Pommes frites, dazu Durstlöscher",
-          "preis": 9.0
+          "nr": "058",
+          "name": "Kindermenü",
+          "beschreibung": "6 Chicken Nuggets, Pommes frites und ein Durstlöscher",
+          "preis": 9.0,
+          "aktiv": true,
+          "alt_nr": "K1"
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/fuer-kids.webp"
+    },
+    {
+      "kategorie": "Spar-Menüs",
+      "bild_quelle": "687e48db4a8c740011768937",
+      "optionen": [
+        {
+          "titel": "Wähle dein Getränk zum Menü",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "Coca Cola 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cola Zero 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Fanta Orange 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Fanta Exotik 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Sprite 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Mezzo Mix 0,33 L",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Ayran 0,25 L",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Zubereitung",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normale Zubereitung",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Extra scharf",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Du willst mehr?",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "normale Portion",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Extra Fleisch",
+              "aufpreis": 2.0
+            }
+          ]
+        },
+        {
+          "titel": "Was möchtest du nicht zu deinem Gericht",
+          "mehrfach": false,
+          "auswahl": [
+            {
+              "name": "ohne Wunsch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Zwiebeln",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Gurken",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Tomaten",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Peperoni",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Rotkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Weißkraut",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Oliven",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Knoblauch",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Käse",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Eisbergsalat",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktailsauce",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "ohne Sauce",
+              "aufpreis": 0.0
+            }
+          ]
+        },
+        {
+          "titel": "Wähle deine Extra Sauce",
+          "mehrfach": true,
+          "auswahl": [
+            {
+              "name": "ohne Extra",
+              "aufpreis": 0.0
+            },
+            {
+              "name": "Cocktail",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "scharfe Sauce",
+              "aufpreis": 1.0
+            },
+            {
+              "name": "Tzatziki",
+              "aufpreis": 1.0
+            }
+          ]
+        }
+      ],
+      "artikel": [
+        {
+          "nr": "Menü 1",
+          "name": "Döner Menü",
+          "beschreibung": "1 Döner Sandwich, Pommes frites und 1 Getränk 0,33 L nach Wahl",
+          "preis": 12.0,
+          "aktiv": true,
+          "alt_nr": "M1",
+          "optionen": [
+            {
+              "titel": "Wähle deine Fleischsorte",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Hähnchen",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Kalb",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nr": "Menü 2",
+          "name": "Wrap Menü",
+          "beschreibung": "1 Döner Wrap (Drehspieß) mit Pommes frites 1 Getränk 0,33 L nach Wahl",
+          "preis": 12.0,
+          "aktiv": true,
+          "alt_nr": "M2",
+          "optionen": [
+            {
+              "titel": "Wähle deine Fleischsorte",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Hähnchen",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Kalb",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nr": "Menü 3",
+          "name": "Lahmacun Menü",
+          "beschreibung": "1 Lahmacun mit Fleisch (Drehspieß) mit Pommes frites 1 Getränk 0,33 L nach Wahl",
+          "preis": 13.0,
+          "aktiv": true,
+          "alt_nr": "M3",
+          "optionen": [
+            {
+              "titel": "Wähle deine Fleischsorte",
+              "mehrfach": false,
+              "auswahl": [
+                {
+                  "name": "Hähnchen",
+                  "aufpreis": 0.0
+                },
+                {
+                  "name": "Kalb",
+                  "aufpreis": 0.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nr": "Menü 4",
+          "name": "Falafel Menü",
+          "beschreibung": "1 Falafel Sandwich mit Pommes frites 1 Getränk 0,33 L nach Wahl",
+          "preis": 12.0,
+          "aktiv": true,
+          "alt_nr": "M4"
+        }
+      ],
+      "bild": "assets/img/kategorien/spar-menues.webp"
     },
     {
       "kategorie": "Getränke",
+      "bild_quelle": "687e4dcd7d5cce0011d2b3b3",
       "artikel": [
         {
-          "nr": "68a",
-          "name": "Cola (0,33l)",
-          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
-          "preis": 2.0,
-          "pfand": true
+          "nr": "",
+          "name": "Coca Cola 0,33 L",
+          "preis": 2.25,
+          "aktiv": true,
+          "alt_nr": "68a"
         },
         {
-          "nr": "68b",
-          "name": "Fanta Orange (0,33l)",
-          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
-          "preis": 2.0,
-          "pfand": true
+          "nr": "",
+          "name": "Cola Zero 0,33 L",
+          "preis": 2.25,
+          "aktiv": true
         },
         {
-          "nr": "68c",
-          "name": "Uludag (0,33l)",
-          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
-          "preis": 2.0,
-          "pfand": true
+          "nr": "",
+          "name": "Fanta Orange 0,33 L",
+          "preis": 2.25,
+          "aktiv": true,
+          "alt_nr": "68b"
         },
         {
-          "nr": "68d",
-          "name": "Sprite (0,33l)",
-          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
-          "preis": 2.0,
-          "pfand": true
+          "nr": "",
+          "name": "Fanta Exotik 0,33 L",
+          "preis": 2.25,
+          "aktiv": true
         },
         {
-          "nr": "68e",
-          "name": "Mezzo Mix (0,33l)",
-          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
-          "preis": 2.0,
-          "pfand": true
+          "nr": "",
+          "name": "Sprite 0,33 L",
+          "preis": 2.25,
+          "aktiv": true,
+          "alt_nr": "68d"
         },
         {
-          "nr": "70",
-          "name": "Wasser (0,5l)",
-          "beschreibung": "Literpreis: 3.50€, Pfand: 0.25€",
-          "preis": 1.75,
-          "pfand": true
+          "nr": "",
+          "name": "Mezzo Mix 0,33 L",
+          "preis": 2.25,
+          "aktiv": true,
+          "alt_nr": "68e"
         },
         {
-          "nr": "71",
-          "name": "Ayran (0,2l)",
-          "beschreibung": "Literpreis: 7.50€",
+          "nr": "",
+          "name": "Coca Cola 1,0 L",
+          "preis": 3.0,
+          "aktiv": true
+        },
+        {
+          "nr": "",
+          "name": "Fanta 1,0 L",
+          "preis": 3.0,
+          "aktiv": true
+        },
+        {
+          "nr": "",
+          "name": "Mezzo Mix 1,0 L",
+          "preis": 3.0,
+          "aktiv": true
+        },
+        {
+          "nr": "",
+          "name": "Wasser 0,5 L",
+          "preis": 2.25,
+          "aktiv": true,
+          "alt_nr": "70"
+        },
+        {
+          "nr": "",
+          "name": "Ayran 0,2 L",
           "preis": 1.5,
-          "pfand": true
+          "aktiv": true,
+          "alt_nr": "71"
         },
         {
-          "nr": "72",
-          "name": "Durstlöscher (0,5l)",
-          "beschreibung": "Literpreis: 3.00€",
+          "nr": "",
+          "name": "Durstlöscher 0,5 L",
           "preis": 1.5,
-          "pfand": true
+          "aktiv": true,
+          "alt_nr": "72"
+        },
+        {
+          "nr": "",
+          "name": "Red Bull",
+          "preis": 3.0,
+          "aktiv": true
         }
-      ]
+      ],
+      "bild": "assets/img/kategorien/getraenke.webp"
     }
   ],
   "zusatzstoffe": {

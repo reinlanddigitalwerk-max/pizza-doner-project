@@ -18,15 +18,29 @@
 // diese Seite zeigt sie nur an.
 window.NEUSSER = {
   oeffnungszeiten: {
-    // 1 = Montag … 7 = Sonntag; null = Ruhetag
+    // 1 = Montag … 7 = Sonntag; null = Ruhetag (Stand: Bestellshop neusser-doener-pizza.de)
     1: null,
-    2: ['12:00', '21:30'],
-    3: ['12:00', '21:30'],
-    4: ['12:00', '21:30'],
-    5: ['12:00', '23:00'],
-    6: ['12:00', '23:00'],
-    7: ['12:00', '21:30']
+    2: ['11:00', '22:00'],
+    3: ['11:00', '22:00'],
+    4: ['11:00', '22:00'],
+    5: ['11:00', '22:00'],
+    6: ['11:00', '22:00'],
+    7: ['12:00', '22:00']
   },
+
+  // Lieferung nur in dieser Zeit
+  lieferzeiten: {
+    1: null,
+    2: ['14:30', '21:30'],
+    3: ['14:30', '21:30'],
+    4: ['14:30', '21:30'],
+    5: ['14:30', '21:30'],
+    6: ['14:30', '21:30'],
+    7: ['14:30', '21:30']
+  },
+
+  // Tage, an denen geschlossen ist (Format JJJJ-MM-TT)
+  geschlossen: ['2025-12-24', '2025-12-25', '2025-12-26'],
 
   angebote: [
     {
@@ -58,12 +72,21 @@ window.NEUSSER = {
       bild: 'assets/img/dishes/lahmacun.webp'
     },
     {
-      id: 'frei-haus',
+      id: 'burger-menue',
+      typ: 'menue',
+      aktiv: true,
+      titel: 'Burger als Menü',
+      preisAb: 2.50,
+      text: 'Jeden Burger mit Pommes frites und Coca-Cola, Coke Zero, Fanta Orange oder Fanta Exotik – ab 2,50 € Aufpreis.',
+      bild: 'assets/img/kategorien/burger.webp'
+    },
+    {
+      id: 'gratis-lieferung',
       typ: 'lieferung',
       aktiv: true,
-      titel: 'Frei Haus',
-      mindestwert: 50,
-      text: 'Ab 50 € Bestellwert liefern wir ohne Liefergebühr.',
+      titel: 'Gratis Lieferung',
+      mindestwert: 10,
+      text: 'Im Umkreis von 2 km liefern wir ohne Liefergebühr. Bis 5 km kostet die Lieferung 2 €.',
       bild: 'assets/img/icons/pizza.webp'
     },
     {

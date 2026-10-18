@@ -1,0 +1,768 @@
+{
+  "quelle": "https://www.neusser-doener-und-pizza.de (Stand: 17.10.2026)",
+  "kategorien": [
+    {
+      "kategorie": "Pizza",
+      "groessen": [
+        "Ø24cm",
+        "Ø30cm"
+      ],
+      "artikel": [
+        {
+          "nr": "38",
+          "name": "Pizza Margherita",
+          "beschreibung": "mit Tomatensauce, Käse und Oregano",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 6.0,
+            "Ø30cm": 8.0
+          }
+        },
+        {
+          "nr": "39",
+          "name": "Pizza Salami",
+          "beschreibung": "mit Rindersalami",
+          "allergene": "G,2,15",
+          "preise": {
+            "Ø24cm": 6.9,
+            "Ø30cm": 8.5
+          }
+        },
+        {
+          "nr": "40",
+          "name": "Pizza Prosciutto",
+          "beschreibung": "mit Putenschinken",
+          "allergene": "G,2,13",
+          "preise": {
+            "Ø24cm": 6.9,
+            "Ø30cm": 8.5
+          }
+        },
+        {
+          "nr": "41",
+          "name": "Pizza Funghi",
+          "beschreibung": "mit Champignons",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 6.9,
+            "Ø30cm": 8.5
+          }
+        },
+        {
+          "nr": "42",
+          "name": "Pizza Tonno",
+          "beschreibung": "mit Thunfisch",
+          "allergene": "G,2,D",
+          "preise": {
+            "Ø24cm": 7.0,
+            "Ø30cm": 9.0
+          }
+        },
+        {
+          "nr": "43",
+          "name": "Pizza Hawaii",
+          "beschreibung": "mit Putenschinken",
+          "allergene": "G,2,13",
+          "preise": {
+            "Ø24cm": 7.0,
+            "Ø30cm": 9.0
+          }
+        },
+        {
+          "nr": "44",
+          "name": "Pizza Diavolo",
+          "beschreibung": "mit Peperoni und Rindersalami",
+          "allergene": "G,2,15",
+          "preise": {
+            "Ø24cm": 7.0,
+            "Ø30cm": 9.0
+          }
+        },
+        {
+          "nr": "45",
+          "name": "Pizza Sucuk",
+          "beschreibung": "mit türkischer Knoblauchwurst",
+          "allergene": "G,2,15",
+          "preise": {
+            "Ø24cm": 7.5,
+            "Ø30cm": 9.0
+          }
+        },
+        {
+          "nr": "46",
+          "name": "Pizza Mista",
+          "beschreibung": "mit Putenschinken, Champignons und Rindersalami",
+          "allergene": "G,2,15,13",
+          "preise": {
+            "Ø24cm": 7.5,
+            "Ø30cm": 10.0
+          }
+        },
+        {
+          "nr": "47",
+          "name": "Pizza Paprika",
+          "beschreibung": "mit Paprika",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 6.9,
+            "Ø30cm": 8.5
+          }
+        },
+        {
+          "nr": "48",
+          "name": "Pizza Spinat",
+          "beschreibung": "mit Spinat und Fetakäse",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 6.9,
+            "Ø30cm": 8.5
+          }
+        },
+        {
+          "nr": "49",
+          "name": "Pizza Vegetaria",
+          "beschreibung": "mit Brokkoli, Zwiebeln, Champignons und frischen Tomaten",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 7.0,
+            "Ø30cm": 9.5
+          }
+        },
+        {
+          "nr": "50",
+          "name": "Pizza Nepal",
+          "beschreibung": "mit frischen Tomaten, Mozzarella und frischem Basilikum",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 7.5,
+            "Ø30cm": 9.5
+          }
+        },
+        {
+          "nr": "51",
+          "name": "Pizza Döner",
+          "beschreibung": "mit Drehspießfleisch, Peperoni und Zwiebeln",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 7.5,
+            "Ø30cm": 10.0
+          }
+        },
+        {
+          "nr": "52",
+          "name": "Pizza Quattro Stagioni",
+          "beschreibung": "mit Putenschinken, Rindersalami, Champignons und Thunfisch",
+          "allergene": "G,2,D,13,15",
+          "preise": {
+            "Ø24cm": 8.0,
+            "Ø30cm": 10.5
+          }
+        },
+        {
+          "nr": "53",
+          "name": "Pizza Deluxe",
+          "beschreibung": "mit Hähnchenbrustfilet, Sauce Hollandaise und Ananas",
+          "allergene": "G,2,3,11",
+          "preise": {
+            "Ø24cm": 7.5,
+            "Ø30cm": 10.0
+          }
+        },
+        {
+          "nr": "54",
+          "name": "Pizza California",
+          "beschreibung": "mit BBQ-Sauce, Zwiebeln, Mais und Hähnchenbrustfilet",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 7.9,
+            "Ø30cm": 10.9
+          }
+        },
+        {
+          "nr": "55",
+          "name": "Neusser Pizza",
+          "beschreibung": "mit Brokkoli, frischen Champignons, Hähnchenbrustfilet und Sauce Hollandaise",
+          "allergene": "G,2,11",
+          "preise": {
+            "Ø24cm": 7.9,
+            "Ø30cm": 10.9
+          }
+        },
+        {
+          "nr": "56",
+          "name": "Pizza Quattro Formaggi",
+          "beschreibung": "mit Goudakäse, Gorgonzola, Mozzarella und Weißkäse",
+          "allergene": "G,2",
+          "preise": {
+            "Ø24cm": 7.9,
+            "Ø30cm": 10.9
+          }
+        },
+        {
+          "nr": "57",
+          "name": "Calzone",
+          "beschreibung": "mit Putenschinken, Thunfisch und Champignons",
+          "allergene": "G,2,D,13",
+          "preis": 10.0
+        }
+      ],
+      "basis": [
+        "Tomatensauce",
+        "Käse"
+      ],
+      "hinweis": "Alle Pizzen mit Tomatensauce und Käse"
+    },
+    {
+      "kategorie": "Salate",
+      "artikel": [
+        {
+          "nr": "19",
+          "name": "Gemischter Salat",
+          "beschreibung": "mit Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
+          "allergene": "G,2",
+          "preis": 7.5
+        },
+        {
+          "nr": "20",
+          "name": "Döner-Salat",
+          "beschreibung": "mit Drehspießfleisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
+          "allergene": "G,12,2",
+          "preis": 11.0
+        },
+        {
+          "nr": "21",
+          "name": "Thunfisch-Salat",
+          "beschreibung": "mit Thunfisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni, Oliven und Goudakäse",
+          "allergene": "G,2,D,8",
+          "preis": 10.0
+        },
+        {
+          "nr": "22",
+          "name": "Bauernsalat",
+          "beschreibung": "mit Gurken, Tomaten, Oliven, Peperoni und Käse",
+          "allergene": "G,2,8",
+          "preis": 8.9
+        },
+        {
+          "nr": "17",
+          "name": "Salat-Tasche",
+          "beschreibung": "Fladenbrot mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,2,G",
+          "preis": 6.0
+        },
+        {
+          "nr": "18",
+          "name": "Salat-Wrap",
+          "beschreibung": "Wrap mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,2,G",
+          "preis": 6.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Döner",
+      "artikel": [
+        {
+          "nr": "1",
+          "name": "Döner-Sandwich",
+          "beschreibung": "Fladenbrot mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,G,12,2",
+          "preis": 8.0
+        },
+        {
+          "nr": "2",
+          "name": "Döner-Sandwich mit extra Fleisch",
+          "beschreibung": "Fladenbrot mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,G,12,2",
+          "preis": 8.0
+        },
+        {
+          "nr": "3",
+          "name": "Döner-Wrap",
+          "beschreibung": "selbstgemachter Blätterteig mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,G,12,2",
+          "preis": 8.0
+        },
+        {
+          "nr": "4",
+          "name": "Portion Fleisch",
+          "beschreibung": "nur Drehspießfleisch",
+          "allergene": "12",
+          "preis": 11.0
+        },
+        {
+          "nr": "5",
+          "name": "Döner-Teller",
+          "beschreibung": "mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl, dazu Pommes Frites oder Reis",
+          "allergene": "A,G,12,2",
+          "preis": 12.5
+        },
+        {
+          "nr": "6",
+          "name": "Pomm-Döner mit Salat",
+          "beschreibung": "Box mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "G,12,2",
+          "preis": 7.8
+        },
+        {
+          "nr": "7",
+          "name": "Pomm-Döner mit Pommes Frites",
+          "beschreibung": "Box mit Drehspießfleisch, Pommes Frites und einer Sauce Ihrer Wahl",
+          "allergene": "G,12,2",
+          "preis": 7.8
+        },
+        {
+          "nr": "8",
+          "name": "Pomm-Döner mit Reis",
+          "beschreibung": "Box mit Drehspießfleisch, Reis und einer Sauce Ihrer Wahl",
+          "preis": 7.8
+        },
+        {
+          "nr": "9",
+          "name": "Döner Überbacken mit Tomatensauce",
+          "beschreibung": "mit Drehspießfleisch, Tomatensauce und Käse",
+          "allergene": "G,12,2",
+          "preis": 11.0
+        },
+        {
+          "nr": "10",
+          "name": "Döner Überbacken mit Sauce Hollandaise",
+          "beschreibung": "mit Drehspießfleisch, Sauce Hollandaise und Käse",
+          "allergene": "G,12,2",
+          "preis": 11.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Lahmacun",
+      "artikel": [
+        {
+          "nr": "11",
+          "name": "Lahmacun",
+          "allergene": "A",
+          "preis": 3.5
+        },
+        {
+          "nr": "12",
+          "name": "Lahmacun mit Salat",
+          "beschreibung": "mit Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "G,2",
+          "preis": 7.8
+        },
+        {
+          "nr": "13",
+          "name": "Lahmacun mit Fleisch",
+          "beschreibung": "mit Drehspießfleisch, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "G,12,2",
+          "preis": 9.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Falafel",
+      "artikel": [
+        {
+          "nr": "14",
+          "name": "Falafel-Sandwich",
+          "beschreibung": "Fladenbrot mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,2,G",
+          "preis": 7.5
+        },
+        {
+          "nr": "15",
+          "name": "Falafel-Wrap",
+          "beschreibung": "Blätterteig mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse und einer Sauce Ihrer Wahl",
+          "allergene": "A,2,G",
+          "preis": 7.8
+        },
+        {
+          "nr": "16",
+          "name": "Falafel-Teller",
+          "beschreibung": "mit Falafel, Salat, Zwiebeln, Gurken, Tomaten, Peperoni, Rotkraut, Weißkraut, Oliven, Knoblauch, Käse, Pommes Frites und einer Sauce Ihrer Wahl",
+          "allergene": "A,2,G",
+          "preis": 12.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Pide",
+      "artikel": [
+        {
+          "nr": "23",
+          "name": "Pide mit Käse",
+          "allergene": "G,2",
+          "preis": 7.0
+        },
+        {
+          "nr": "24",
+          "name": "Pide mit Hackfleisch",
+          "allergene": "A,15",
+          "preis": 8.0
+        },
+        {
+          "nr": "25",
+          "name": "Pide mit Spinat",
+          "beschreibung": "mit Spinat und Käse",
+          "allergene": "A,2,G",
+          "preis": 8.0
+        },
+        {
+          "nr": "26",
+          "name": "Pide mit Dönerfleisch",
+          "beschreibung": "mit Dönerfleisch, Peperoni und Zwiebeln",
+          "allergene": "A,12",
+          "preis": 8.5
+        },
+        {
+          "nr": "27",
+          "name": "Pide mit Sucuk",
+          "allergene": "A,12",
+          "preis": 8.5
+        }
+      ]
+    },
+    {
+      "kategorie": "Schnitzel",
+      "artikel": [
+        {
+          "nr": "58",
+          "name": "Schnitzel Wiener Art",
+          "beschreibung": "mit Pommes frites und Salat",
+          "preis": 11.0
+        },
+        {
+          "nr": "59",
+          "name": "Jägerschnitzel",
+          "beschreibung": "mit Jägersauce, Pommes frites und Salat",
+          "preis": 12.0
+        },
+        {
+          "nr": "60",
+          "name": "Paprikaschnitzel",
+          "beschreibung": "mit Paprikasauce, Pommes frites und Sauce",
+          "preis": 12.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Burger",
+      "artikel": [
+        {
+          "nr": "28",
+          "name": "Hamburger",
+          "beschreibung": "mit 140g Rindfleisch, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "allergene": "G,2",
+          "preis": 8.5
+        },
+        {
+          "nr": "29",
+          "name": "Cheeseburger",
+          "beschreibung": "mit 140g Rindfleisch, Käse, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "allergene": "G,2",
+          "preis": 9.5
+        },
+        {
+          "nr": "30",
+          "name": "Chili-Cheeseburger",
+          "beschreibung": "mit 140g Rindfleisch, Käse, Jalapenos, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
+          "allergene": "G,2",
+          "preis": 10.0
+        },
+        {
+          "nr": "31",
+          "name": "Crispy Chickenburger",
+          "beschreibung": "mit Crispy Chicken, Tomaten, Salat und Burgersauce",
+          "allergene": "G,2",
+          "preis": 8.5
+        },
+        {
+          "nr": "32",
+          "name": "Crispy Cheeseburger",
+          "beschreibung": "mit Crispy Chicken, Käse, Salat, Tomaten und Burgersauce",
+          "allergene": "G,2",
+          "preis": 9.5
+        }
+      ]
+    },
+    {
+      "kategorie": "Pizzabrötchen",
+      "artikel": [
+        {
+          "nr": "33",
+          "name": "6 Pizzabrötchen",
+          "beschreibung": "auf Wunsch mit Aioli oder Kräuterbutter",
+          "allergene": "A",
+          "preis": 4.0
+        },
+        {
+          "nr": "34",
+          "name": "6 Pizzabrötchen Weisskäse",
+          "beschreibung": "mit Weißkäse",
+          "allergene": "A,G,2",
+          "preis": 6.0
+        },
+        {
+          "nr": "35",
+          "name": "6 Pizzabrötchen Thunfisch",
+          "beschreibung": "mit Thunfisch",
+          "allergene": "A,D",
+          "preis": 7.5
+        },
+        {
+          "nr": "36",
+          "name": "6 Pizzabrötchen Spinat",
+          "beschreibung": "mit Spinat und Käse",
+          "allergene": "A,G,2",
+          "preis": 7.5
+        },
+        {
+          "nr": "37",
+          "name": "6 Pizzabrötchen Dönerfleisch",
+          "beschreibung": "mit Dönerfleisch",
+          "allergene": "A,12",
+          "preis": 8.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Imbiss & Co.",
+      "artikel": [
+        {
+          "nr": "63",
+          "name": "6 Chicken Nuggets",
+          "preis": 6.0
+        },
+        {
+          "nr": "64",
+          "name": "Currywurst",
+          "preis": 4.0
+        },
+        {
+          "nr": "65",
+          "name": "Currywurst mit Pommes Frites",
+          "preis": 6.5
+        },
+        {
+          "nr": "66",
+          "name": "Currywurst mit Pommes Frites (Doppelt)",
+          "preis": 9.0
+        },
+        {
+          "nr": "67",
+          "name": "Chicken Bowl",
+          "beschreibung": "mit panierten, frittierten Chicken-Stripes, Sauce, Käse, Pommes Frites und Salat",
+          "preis": 11.0
+        },
+        {
+          "nr": "61",
+          "name": "Pommes Frites",
+          "preis": 4.5
+        },
+        {
+          "nr": "62",
+          "name": "Portion Reis",
+          "preis": 6.0
+        },
+        {
+          "nr": "62a",
+          "name": "Peperoni",
+          "preis": 3.5
+        },
+        {
+          "nr": "62b",
+          "name": "Oliven",
+          "preis": 3.5
+        },
+        {
+          "nr": "S1",
+          "name": "Ketchup",
+          "preis": 1.0
+        },
+        {
+          "nr": "S2",
+          "name": "Mayonnaise",
+          "preis": 1.0
+        },
+        {
+          "nr": "S3",
+          "name": "Tzatziki",
+          "preis": 1.0
+        },
+        {
+          "nr": "S4",
+          "name": "Cocktailsauce",
+          "preis": 1.0
+        },
+        {
+          "nr": "S5",
+          "name": "Currysauce",
+          "preis": 1.5
+        },
+        {
+          "nr": "S6",
+          "name": "Jägersauce",
+          "preis": 2.0
+        },
+        {
+          "nr": "S7",
+          "name": "Paprikasauce",
+          "preis": 2.0
+        },
+        {
+          "nr": "S8",
+          "name": "Scharfe Sauce",
+          "preis": 1.0
+        },
+        {
+          "nr": "S9",
+          "name": "Aioli",
+          "preis": 1.5
+        },
+        {
+          "nr": "S10",
+          "name": "Kräuterbutter",
+          "preis": 1.5
+        }
+      ]
+    },
+    {
+      "kategorie": "Menüs",
+      "artikel": [
+        {
+          "nr": "M1",
+          "name": "Döner-Menü",
+          "beschreibung": "Döner-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
+          "preis": 12.0
+        },
+        {
+          "nr": "M2",
+          "name": "Wrap-Menü",
+          "beschreibung": "Döner-Wrap mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
+          "preis": 12.0
+        },
+        {
+          "nr": "M3",
+          "name": "Lahmacun-Menü",
+          "beschreibung": "Lahmacun mit Drehspießfleisch und Pommes frites dazu, 1 Softdrink (0,33l) Ihrer Wahl",
+          "preis": 13.0
+        },
+        {
+          "nr": "M4",
+          "name": "Falafel-Menü",
+          "beschreibung": "Falafel-Sandwich mit Pommes frites, dazu 1 Softdrink (0,33l) Ihrer Wahl",
+          "preis": 12.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Für Kids",
+      "artikel": [
+        {
+          "nr": "K1",
+          "name": "Kinder-Menü",
+          "beschreibung": "6 Chicken Nuggets mit Pommes frites, dazu Durstlöscher",
+          "preis": 9.0
+        }
+      ]
+    },
+    {
+      "kategorie": "Getränke",
+      "artikel": [
+        {
+          "nr": "68a",
+          "name": "Cola (0,33l)",
+          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
+          "preis": 2.0,
+          "pfand": true
+        },
+        {
+          "nr": "68b",
+          "name": "Fanta Orange (0,33l)",
+          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
+          "preis": 2.0,
+          "pfand": true
+        },
+        {
+          "nr": "68c",
+          "name": "Uludag (0,33l)",
+          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
+          "preis": 2.0,
+          "pfand": true
+        },
+        {
+          "nr": "68d",
+          "name": "Sprite (0,33l)",
+          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
+          "preis": 2.0,
+          "pfand": true
+        },
+        {
+          "nr": "68e",
+          "name": "Mezzo Mix (0,33l)",
+          "beschreibung": "Literpreis: 6.06€, Pfand: 0.25€",
+          "preis": 2.0,
+          "pfand": true
+        },
+        {
+          "nr": "70",
+          "name": "Wasser (0,5l)",
+          "beschreibung": "Literpreis: 3.50€, Pfand: 0.25€",
+          "preis": 1.75,
+          "pfand": true
+        },
+        {
+          "nr": "71",
+          "name": "Ayran (0,2l)",
+          "beschreibung": "Literpreis: 7.50€",
+          "preis": 1.5,
+          "pfand": true
+        },
+        {
+          "nr": "72",
+          "name": "Durstlöscher (0,5l)",
+          "beschreibung": "Literpreis: 3.00€",
+          "preis": 1.5,
+          "pfand": true
+        }
+      ]
+    }
+  ],
+  "zusatzstoffe": {
+    "1": "mit Konservierungsstoff",
+    "2": "mit Farbstoff",
+    "3": "mit Phosphat",
+    "4": "mit Geschmacksverstärker",
+    "5": "mit Antioxidationsmittel",
+    "6": "mit Süßungsmittel",
+    "7": "mit Milcheiweiß",
+    "8": "geschwärzt",
+    "9": "mit Tomatenketchup",
+    "10": "genetisch verändert",
+    "11": "mit Salat-Mayonnaise (enthält Sojaöl aus gentechnisch veränderter Soja)",
+    "12": "mit Drehspieß nach Döner Art (Hähnchen- oder Kalb-/Putenfleisch)",
+    "13": "mit Rindfleisch",
+    "14": "mit Putenschinken (Putenfleisch)",
+    "15": "mit Rindfleisch",
+    "16": "mit Verdickungsmittel"
+  },
+  "allergene": {
+    "A": "Glutenhaltiges Getreide (Weizen)",
+    "B": "Krebstiere",
+    "C": "Eier",
+    "D": "Fisch",
+    "E": "Erdnüsse",
+    "F": "Soja",
+    "G": "Milch / Laktose",
+    "H": "Schalenfrüchte (Nüsse)",
+    "L": "Sellerie",
+    "M": "Senf",
+    "N": "Sesamsamen",
+    "O": "Schwefeldioxid / Sulfite",
+    "P": "Lupinen",
+    "R": "Weichtiere"
+  },
+  "hinweise": [
+    "Für Zusatzstoffe und Allergene der Getränke schauen Sie bitte auf die Etiketten der Flaschen.",
+    "Bei Fragen zu Allergenen und Zutaten, die eine Unverträglichkeit auslösen, wenden Sie sich bitte an unser Team."
+  ]
+}

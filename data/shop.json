@@ -2,57 +2,110 @@
   "name": "Neusser Döner & Pizza",
   "inhaber": "Negrvan Mahmoud",
   "adresse": {
-    "strasse": "Further Str. 46",
+    "strasse": "Further Straße 46",
     "plz": "41462",
     "ort": "Neuss"
   },
-  "telefon": "0157 71066644",
-  "bestellen_url": "https://neusser-doener-pizza.de/bestellen",
+  "telefon": "02131 3166137",
+  "telefon_link": "+4921313166137",
+  "telefon_mobil": "0157 71066644",
+  "ust_idnr": "DE455208316",
+  "steuernummer": "122/5398/0299",
   "aufsichtsbehoerde": "Stadt Neuss",
-  "oeffnungszeiten": [
-    {
-      "tag": "Montag",
-      "zeit": "Ruhetag"
-    },
-    {
-      "tag": "Dienstag",
-      "zeit": "12:00 – 21:30"
-    },
-    {
-      "tag": "Mittwoch",
-      "zeit": "12:00 – 21:30"
-    },
-    {
-      "tag": "Donnerstag",
-      "zeit": "12:00 – 21:30"
-    },
-    {
-      "tag": "Freitag",
-      "zeit": "12:00 – 23:00"
-    },
-    {
-      "tag": "Samstag",
-      "zeit": "12:00 – 23:00"
-    },
-    {
-      "tag": "Sonn- & Feiertag",
-      "zeit": "12:00 – 21:30"
-    }
+  "koordinaten": {
+    "lat": 51.2059367,
+    "lng": 6.6791553
+  },
+  "bestellen_url": "https://neusser-doener-pizza.de/bestellen",
+  "oeffnungszeiten": {
+    "Montag": null,
+    "Dienstag": [
+      "11:00",
+      "22:00"
+    ],
+    "Mittwoch": [
+      "11:00",
+      "22:00"
+    ],
+    "Donnerstag": [
+      "11:00",
+      "22:00"
+    ],
+    "Freitag": [
+      "11:00",
+      "22:00"
+    ],
+    "Samstag": [
+      "11:00",
+      "22:00"
+    ],
+    "Sonntag": [
+      "12:00",
+      "22:00"
+    ]
+  },
+  "lieferzeiten": {
+    "Montag": null,
+    "Dienstag": [
+      "14:30",
+      "21:30"
+    ],
+    "Mittwoch": [
+      "14:30",
+      "21:30"
+    ],
+    "Donnerstag": [
+      "14:30",
+      "21:30"
+    ],
+    "Freitag": [
+      "14:30",
+      "21:30"
+    ],
+    "Samstag": [
+      "14:30",
+      "21:30"
+    ],
+    "Sonntag": [
+      "14:30",
+      "21:30"
+    ]
+  },
+  "geschlossen_an": [
+    "2025-12-24",
+    "2025-12-25",
+    "2025-12-26"
   ],
   "lieferung": {
-    "mindestbestellwert": 10.0,
-    "liefergebuehr_ab": 2.0,
-    "frei_haus_ab": 50.0,
-    "plz_gebiete": [
-      "41460",
-      "41462",
-      "41464",
-      "41468",
-      "41469",
-      "41472",
-      "40549",
-      "40667",
-      "41564"
-    ]
-  }
+    "zonen": [
+      {
+        "name": "0 - 2 km",
+        "liefergebuehr": 0.0,
+        "mindestbestellwert": 10.0
+      },
+      {
+        "name": "2 - 5 km",
+        "liefergebuehr": 2.0,
+        "mindestbestellwert": 10.0
+      }
+    ],
+    "bereit_in_min": 35,
+    "abholung_bereit_in_min": 15,
+    "vorbestellung": true
+  },
+  "zahlung": [
+    "Bar",
+    "PayPal",
+    "EC-Karte",
+    "Kreditkarte"
+  ],
+  "merkmale": [
+    "Abholung",
+    "Lieferung",
+    "Sitzplätze im Laden",
+    "Steinofen",
+    "Halal",
+    "Vegetarische Gerichte"
+  ],
+  "ueber_uns": "Hallo lieber Kunde,\nich freue mich Sie in meinem kleinen aber feinen Imbiss begrüßen zu dürfen.\nFreunde der türkischen und italienischen Küche fühlen sich bei mir wohl, aber auch Vegetarier haben bei mir eine große Auswahl.\nDie Bewertungen bei Google sprechen für sich.\nÜberzeugen Sie sich selbst von meinem Angebot und so sage ich: \"Guten Appetit!\""
 }

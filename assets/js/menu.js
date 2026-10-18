@@ -74,7 +74,7 @@
     if (thumb) { img.src = thumb.dataset.large || thumb.src; img.alt = ''; }
     title.innerHTML = card.querySelector('.card__name').innerHTML;
     content.innerHTML = '';
-    ['.chips', '.card__info', '.card__more', '.card__foot'].forEach(function (sel) {
+    ['.chips', '.card__info', '.card__more', '.card__foot', '.card__opts'].forEach(function (sel) {
       var el = card.querySelector(sel);
       if (!el) return;
       var copy = el.cloneNode(true);
