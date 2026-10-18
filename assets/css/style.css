@@ -1341,16 +1341,8 @@ a { color: inherit; }
   80%  { opacity: 1; }
   100% { opacity: 0; transform: translate(4px, 30px) rotate(60deg); }
 }
-/* Feuer am Grill rechts flackert am ganzen Spieß entlang */
+/* Feuer am Grill rechts: steht ruhig am ganzen Spieß entlang */
 .sp-feuer { filter: drop-shadow(0 0 3px rgba(255, 140, 20, .85)); }
-.sp-fl { transform-box: fill-box; transform-origin: 100% 100%; animation: sp-flackern .8s ease-in-out infinite alternate; }
-.sp-fl:nth-child(2n) { animation-duration: .65s; animation-delay: .15s; }
-.sp-fl:nth-child(3n) { animation-duration: .95s; animation-delay: .3s; }
-@keyframes sp-flackern {
-  0%   { transform: scale(.8, .85) skewY(4deg); opacity: .8; }
-  50%  { transform: scale(1.1, 1.05) skewY(-3deg); opacity: 1; }
-  100% { transform: scale(1.25, .95) skewY(2deg); opacity: .9; }
-}
 
 /* Symbole klappen über dem Spieß auf */
 .spiess__links {
@@ -1380,9 +1372,9 @@ a { color: inherit; }
   transition: opacity .25s ease, transform .45s var(--spring);
 }
 .spiess__link svg { width: 24px; height: 24px; }
-.spiess__link--wa { background: #25D366; }
-.spiess__link--ig { background: radial-gradient(circle at 30% 107%, #FDF497 0%, #FD5949 45%, #D6249F 60%, #285AEB 90%); }
-.spiess__link--fb { background: #1877F2; }
+/* alle drei im Braun der Seite */
+.spiess__link { background: var(--brown); color: var(--cream); box-shadow: 0 0 0 2px rgba(249, 192, 21, .55), 0 10px 20px -10px rgba(0, 0, 0, .6); }
+.spiess__link:hover { background: #55290A; }
 .spiess__link:focus-visible { outline: 3px solid var(--brown); outline-offset: 3px; }
 .spiess.is-open .spiess__links { pointer-events: auto; }
 .spiess.is-open .spiess__link { opacity: 1; transform: none; }
@@ -1397,7 +1389,7 @@ a { color: inherit; }
   .spiess__link { width: 44px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sp-drehen, .sp-fleisch, .sp-krumen ellipse, .sp-fl { animation: none; }
+  .sp-drehen, .sp-fleisch, .sp-krumen ellipse { animation: none; }
   .sp-krumen ellipse { opacity: 0; }
   .spiess__link, .spiess__btn { transition: none; }
 }
