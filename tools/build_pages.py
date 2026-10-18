@@ -222,12 +222,18 @@ TOPBAR = index[index.index("  <!-- Logo-Leiste -->"): index.index("  <!-- Angebo
 FOOTER = index[index.index("  <!-- Kontakt, Öffnungszeiten, Impressum -->"): index.index("  <script")]
 
 
+def topbar(filename):
+    """Logo-Leiste mit markiertem Menüpunkt der aktuellen Seite."""
+    t = TOPBAR.replace(' aria-current="page"', "")
+    return t.replace(f'<a href="{filename}">', f'<a href="{filename}" aria-current="page">', 1)
+
+
 def page(filename, title, description, body, scripts="", body_class=""):
     head = re.sub(r"<title>.*?</title>", f"<title>{esc(title)}</title>", HEAD, flags=re.S)
     head = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{esc(description)}">', head)
     out = f"""{head}<body class="{body_class}">
 
-{TOPBAR}
+{topbar(filename)}
   <main>
 {body}
   </main>
@@ -251,6 +257,35 @@ def page_hero(title, text="", cta=True):
 
 # ---------- Speisekarte ----------
 cats = [c for c in menu["kategorien"] if any(a.get("aktiv", True) for a in c["artikel"])]
+
+
+# ---------- Startseite: Kategorien mit Foto (zwischen den Markierungen in index.html) ----------
+def ab_preis(cat):
+    p = [v for a in cat["artikel"] if a.get("aktiv", True)
+         for v in ([a["preis"]] if "preis" in a else a.get("preise", {}).values())]
+    return min(p) if p else None
+
+
+def kat_kachel(cat):
+    items = [a for a in cat["artikel"] if a.get("aktiv", True)]
+    img = cat.get("bild") or next((b for b, _ in map(bild, items) if b), "")
+    preis = ab_preis(cat)
+    n = len(items)
+    return (
+        f'<li><a class="cat-tile" href="speisekarte.html#{slug(cat["kategorie"])}">'
+        + (f'<img src="{img}" alt="" loading="lazy" width="400" height="300">' if img else "")
+        + f'<span class="cat-tile__name">{esc(cat["kategorie"])}</span>'
+        + f'<span class="cat-tile__meta">{n} {"Gericht" if n == 1 else "Gerichte"}'
+        + (f" · ab {euro(preis)}" if preis else "") + "</span></a></li>"
+    )
+
+
+START, END = "<!-- KATEGORIEN:START – wird von tools/build_pages.py erzeugt -->", "        <!-- KATEGORIEN:END -->"
+grid = '\n        <ul class="cat-grid">\n          ' + "\n          ".join(kat_kachel(c) for c in cats) + "\n        </ul>\n"
+i, j = index.index(START) + len(START), index.index(END)
+index = index[:i] + grid + index[j:]
+(ROOT / "index.html").write_text(index, encoding="utf-8")
+print("geschrieben: index.html (Kategorien)")
 n_items = sum(1 for c in cats for a in c["artikel"] if a.get("aktiv", True))
 nav = "".join(f'<a href="#{slug(c["kategorie"])}">{esc(c["kategorie"])}</a>' for c in cats) + '<a href="#allergene">Allergene</a>'
 page(

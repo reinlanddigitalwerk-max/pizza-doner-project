@@ -104,9 +104,30 @@ var ANGEBOTE = (DATA.angebote || []).filter(function (a) { return a.aktiv; });
   else if (!z) text = '<strong>Heute Ruhetag</strong>';
   else if (NOW.minuten < minuten(z[0])) text = '<strong>Öffnet heute</strong> um ' + z[0] + ' Uhr';
   else if ((DATA.geschlossen || []).indexOf(NOW.datum) !== -1) text = '<strong>Heute geschlossen</strong>';
-  else text = '<strong>Geschlossen</strong> – öffnet morgen wieder';
+  else text = '<strong>Geschlossen</strong> – ' + naechsteOeffnung();
   out.innerHTML = text;
   out.classList.toggle('is-open', istGeoeffnet(NOW));
+})();
+
+// Nächster Öffnungstag nach heute, z. B. „öffnet morgen um 11:00 Uhr“ oder „öffnet Di um 11:00 Uhr“
+function naechsteOeffnung() {
+  for (var i = 1; i <= 7; i++) {
+    var tag = (NOW.tag - 1 + i) % 7 + 1;
+    var z = DATA.oeffnungszeiten[tag];
+    if (z) return 'öffnet ' + (i === 1 ? 'morgen' : TAGE[tag - 1]) + ' um ' + z[0] + ' Uhr';
+  }
+  return '';
+}
+
+// ---------- Kachel „Öffnungszeiten“: heute zuerst ----------
+(function () {
+  var out = document.querySelector('[data-today-hours]');
+  if (!out || !DATA.oeffnungszeiten) return;
+  var z = DATA.oeffnungszeiten[NOW.tag];
+  var zu = (DATA.geschlossen || []).indexOf(NOW.datum) !== -1;
+  var heute = zu ? 'Heute geschlossen' : z ? 'Heute ' + z[0] + '–' + z[1] + ' Uhr' : 'Heute Ruhetag';
+  out.innerHTML = '<strong>' + heute + '</strong><br>' + out.innerHTML.split('<br>')[0] +
+    (DATA.oeffnungszeiten[1] ? '' : ', Mo zu');
 })();
 
 // ---------- Angebote-Insel ----------

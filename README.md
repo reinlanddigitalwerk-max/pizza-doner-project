@@ -13,7 +13,7 @@ Neue Website für Neusser Döner & Pizza (Further Str. 46, 41462 Neuss) mit dem 
 - `ueber-uns.html` – Über uns, Kontakt, Öffnungs- und Lieferzeiten, Liefergebiete
 - `impressum.html`, `datenschutz.html`
 
-Alle Unterseiten werden gebaut mit `python3 tools/build_pages.py` (Logo-Leiste und Footer kommen aus `index.html`).
+Alle Unterseiten werden gebaut mit `python3 tools/build_pages.py` (Logo-Leiste und Footer kommen aus `index.html`, der aktive Menüpunkt wird je Seite markiert). Das Skript füllt auch die Kategorie-Kacheln auf der Startseite zwischen `KATEGORIEN:START` und `KATEGORIEN:END`. Das Klappmenü für Handy/Tablet steckt in `assets/js/nav.js`.
 
 ## Daten aktualisieren
 

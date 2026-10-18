@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/img/logo.webp" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Lilita+One&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -19,14 +19,22 @@
       <a class="brand" href="index.html" aria-label="Neusser Döner &amp; Pizza – Startseite">
         <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
       </a>
-      <nav class="nav" aria-label="Hauptmenü">
-        <a href="speisekarte.html">Speisekarte</a>
-        <a href="index.html#angebote-liste">Angebote</a>
-        <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
-      </nav>
-      <a class="topbar__phone" href="tel:+4921313166137">02131 3166137</a>
+      <div class="topbar__menu" id="hauptmenue">
+        <nav class="nav" aria-label="Hauptmenü">
+          <a href="index.html" aria-current="page">Startseite</a>
+          <a href="speisekarte.html">Speisekarte</a>
+          <a href="index.html#angebote-liste">Angebote</a>
+          <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
+        </nav>
+        <a class="topbar__phone" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>02131 3166137</a>
+      </div>
       <a class="btn btn--primary topbar__cta" href="bestellen.html">Jetzt bestellen</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="hauptmenue">
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menü</span>
+      </button>
     </div>
+    <script src="assets/js/nav.js" defer></script>
   </header>
 
   <!-- Angebote: „Insel“ unter der Logo-Leiste. Öffnet sich beim Laden wie die Dynamic Island. -->
@@ -83,22 +91,47 @@
             <a class="btn btn--primary" href="bestellen.html">Jetzt bestellen</a>
             <a class="btn btn--ghost" href="speisekarte.html">Speisekarte ansehen</a>
           </div>
-          <ul class="hero__facts">
-            <li class="open-state" data-open-state>Öffnungszeiten unten</li>
-            <li><strong>10&nbsp;€</strong> Mindestbestellwert</li>
-            <li><strong>bis 2&nbsp;km</strong> Lieferung kostenlos</li>
-            <li><strong>2–5&nbsp;km</strong> 2&nbsp;€ Liefergebühr</li>
-          </ul>
+          <p class="hero__status open-state" data-open-state>Öffnungszeiten unten</p>
         </div>
 
       </div>
     </section>
 
+
+    <!-- Auf einen Blick: Öffnungszeiten heute, Lieferung, Abholung, Bezahlen -->
+    <section class="infos" aria-label="Auf einen Blick">
+      <ul class="container infos__grid">
+        <li class="info-tile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <h2>Öffnungszeiten</h2>
+          <p data-today-hours>Di–Sa 11–22, So 12–22 Uhr<br>Montag Ruhetag</p>
+        </li>
+        <li class="info-tile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+          <h2>Lieferung</h2>
+          <p>Di–So 14:30–21:30 Uhr<br>bis 2&nbsp;km gratis · 2–5&nbsp;km 2&nbsp;€</p>
+        </li>
+        <li class="info-tile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <h2>Abholung</h2>
+          <p>in ca. 15 Minuten fertig<br>Further Straße 46</p>
+        </li>
+        <li class="info-tile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+          <h2>Bezahlen</h2>
+          <p>Bar, PayPal, EC- und Kreditkarte<br>Mindestbestellwert 10&nbsp;€</p>
+        </li>
+      </ul>
+    </section>
+
     <!-- Angebote: Karten mit Bedingungen, gebaut aus assets/js/offers-data.js -->
     <section class="offers" id="angebote-liste" aria-labelledby="offers-title">
       <div class="container">
-        <div class="offers__head">
-          <h2 id="offers-title">Unsere Angebote</h2>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Angebote</p>
+            <h2 class="section-title" id="offers-title">Sparen beim Bestellen</h2>
+          </div>
           <div class="offer-filters" role="group" aria-label="Angebote filtern">
             <button type="button" data-filter="alle" aria-pressed="true">Alle</button>
             <button type="button" data-filter="rabatt" aria-pressed="false">Rabatte</button>
@@ -108,6 +141,37 @@
           </div>
         </div>
         <div class="offer-grid"></div>
+      </div>
+    </section>
+
+    <!-- Speisekarte in Kurzform: Kategorien mit Foto -->
+    <section class="cats-home" aria-labelledby="cats-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Speisekarte</p>
+            <h2 class="section-title" id="cats-title">Was darf’s heute sein?</h2>
+          </div>
+          <a class="btn btn--outline" href="speisekarte.html">Ganze Speisekarte</a>
+        </div>
+        <!-- KATEGORIEN:START – wird von tools/build_pages.py erzeugt -->
+        <ul class="cat-grid">
+          <li><a class="cat-tile" href="speisekarte.html#pizzabroetchen"><img src="assets/img/menu/pizzabroetchen.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizzabrötchen</span><span class="cat-tile__meta">5 Gerichte · ab 4,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#pizza"><img src="assets/img/kategorien/pizza.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pizza</span><span class="cat-tile__meta">20 Gerichte · ab 6,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#doener-drehspiess"><img src="assets/img/kategorien/doener-drehspiess.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner &amp; Drehspieß</span><span class="cat-tile__meta">7 Gerichte · ab 7,80 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#doener-ueberbacken"><img src="assets/img/kategorien/doener-ueberbacken.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Döner überbacken</span><span class="cat-tile__meta">1 Gericht · ab 11,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#lahmacun"><img src="assets/img/kategorien/lahmacun.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Lahmacun</span><span class="cat-tile__meta">3 Gerichte · ab 3,50 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#falafel"><img src="assets/img/kategorien/falafel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Falafel</span><span class="cat-tile__meta">5 Gerichte · ab 6,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#salate"><img src="assets/img/kategorien/salate.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Salate</span><span class="cat-tile__meta">5 Gerichte · ab 7,50 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#pide"><img src="assets/img/kategorien/pide.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Pide</span><span class="cat-tile__meta">5 Gerichte · ab 7,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#schnitzel"><img src="assets/img/kategorien/schnitzel.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Schnitzel</span><span class="cat-tile__meta">3 Gerichte · ab 11,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#burger"><img src="assets/img/kategorien/burger.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Burger</span><span class="cat-tile__meta">5 Gerichte · ab 8,50 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#imbiss-saucen"><img src="assets/img/kategorien/imbiss-saucen.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Imbiss &amp; Saucen</span><span class="cat-tile__meta">18 Gerichte · ab 1,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#fuer-kids"><img src="assets/img/kategorien/fuer-kids.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Für Kids</span><span class="cat-tile__meta">1 Gericht · ab 9,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#spar-menues"><img src="assets/img/kategorien/spar-menues.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Spar-Menüs</span><span class="cat-tile__meta">4 Gerichte · ab 12,00 €</span></a></li>
+          <li><a class="cat-tile" href="speisekarte.html#getraenke"><img src="assets/img/kategorien/getraenke.webp" alt="" loading="lazy" width="400" height="300"><span class="cat-tile__name">Getränke</span><span class="cat-tile__meta">13 Gerichte · ab 1,50 €</span></a></li>
+        </ul>
+        <!-- KATEGORIEN:END -->
       </div>
     </section>
   </main>
@@ -141,7 +205,7 @@
         <h2>Lieferung</h2>
         <table class="hours">
           <tr><th scope="row">bis 2 km</th><td>kostenlos</td></tr>
-          <tr><th scope="row">2 – 5 km</th><td>2,00 € Liefergebühr</td></tr>
+          <tr><th scope="row">2 – 5 km</th><td>2,00 €</td></tr>
           <tr><th scope="row">Mindestbestellwert</th><td>10,00 €</td></tr>
         </table>
         <p class="footer__pay">Abholung: in ca. 15 Minuten fertig</p>

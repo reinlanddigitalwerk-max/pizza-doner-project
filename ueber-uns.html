@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/img/logo.webp" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Lilita+One&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="page-info">
@@ -19,14 +19,22 @@
       <a class="brand" href="index.html" aria-label="Neusser Döner &amp; Pizza – Startseite">
         <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
       </a>
-      <nav class="nav" aria-label="Hauptmenü">
-        <a href="speisekarte.html">Speisekarte</a>
-        <a href="index.html#angebote-liste">Angebote</a>
-        <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
-      </nav>
-      <a class="topbar__phone" href="tel:+4921313166137">02131 3166137</a>
+      <div class="topbar__menu" id="hauptmenue">
+        <nav class="nav" aria-label="Hauptmenü">
+          <a href="index.html">Startseite</a>
+          <a href="speisekarte.html">Speisekarte</a>
+          <a href="index.html#angebote-liste">Angebote</a>
+          <a href="ueber-uns.html" aria-current="page">Über uns &amp; Kontakt</a>
+        </nav>
+        <a class="topbar__phone" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>02131 3166137</a>
+      </div>
       <a class="btn btn--primary topbar__cta" href="bestellen.html">Jetzt bestellen</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="hauptmenue">
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menü</span>
+      </button>
     </div>
+    <script src="assets/js/nav.js" defer></script>
   </header>
 
 
@@ -71,48 +79,6 @@
       </section>
     </div>
   </main>
-
-  <!-- Kontakt, Öffnungszeiten, Impressum -->
-  <footer class="footer" id="kontakt">
-    <div class="container footer__inner">
-      <div class="footer__col">
-        <h2>Kontakt</h2>
-        <address>
-          Neusser Döner &amp; Pizza<br>
-          Further Straße 46<br>
-          41462 Neuss<br>
-          Tel.: <a href="tel:+4921313166137">02131 3166137</a>
-        </address>
-        <p class="footer__pay">Bezahlen: Bar, PayPal, EC- und Kreditkarte</p>
-      </div>
-      <div class="footer__col">
-        <h2>Öffnungszeiten</h2>
-        <table class="hours">
-          <tr><th scope="row">Montag</th><td>Ruhetag</td></tr>
-          <tr><th scope="row">Dienstag – Samstag</th><td>11:00 – 22:00</td></tr>
-          <tr><th scope="row">Sonntag</th><td>12:00 – 22:00</td></tr>
-        </table>
-        <h3 class="footer__sub">Lieferzeiten</h3>
-        <table class="hours">
-          <tr><th scope="row">Dienstag – Sonntag</th><td>14:30 – 21:30</td></tr>
-        </table>
-      </div>
-      <div class="footer__col">
-        <h2>Lieferung</h2>
-        <table class="hours">
-          <tr><th scope="row">bis 2 km</th><td>kostenlos</td></tr>
-          <tr><th scope="row">2 – 5 km</th><td>2,00 € Liefergebühr</td></tr>
-          <tr><th scope="row">Mindestbestellwert</th><td>10,00 €</td></tr>
-        </table>
-        <p class="footer__pay">Abholung: in ca. 15 Minuten fertig</p>
-      </div>
-      <div class="footer__col footer__legal">
-        <h2>Rechtliches</h2>
-        <p><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="speisekarte.html#allergene">Allergene</a></p>
-        <p class="footer__credits">Fotos: Feuer von <a href="https://commons.wikimedia.org/wiki/File:Fire-Mehdi-1.JPG">Mehdi</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>), Pizzastück von <a href="https://commons.wikimedia.org/wiki/File:Paulie_Gee%27s_Slice_Shop_(35386).jpg">Rhododendrites</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), jeweils freigestellt. Weitere Fotos: CC0 / Public Domain. Abbildungen können abweichen.</p>
-      </div>
-    </div>
-  </footer>
 
 </body>
 </html>
