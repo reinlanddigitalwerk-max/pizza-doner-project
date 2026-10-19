@@ -170,7 +170,16 @@ a { color: inherit; }
 }
 
 /* ---------- Angebote: Insel ---------- */
-.promo { background: var(--green); }
+.promo { position: relative; isolation: isolate; background: var(--green); }
+/* gleiches Punktmuster wie im Hero darunter; unten verankert, damit die Punkte nahtlos weiterlaufen */
+.promo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(rgba(255, 255, 255, .07) 1.2px, transparent 1.6px) 0 100% / 22px 22px;
+}
 .promo__inner {
   display: flex;
   justify-content: center;
@@ -988,7 +997,7 @@ a { color: inherit; }
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 26% 52%, rgba(249, 192, 21, .26), transparent 42%),
+    radial-gradient(520px 420px at 26% 58%, rgba(249, 192, 21, .26), transparent 70%),
     radial-gradient(rgba(255, 255, 255, .07) 1.2px, transparent 1.6px) 0 0 / 22px 22px;
 }
 .menu-hero::before, .order-head::before {
