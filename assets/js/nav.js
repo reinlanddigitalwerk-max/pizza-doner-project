@@ -50,59 +50,49 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Kontakt-Spieß: Antippen klappt WhatsApp, Instagram, Facebook und Telefon auf
-(function () {
-  var box = document.querySelector('.spiess');
-  if (!box) return;
-  var knopf = box.querySelector('.spiess__btn');
-  // Links ohne Adresse (z. B. Instagram, solange keiner eingetragen ist) ausblenden
-  box.querySelectorAll('.spiess__link').forEach(function (a) {
-    if (!a.getAttribute('href')) a.parentNode.hidden = true;
-  });
-  function setze(offen) {
-    box.classList.toggle('is-open', offen);
-    knopf.setAttribute('aria-expanded', offen ? 'true' : 'false');
-  }
-  knopf.addEventListener('click', function () { setze(!box.classList.contains('is-open')); });
-  document.addEventListener('click', function (e) { if (!box.contains(e.target)) setze(false); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && box.classList.contains('is-open')) { setze(false); knopf.focus(); }
-  });
-})();
 
-// App installieren: Service Worker anmelden, Knopf zeigen, wenn der Browser es anbietet
+// App installieren: Service Worker anmelden; Knöpfe und Pizza-Handy starten die Installation
 (function () {
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('sw.js').catch(function () { /* z. B. in der Vorschau nicht erlaubt */ });
   }
-  var knoepfe = document.querySelectorAll('[data-install]');
-  if (!knoepfe.length) return;
   var installiert = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   if (installiert) return;
 
+  var knoepfe = document.querySelectorAll('[data-install]');      // Menü und Footer: nur wenn es klappt
+  var promo = document.querySelector('[data-install-promo]');      // Pizza-Handy: immer sichtbar
+  var iosHilfe = document.querySelector('.ios-install:not(.app-hinweis)');
+  var hilfe = document.querySelector('.app-hinweis');
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var angebot = null;
+
   function zeigen(an) { knoepfe.forEach(function (k) { k.hidden = !an; }); }
+  if (promo) promo.hidden = false;
+  if (ios && iosHilfe) zeigen(true);
 
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     angebot = e;
     zeigen(true);
   });
-  window.addEventListener('appinstalled', function () { zeigen(false); });
-
-  // iPhone/iPad: kein Installieren-Dialog, darum kurze Anleitung
-  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var anleitung = document.querySelector('.ios-install');
-  if (ios && anleitung) zeigen(true);
-
-  knoepfe.forEach(function (k) {
-    k.addEventListener('click', function () {
-      if (angebot) {
-        angebot.prompt();
-        angebot.userChoice.then(function () { angebot = null; zeigen(false); });
-      } else if (ios && anleitung) {
-        anleitung.showModal();
-      }
-    });
+  window.addEventListener('appinstalled', function () {
+    zeigen(false);
+    if (promo) promo.hidden = true;
   });
+
+  function installieren() {
+    if (angebot) {
+      angebot.prompt();
+      angebot.userChoice.then(function (w) {
+        angebot = null;
+        if (w.outcome === 'accepted' && promo) promo.hidden = true;
+      });
+    } else if (ios && iosHilfe) {
+      iosHilfe.showModal();
+    } else if (hilfe) {
+      hilfe.showModal();
+    }
+  }
+  knoepfe.forEach(function (k) { k.addEventListener('click', installieren); });
+  if (promo) promo.addEventListener('click', installieren);
 })();
