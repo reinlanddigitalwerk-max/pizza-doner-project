@@ -1,0 +1,11 @@
+{
+  "hinweis": "Liefergebiete für die Online-Bestellung auf dieser Website. Regel aus dem Bestellshop: bis 2 km kostenlos, 2–5 km 2 €, Mindestbestellwert 10 €. Die PLZ-Liste stammt von der alten Bestellseite; welche PLZ in welche Zone fällt, bitte vom Inhaber prüfen lassen.",
+  "zonen": [
+    {"plz": "41460", "ort": "Neuss", "gebiet": "Innenstadt", "gebuehr": 0, "min": 10},
+    {"plz": "41462", "ort": "Neuss", "gebiet": "Furth und Umgebung", "gebuehr": 0, "min": 10},
+    {"plz": "41464", "ort": "Neuss", "gebiet": "", "gebuehr": 2, "min": 10},
+    {"plz": "41468", "ort": "Neuss", "gebiet": "Gnadental", "gebuehr": 2, "min": 10},
+    {"plz": "40549", "ort": "Düsseldorf", "gebiet": "Heerdt", "gebuehr": 2, "min": 10},
+    {"plz": "41564", "ort": "Kaarst", "gebiet": "Holzbüttgen", "gebuehr": 2, "min": 10}
+  ]
+}

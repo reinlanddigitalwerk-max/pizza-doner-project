@@ -1,7 +1,9 @@
 """Baut die Unterseiten aus den Daten in data/:
 
-  speisekarte.html  – Speisekarte als Karten (data/menu.json)
-  bestellen.html    – Bestellshop (Speisebaron) eingebettet
+  speisekarte.html  – Speisekarte zum Bestellen mit Warenkorb (data/menu.json)
+  kasse.html        – Kasse: Formular, Absenden an die Datenbank oder per WhatsApp
+  bestellungen.html – Bestell-Monitor für den Laden (nicht verlinkt)
+  bestellen.html    – Bestellshop von Speisebaron eingebettet (Alternative mit PayPal)
   ueber-uns.html    – Über uns, Kontakt, Öffnungs- und Lieferzeiten (data/shop.json)
   impressum.html    – Impressum (data/shop.json)
   datenschutz.html  – Datenschutzerklärung (data/quellen/datenschutz-shop.txt)
@@ -51,7 +53,7 @@ BILD_NAME = [
     (r"^Fanta", "orangenlimonade"), (r"^Sprite", "zitronenlimonade"),
 ]
 
-ORDER_URL = "bestellen.html"
+ORDER_URL = "speisekarte.html"
 
 
 def esc(s):
@@ -119,64 +121,71 @@ def bild(item):
     return None, None
 
 
-def optionen_html(groups):
-    if not groups:
-        return ""
-    out = ['<div class="card__opts" hidden><h4>Wünsche &amp; Extras beim Bestellen</h4>']
-    for g in groups:
-        ch = []
-        for c in g["auswahl"]:
-            preis = f' <span class="opt-price">+{euro(c["aufpreis"])}</span>' if c["aufpreis"] else ""
-            ch.append(f"<li>{esc(c['name'])}{preis}</li>")
-        out.append(f'<div class="opt-group"><p class="opt-title">{esc(g["titel"])}'
-                   f'{" <small>(mehrere möglich)</small>" if g.get("mehrfach") else ""}</p><ul>{"".join(ch)}</ul></div>')
-    out.append("</div>")
-    return "".join(out)
+def item_key(item, cat):
+    return slug(cat["kategorie"]) + "--" + slug(item["name"])
 
 
-def item_html(item, cat):
-    name = item["name"]
-    sizes = cat.get("groessen", [])
-    basis = cat.get("basis", [])
-    if "preise" in item:
-        prices = "".join(f'<span class="price"><small>{esc(s)}</small>{euro(item["preise"][s])}</span>'
-                         for s in sizes if s in item["preise"])
-    else:
-        prices = f'<span class="price">{euro(item["preis"])}</span>'
-    z = zutaten(item, basis)
-    base = list(basis)
-    chips = ('<ul class="chips">' + "".join(f'<li class="chip--basis">{esc(x)}</li>' for x in base)
-             + "".join(f"<li>{esc(x)}</li>" for x in z) + "</ul>") if (z or base) else ""
-    note = f'<p class="card__info">{esc(info(item))}</p>' if info(item) else ""
+def beschreibung(item, cat):
+    """Kurztext für die Zeile: Zutaten oder Info, sonst die Beschreibung."""
+    z = zutaten(item, cat.get("basis", []))
+    if z:
+        return ", ".join(z)
+    return info(item) or item.get("beschreibung", "").rstrip(".")
+
+
+def item_daten(item, cat):
+    """Daten für Bestellfenster und Warenkorb (wird als JSON in die Seite geschrieben)."""
     codes, al, zs = allergen_namen(item)
-    sup = f'<sup class="codes" title="{esc(", ".join(al + zs))}">{esc(", ".join(codes))}</sup>' if codes else ""
-    more = ""
-    if al or zs:
-        more = ('<div class="card__more" hidden>'
-                + (f'<p><b>Allergene:</b> {esc(", ".join(al))}</p>' if al else "")
-                + (f'<p><b>Zusatzstoffe:</b> {esc(", ".join(zs))}</p>' if zs else "")
-                + "</div>")
-    groups = list(cat.get("optionen", [])) + list(item.get("optionen", []))
-    extras = any(c["aufpreis"] for g in groups for c in g["auswahl"])
-    hint = '<span class="card__extras">Extras möglich</span>' if extras else ""
     small, large = bild(item)
     if not small and cat.get("bild"):
         small = large = cat["bild"]
-    img = (f'<img class="card__img" src="{small}" alt="" width="192" height="192" loading="lazy" data-large="{large}">'
-           if small else '<span class="card__img card__img--none"></span>')
-    search = " ".join([name, cat["kategorie"], item.get("nr", "")] + base + z
+    d = {
+        "name": item["name"],
+        "kat": cat["kategorie"],
+        "text": beschreibung(item, cat),
+        "bild": large or "",
+        "allergene": ", ".join(al),
+        "zusatz": ", ".join(zs),
+        "optionen": list(cat.get("optionen", [])) + list(item.get("optionen", [])),
+    }
+    if "preise" in item:
+        d["preise"] = [[s, item["preise"][s]] for s in cat.get("groessen", item["preise"].keys()) if s in item["preise"]]
+    else:
+        d["preis"] = item["preis"]
+    if cat.get("basis"):
+        d["basis"] = ", ".join(cat["basis"])
+    return d
+
+
+def zeile_html(item, cat):
+    """Eine Zeile wie bei Lieferando: Name, Zutaten, Preis, Foto rechts, Plus-Knopf."""
+    key = item_key(item, cat)
+    name = item["name"]
+    if "preise" in item:
+        preis = "ab " + euro(min(item["preise"].values()))
+    else:
+        preis = euro(item["preis"])
+    codes, al, zs = allergen_namen(item)
+    sup = f'<sup class="codes" title="{esc(", ".join(al + zs))}">{esc(", ".join(codes))}</sup>' if codes else ""
+    small, _ = bild(item)
+    if not small and cat.get("bild"):
+        small = cat["bild"]
+    img = f'<img class="meal__img" src="{small}" alt="" width="192" height="192" loading="lazy">' if small else ""
+    groups = list(cat.get("optionen", [])) + list(item.get("optionen", []))
+    extras = any(c["aufpreis"] for g in groups for c in g["auswahl"])
+    text = beschreibung(item, cat)
+    search = " ".join([name, cat["kategorie"], item.get("nr", ""), text]
                       + [c["name"] for g in groups for c in g["auswahl"] if c["aufpreis"]]).lower()
-    nr = f'<span class="card__nr">{esc(item["nr"])}</span>' if item.get("nr") else ""
     return (
-        f'<li class="card" data-search="{esc(search)}">'
-        f"{img}"
-        '<div class="card__body">'
-        f'<h3 class="card__name">{nr}{esc(name)}{sup}</h3>'
-        f"{chips}{note}"
-        f'<div class="card__foot">{hint}<div class="card__prices">{prices}</div></div>'
+        f'<li class="meal" data-id="{key}" data-search="{esc(search)}">'
+        '<div class="meal__text">'
+        f'<h3 class="meal__name">{esc(name)}{sup}</h3>'
+        + (f'<p class="meal__desc">{esc(text)}</p>' if text else "")
+        + f'<p class="meal__price">{preis}{" <span>· Extras möglich</span>" if extras else ""}</p>'
         "</div>"
-        f"{more}{optionen_html(groups)}"
-        f'<button class="card__open" type="button" aria-label="Details zu {esc(name)}"></button>'
+        f"{img}"
+        f'<button class="meal__add" type="button" aria-label="{esc(name)} in den Warenkorb">'
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>'
         "</li>"
     )
 
@@ -192,10 +201,10 @@ def section_html(cat):
         f'<section class="cat" id="{slug(name)}" aria-labelledby="h-{slug(name)}">'
         '<header class="cat__head">'
         + (f'<img class="cat__img" src="{img}" alt="" loading="lazy">' if img else "")
-        + f'<h2 id="h-{slug(name)}">{esc(name)}</h2>'
-        + "</header>"
-        + (f'<p class="cat__note">{esc(note)}</p>' if note else "")
-        + '<ul class="cards">' + "".join(item_html(i, cat) for i in items) + "</ul>"
+        + f'<div><h2 id="h-{slug(name)}">{esc(name)}</h2>'
+        + (f'<p class="cat__note">{esc(note.splitlines()[0])}</p>' if note else "")
+        + "</div></header>"
+        + '<ul class="meals">' + "".join(zeile_html(i, cat) for i in items) + "</ul>"
         "</section>"
     )
 
@@ -258,6 +267,7 @@ def page_hero(title, text="", cta=True):
 
 # ---------- Speisekarte ----------
 cats = [c for c in menu["kategorien"] if any(a.get("aktiv", True) for a in c["artikel"])]
+adr = shop["adresse"]
 
 
 # ---------- Startseite: Kategorien mit Foto (zwischen den Markierungen in index.html) ----------
@@ -293,11 +303,50 @@ index = index[:i] + grid + index[j:]
 print("geschrieben: index.html (Kategorien)")
 n_items = sum(1 for c in cats for a in c["artikel"] if a.get("aktiv", True))
 nav = "".join(f'<a href="#{slug(c["kategorie"])}">{esc(c["kategorie"])}</a>' for c in cats) + '<a href="#allergene">Allergene</a>'
+# ---------- Daten für Warenkorb und Kasse (assets/js/shop-daten.js) ----------
+gebiete = json.loads((ROOT / "data/liefergebiete.json").read_text(encoding="utf-8"))
+shop_daten = {
+    "name": shop["name"],
+    "telefon": shop["telefon"],
+    "telefonLink": shop["telefon_link"],
+    "whatsapp": "49" + re.sub(r"\D", "", shop["telefon_mobil"]).lstrip("0"),
+    "lieferungMin": shop["lieferung"]["bereit_in_min"],
+    "abholungMin": shop["lieferung"]["abholung_bereit_in_min"],
+    "mindestbestellwert": min(z["min"] for z in gebiete["zonen"]),
+    "zonen": gebiete["zonen"],
+}
+(ROOT / "assets/js/shop-daten.js").write_text(
+    "// Wird von tools/build_pages.py aus data/shop.json und data/liefergebiete.json erzeugt – nicht von Hand ändern.\n"
+    "window.SHOP = " + json.dumps(shop_daten, ensure_ascii=False, indent=2) + ";\n", encoding="utf-8")
+print("geschrieben: assets/js/shop-daten.js")
+
+menu_daten = {item_key(a, c): item_daten(a, c) for c in cats for a in c["artikel"] if a.get("aktiv", True)}
+gratis = [z["plz"] for z in gebiete["zonen"] if not z["gebuehr"]]
+SHOP_SCRIPTS = ('  <script src="assets/js/offers-data.js" defer></script>\n'
+                '  <script src="assets/js/shop-daten.js" defer></script>\n'
+                '  <script src="assets/js/bestell-config.js" defer></script>\n'
+                '  <script src="assets/js/warenkorb.js" defer></script>\n')
+
 page(
     "speisekarte.html",
-    "Speisekarte – Neusser Döner & Pizza",
-    "Speisekarte von Neusser Döner & Pizza in Neuss: Pizza, Döner, Lahmacun, Pide, Burger, Schnitzel, Menüs und Getränke mit Preisen, Extras und Allergenen.",
-    f"""{page_hero("Speisekarte", f"{n_items} Gerichte und Getränke · Mindestbestellwert 10&nbsp;€ · bis 2&nbsp;km kostenlose Lieferung")}
+    "Speisekarte & online bestellen – Neusser Döner & Pizza",
+    "Speisekarte von Neusser Döner & Pizza in Neuss: Pizza, Döner, Lahmacun, Pide, Burger, Schnitzel, Menüs und Getränke – direkt online bestellen, liefern lassen oder abholen.",
+    f"""    <section class="shop-head">
+      <div class="container shop-head__inner">
+        <img class="shop-head__logo" src="assets/img/logo.webp" alt="" width="560" height="375">
+        <div class="shop-head__text">
+          <h1>{esc(shop["name"])}</h1>
+          <p class="shop-head__addr">{esc(adr["strasse"])}, {esc(adr["plz"])} {esc(adr["ort"])} · Döner, Pizza, Lahmacun, Pide &amp; mehr</p>
+          <ul class="shop-head__facts">
+            <li class="open-state" data-open-state>Öffnungszeiten siehe unten</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Lieferung ca. {shop["lieferung"]["bereit_in_min"]} Min.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Abholung ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Mindestbestellwert {euro(shop_daten["mindestbestellwert"])}</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Lieferung gratis in {", ".join(gratis)}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
     <div class="cat-nav">
       <div class="container cat-nav__wrap">
@@ -309,26 +358,153 @@ page(
       </div>
     </div>
 
-    <div class="container menu">
-      <p class="search-empty" hidden>Nichts gefunden. Versuch es mit einem anderen Wort, z. B. „Käse“ oder „Hähnchen“.</p>
-      <p class="search-count" aria-live="polite"></p>
-      {"".join(section_html(c) for c in cats)}
-      {legend_html()}
-      <p class="menu__note">Abbildungen sind Beispielfotos und können vom Gericht abweichen. Preise in Euro inkl. MwSt.</p>
+    <div class="container shop-layout">
+      <div class="menu">
+        <p class="search-empty" hidden>Nichts gefunden. Versuch es mit einem anderen Wort, z. B. „Käse“ oder „Hähnchen“.</p>
+        <p class="search-count" aria-live="polite"></p>
+        {"".join(section_html(c) for c in cats)}
+        {legend_html()}
+        <p class="menu__note">Abbildungen sind Beispielfotos und können vom Gericht abweichen. Preise in Euro inkl. MwSt.</p>
+      </div>
+      <aside class="basket" id="warenkorb" aria-label="Warenkorb">
+        <div class="basket__inner" data-warenkorb></div>
+      </aside>
     </div>
 
-    <dialog class="dish-dialog" aria-labelledby="dish-dialog-title">
-      <button class="dish-dialog__close" type="button" aria-label="Schließen">×</button>
-      <img class="dish-dialog__img" src="" alt="">
-      <div class="dish-dialog__body">
-        <h2 id="dish-dialog-title"></h2>
-        <div class="dish-dialog__content"></div>
-        <a class="btn btn--primary" href="{ORDER_URL}">Jetzt bestellen</a>
-      </div>
-    </dialog>""",
-    '  <script src="assets/js/menu.js" defer></script>\n',
-    "page-menu",
+    <button class="basket-bar" type="button" aria-controls="warenkorb" aria-expanded="false" hidden>
+      <span class="basket-bar__count" data-anzahl>0</span>
+      <span>Warenkorb ansehen</span>
+      <strong data-summe>0,00 €</strong>
+    </button>
+
+    <dialog class="item-dialog" aria-labelledby="item-dialog-title"></dialog>
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script type="application/json" id="menu-daten">{json.dumps(menu_daten, ensure_ascii=False).replace("</", "<\\/")}</script>""",
+    SHOP_SCRIPTS + '  <script src="assets/js/main.js" defer></script>\n  <script src="assets/js/menu.js" defer></script>\n',
+    "page-menu page-shop",
 )
+
+# ---------- Kasse ----------
+page(
+    "kasse.html",
+    "Kasse – Neusser Döner & Pizza",
+    "Bestellung bei Neusser Döner & Pizza abschließen: Lieferung oder Abholung, Bezahlung bar oder mit Karte.",
+    f"""    <section class="shop-head shop-head--slim">
+      <div class="container">
+        <a class="back" href="speisekarte.html">← Zurück zur Speisekarte</a>
+        <h1>Bestellung abschließen</h1>
+      </div>
+    </section>
+
+    <div class="container checkout" data-kasse>
+      <form class="checkout__form" novalidate>
+        <section class="co-card">
+          <h2><span>1</span> Lieferart</h2>
+          <div class="mode mode--big" role="radiogroup" aria-label="Lieferart">
+            <label><input type="radio" name="art" value="lieferung"> <span>Lieferung</span></label>
+            <label><input type="radio" name="art" value="abholung"> <span>Abholung</span></label>
+          </div>
+          <p class="co-hint" data-art-hinweis></p>
+        </section>
+
+        <section class="co-card">
+          <h2><span>2</span> Deine Daten</h2>
+          <div class="fields">
+            <label class="field field--wide"><span>Vor- und Nachname *</span><input name="name" autocomplete="name" required maxlength="80"></label>
+            <label class="field"><span>Telefon *</span><input name="telefon" type="tel" autocomplete="tel" required maxlength="25" placeholder="für Rückfragen"></label>
+            <label class="field"><span>E-Mail (optional)</span><input name="email" type="email" autocomplete="email" maxlength="120"></label>
+            <div class="fields fields--sub field--wide" data-nur="lieferung">
+              <label class="field field--wide"><span>Firma (optional)</span><input name="firma" autocomplete="organization" maxlength="80"></label>
+              <label class="field field--grow"><span>Straße *</span><input name="strasse" autocomplete="address-line1" maxlength="80"></label>
+              <label class="field field--small"><span>Hausnr. *</span><input name="hausnr" maxlength="10"></label>
+              <label class="field field--grow"><span>PLZ *</span><select name="plz" autocomplete="postal-code"></select></label>
+              <label class="field"><span>Ort</span><input name="ort" readonly tabindex="-1"></label>
+              <label class="field"><span>Etage</span><select name="etage"><option value="">Keine Angabe</option><option>Erdgeschoss</option><option>1. Etage</option><option>2. Etage</option><option>3. Etage</option><option>4. Etage</option><option>5. Etage</option><option>6. Etage</option><option>7. Etage</option><option>8. Etage</option><option>9. Etage</option><option>10. Etage</option></select></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="co-card">
+          <h2><span>3</span> Zeit &amp; Bezahlung</h2>
+          <div class="fields">
+            <label class="field"><span data-zeit-label>Liefertermin *</span><select name="zeit" required></select></label>
+            <fieldset class="field pay">
+              <legend>Bezahlung *</legend>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar</span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte</span></label>
+            </fieldset>
+            <label class="field field--wide"><span>Bemerkung (optional)</span><textarea name="bemerkung" rows="3" maxlength="500" placeholder="z. B. Klingel defekt, bitte anrufen"></textarea></label>
+          </div>
+          <p class="co-closed" data-geschlossen hidden></p>
+        </section>
+
+        <label class="consent"><input type="checkbox" name="datenschutz" required> <span>Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung der Bestellung verwendet werden. *</span></label>
+        <label class="consent"><input type="checkbox" name="merken"> <span>Meine Daten auf diesem Gerät für die nächste Bestellung merken</span></label>
+        <p class="co-error" role="alert" hidden></p>
+        <button class="btn btn--primary btn--big checkout__submit" type="submit">Kostenpflichtig bestellen</button>
+        <p class="co-hint co-hint--center">Lieber online mit PayPal bezahlen? <a href="bestellen.html">Über unseren Partner-Shop bestellen</a></p>
+        <p class="co-hint co-hint--center" data-wa-hinweis hidden>Die Bestellung wird als fertige WhatsApp-Nachricht an uns geöffnet – bitte dort noch auf Senden tippen.</p>
+      </form>
+
+      <aside class="checkout__sum">
+        <div class="basket__inner" data-warenkorb></div>
+        <a class="checkout__edit" href="speisekarte.html">Warenkorb bearbeiten</a>
+      </aside>
+    </div>
+
+    <section class="container done" data-fertig hidden>
+      <div class="done__card">
+        <div class="done__icon" aria-hidden="true">✓</div>
+        <h2 data-fertig-titel>Danke für deine Bestellung!</h2>
+        <p data-fertig-text></p>
+        <a class="btn btn--primary" href="index.html">Zur Startseite</a>
+      </div>
+    </section>""",
+    SHOP_SCRIPTS + '  <script src="assets/js/kasse.js" defer></script>\n',
+    "page-checkout",
+)
+
+# ---------- Bestell-Monitor fürs Geschäft (nicht verlinkt, nicht in Suchmaschinen) ----------
+mon_head = re.sub(r"<title>.*?</title>", "<title>Bestellungen – Neusser Döner &amp; Pizza</title>", HEAD, flags=re.S)
+mon_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="robots" content="noindex, nofollow">', mon_head)
+(ROOT / "bestellungen.html").write_text(f"""{mon_head}<body class="page-monitor">
+  <main class="monitor" data-monitor>
+    <header class="monitor__bar">
+      <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
+      <h1>Bestellungen</h1>
+    </header>
+
+    <p class="monitor__hint" data-hinweis hidden>Die Datenbank ist noch nicht eingerichtet. Solange kommen Online-Bestellungen per WhatsApp
+      (siehe <code>assets/js/bestell-config.js</code>).</p>
+
+    <form class="monitor__login" data-login hidden>
+      <h2>Anmelden</h2>
+      <label class="field"><span>E-Mail</span><input name="email" type="email" autocomplete="username" required></label>
+      <label class="field"><span>Passwort</span><input name="passwort" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn--primary" type="submit">Anmelden</button>
+      <p class="co-error" data-fehler aria-live="polite"></p>
+    </form>
+
+    <section data-board hidden>
+      <div class="monitor__tools">
+        <button class="m-btn m-btn--ton" type="button" data-ton aria-pressed="false">🔕 Ton aus – hier tippen</button>
+        <label>Anzeigen <select data-filter><option value="offen">Offen</option><option value="alle">Alle (24 Std.)</option>
+          <option value="fertig">Fertig</option><option value="storniert">Storniert</option></select></label>
+        <label><input type="checkbox" data-autodruck> Beim Annehmen Bon drucken</label>
+        <button class="m-btn" type="button" data-abmelden>Abmelden</button>
+      </div>
+      <div class="monitor__list" data-liste></div>
+    </section>
+  </main>
+  <div class="bon" data-bon></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" defer></script>
+  <script src="assets/js/bestell-config.js" defer></script>
+  <script src="assets/js/monitor.js" defer></script>
+</body>
+</html>
+""", encoding="utf-8")
+print("geschrieben: bestellungen.html")
 
 # ---------- Bestellen (Shop eingebettet) ----------
 page(
@@ -368,7 +544,6 @@ merkmale = "".join(f"<li>{esc(m)}</li>" for m in shop["merkmale"])
 zonen = "".join(
     f'<tr><th scope="row">{esc(z["name"])}</th><td>{"kostenlos" if not z["liefergebuehr"] else euro(z["liefergebuehr"]) + " Liefergebühr"} · ab {euro(z["mindestbestellwert"])}</td></tr>'
     for z in shop["lieferung"]["zonen"])
-adr = shop["adresse"]
 maps = "https://www.google.com/maps/search/?api=1&query=" + html.escape(f'{shop["name"]}, {adr["strasse"]}, {adr["plz"]} {adr["ort"]}').replace(" ", "+")
 osm = f'https://www.openstreetmap.org/?mlat={shop["koordinaten"]["lat"]}&mlon={shop["koordinaten"]["lng"]}#map=17/{shop["koordinaten"]["lat"]}/{shop["koordinaten"]["lng"]}'
 page(
@@ -468,6 +643,11 @@ page(
     "Datenschutzerklärung von Neusser Döner & Pizza.",
     f"""{page_hero("Datenschutzerklärung", cta=False)}
     <div class="container legal">
+      <h2>Online-Bestellung über diese Website</h2>
+      <p>Wenn du über die Speisekarte und die Kasse dieser Website bestellst, verarbeiten wir die Angaben aus dem Bestellformular (Name, Telefonnummer, bei Lieferung die Adresse, freiwillig E-Mail, Firma, Etage und Bemerkung) sowie die bestellten Gerichte, um deine Bestellung zuzubereiten, zu liefern und bei Rückfragen anzurufen (Art. 6 Abs. 1 lit. b DSGVO).</p>
+      <p>Der Warenkorb wird nur in deinem Browser gespeichert (localStorage). Wenn du „Meine Daten merken“ ankreuzt, werden auch deine Kontaktdaten nur in deinem Browser gespeichert, bis du das Häkchen wieder entfernst oder die Website-Daten löschst.</p>
+      <p>Je nach Einstellung wird die Bestellung entweder in unserer Bestell-Datenbank bei Supabase (Supabase Inc., Server in Frankfurt am Main, EU) gespeichert, solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist, oder als WhatsApp-Nachricht geöffnet, die du selbst an uns sendest. Für WhatsApp gelten zusätzlich die Datenschutzhinweise von WhatsApp Ireland Ltd.</p>
+      <p>Die folgenden Abschnitte stammen aus der Datenschutzerklärung unseres Bestellshops (Speisebaron) und gelten für Bestellungen über die Seite „Online bestellen“.</p>
       {datenschutz_html()}
     </div>""",
     body_class="page-legal",

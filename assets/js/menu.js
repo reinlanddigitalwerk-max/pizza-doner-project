@@ -32,7 +32,7 @@
 (function () {
   var input = document.getElementById('menu-search');
   if (!input) return;
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.meal'));
   var sections = Array.prototype.slice.call(document.querySelectorAll('.cat'));
   var empty = document.querySelector('.search-empty');
   var count = document.querySelector('.search-count');
@@ -51,7 +51,7 @@
       if (ok) hits++;
     });
     sections.forEach(function (s) {
-      s.hidden = !s.querySelector('.card:not([hidden])');
+      s.hidden = !s.querySelector('.meal:not([hidden])');
     });
     empty.hidden = hits !== 0;
     count.textContent = words.length && hits ? hits + (hits === 1 ? ' Treffer' : ' Treffer') : '';
@@ -60,34 +60,133 @@
   input.addEventListener('input', run);
 })();
 
-// Detailfenster: Klick auf eine Karte zeigt großes Foto, Zutaten, Allergene und Preise.
+// Bestellen: Gericht antippen → Fenster mit Größe, Extras, Wunsch und Menge → Warenkorb.
 (function () {
-  var dialog = document.querySelector('.dish-dialog');
-  if (!dialog || typeof dialog.showModal !== 'function') return;
-  var img = dialog.querySelector('.dish-dialog__img');
-  var title = dialog.querySelector('#dish-dialog-title');
-  var content = dialog.querySelector('.dish-dialog__content');
+  var W = window.Warenkorb;
+  var datenEl = document.getElementById('menu-daten');
+  var dialog = document.querySelector('.item-dialog');
+  if (!W || !datenEl || !dialog) return;
+  var DATEN = JSON.parse(datenEl.textContent);
+  var euro = W.euro, esc = W.esc;
 
-  function open(card) {
-    var thumb = card.querySelector('img.card__img');
-    img.hidden = !thumb;
-    if (thumb) { img.src = thumb.dataset.large || thumb.src; img.alt = ''; }
-    title.innerHTML = card.querySelector('.card__name').innerHTML;
-    content.innerHTML = '';
-    ['.chips', '.card__info', '.card__more', '.card__foot', '.card__opts'].forEach(function (sel) {
-      var el = card.querySelector(sel);
-      if (!el) return;
-      var copy = el.cloneNode(true);
-      copy.hidden = false;
-      content.appendChild(copy);
+  // Warenkorb rechts bzw. als Blatt auf dem Handy
+  var basket = document.querySelector('.basket');
+  var root = basket.querySelector('[data-warenkorb]');
+  W.binden(root, { bearbeiten: true, modus: true, kasse: true, schliessen: true });
+
+  var bar = document.querySelector('.basket-bar');
+  function leiste() {
+    var sm = W.summen();
+    bar.hidden = !sm.anzahl;
+    bar.querySelector('[data-anzahl]').textContent = sm.anzahl;
+    bar.querySelector('[data-summe]').textContent = euro(sm.gesamt);
+  }
+  W.on(leiste);
+  leiste();
+  function blatt(offen) {
+    basket.classList.toggle('is-open', offen);
+    document.body.classList.toggle('sheet-open', offen);
+    bar.setAttribute('aria-expanded', offen ? 'true' : 'false');
+  }
+  bar.addEventListener('click', function () { blatt(true); });
+  root.addEventListener('click', function (e) { if (e.target.closest('[data-schliessen]')) blatt(false); });
+  basket.addEventListener('click', function (e) { if (e.target === basket) blatt(false); });
+
+  var toast = document.querySelector('.toast');
+  var toastZeit;
+  function melden(text) {
+    toast.textContent = text;
+    toast.hidden = false;
+    toast.classList.add('is-on');
+    clearTimeout(toastZeit);
+    toastZeit = setTimeout(function () { toast.classList.remove('is-on'); setTimeout(function () { toast.hidden = true; }, 300); }, 2200);
+  }
+
+  function preisVon(d) { return d.preise ? d.preise[0][1] : d.preis; }
+
+  function oeffnen(id) {
+    var d = DATEN[id];
+    if (!d) return;
+    var html = '<form method="dialog" class="item">' +
+      (d.bild ? '<img class="item__img" src="' + esc(d.bild) + '" alt="">' : '') +
+      '<button class="item__close" value="zu" aria-label="Schließen">×</button>' +
+      '<div class="item__body">' +
+      '<h2 id="item-dialog-title">' + esc(d.name) + '</h2>' +
+      (d.text ? '<p class="item__desc">' + esc(d.text) + '</p>' : '') +
+      (d.basis ? '<p class="item__basis">Immer dabei: ' + esc(d.basis) + '</p>' : '') +
+      ((d.allergene || d.zusatz) ? '<details class="item__info"><summary>Allergene &amp; Zusatzstoffe</summary>' +
+        (d.allergene ? '<p><b>Allergene:</b> ' + esc(d.allergene) + '</p>' : '') +
+        (d.zusatz ? '<p><b>Zusatzstoffe:</b> ' + esc(d.zusatz) + '</p>' : '') + '</details>' : '');
+
+    if (d.preise) {
+      html += '<fieldset class="grp"><legend>Größe wählen <em>Pflicht</em></legend>' + d.preise.map(function (g, i) {
+        return '<label class="choice"><input type="radio" name="groesse" value="' + i + '"' + (i ? '' : ' checked') + '>' +
+          '<span>' + esc(g[0]) + '</span><b>' + euro(g[1]) + '</b></label>';
+      }).join('') + '</fieldset>';
+    }
+    (d.optionen || []).forEach(function (g, gi) {
+      var typ = g.mehrfach ? 'checkbox' : 'radio';
+      html += '<fieldset class="grp"><legend>' + esc(g.titel) + (g.mehrfach ? ' <em>mehrere möglich</em>' : '') + '</legend>' +
+        g.auswahl.map(function (c, ci) {
+          return '<label class="choice"><input type="' + typ + '" name="o' + gi + '" value="' + ci + '"' +
+            (!g.mehrfach && ci === 0 ? ' checked' : '') + '><span>' + esc(c.name) + '</span>' +
+            (c.aufpreis ? '<b>+' + euro(c.aufpreis) + '</b>' : '') + '</label>';
+        }).join('') + '</fieldset>';
     });
+    html += '<label class="grp grp--note"><span>Wunsch an die Küche (optional)</span>' +
+      '<textarea name="notiz" rows="2" maxlength="120" placeholder="z. B. gut durch, wenig Sauce"></textarea></label>' +
+      '</div><div class="item__foot">' +
+      '<div class="qty qty--big"><button type="button" data-q="-1" aria-label="Eins weniger">−</button><span data-menge>1</span><button type="button" data-q="1" aria-label="Eins mehr">+</button></div>' +
+      '<button class="btn btn--primary item__add" value="ok">In den Warenkorb · <span data-preis></span></button></div></form>';
+    dialog.innerHTML = html;
+
+    var form = dialog.querySelector('form');
+    var mengeEl = form.querySelector('[data-menge]');
+    var n = 1;
+
+    function auswahl() {
+      var groesse = '', basis = preisVon(d), extra = 0, opts = [];
+      if (d.preise) {
+        var g = d.preise[+form.querySelector('input[name="groesse"]:checked').value];
+        groesse = g[0]; basis = g[1];
+      }
+      (d.optionen || []).forEach(function (g, gi) {
+        form.querySelectorAll('input[name="o' + gi + '"]:checked').forEach(function (inp) {
+          var c = g.auswahl[+inp.value];
+          extra += c.aufpreis;
+          // Nichtssagendes wie „ohne Wunsch“ oder „normal“ nicht auf den Bon schreiben
+          if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single)/i.test(c.name)) opts.push(c.name);
+        });
+      });
+      return { groesse: groesse, stueck: Math.round((basis + extra) * 100) / 100, opts: opts };
+    }
+    function preis() {
+      form.querySelector('[data-preis]').textContent = euro(auswahl().stueck * n);
+    }
+    form.addEventListener('change', preis);
+    form.addEventListener('click', function (e) {
+      var q = e.target.closest('[data-q]');
+      if (!q) return;
+      n = Math.max(1, Math.min(50, n + +q.dataset.q));
+      mengeEl.textContent = n;
+      preis();
+    });
+    form.addEventListener('submit', function (e) {
+      var wer = e.submitter && e.submitter.value;
+      if (wer !== 'ok') return;
+      var a = auswahl();
+      W.hinzu({
+        id: id, name: d.name, groesse: a.groesse, optionen: a.opts,
+        notiz: form.notiz.value.trim().slice(0, 120), preis: a.stueck, menge: n
+      });
+      melden(n + '× ' + d.name + ' im Warenkorb');
+    });
+    preis();
     dialog.showModal();
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('.card__open'), function (b) {
-    b.addEventListener('click', function () { open(b.closest('.card')); });
+  document.querySelectorAll('.meal').forEach(function (li) {
+    li.addEventListener('click', function () { oeffnen(li.dataset.id); });
   });
-  dialog.querySelector('.dish-dialog__close').addEventListener('click', function () { dialog.close(); });
-  // Klick neben das Fenster schließt es
   dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
 })();

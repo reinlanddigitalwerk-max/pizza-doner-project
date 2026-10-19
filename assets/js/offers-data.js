@@ -14,8 +14,8 @@
 //   mindestwert:  Mindestbestellwert in Euro (optional)
 //   bild / icon:  Bild für Insel und Karte
 //
-// Die Rabatte müssen auch im Bestellsystem (neusser-doener-pizza.de/bestellen) eingerichtet sein –
-// diese Seite zeigt sie nur an.
+// Aktive Rabatte werden im Warenkorb der Website (Speisekarte und Kasse) automatisch abgezogen.
+// Für Bestellungen über Speisebaron (bestellen.html) müssen sie dort extra als Gutschein angelegt werden.
 window.NEUSSER = {
   oeffnungszeiten: {
     // 1 = Montag … 7 = Sonntag; null = Ruhetag (Stand: Bestellshop neusser-doener-pizza.de)
@@ -46,7 +46,9 @@ window.NEUSSER = {
     {
       id: 'rabatt-12',
       typ: 'rabatt',
-      aktiv: true,
+      // Test-Angebot: aus, weil Rabatte jetzt im Warenkorb der Website wirklich abgezogen werden.
+      // Auf true setzen, sobald der Inhaber die 12 % geben möchte.
+      aktiv: false,
       prozent: 12,
       titel: 'Rabatt',
       text: 'Jetzt online bestellen und sparen.',

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bestellungen – Neusser Döner &amp; Pizza</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/img/logo.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Lilita+One&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="page-monitor">
+  <main class="monitor" data-monitor>
+    <header class="monitor__bar">
+      <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
+      <h1>Bestellungen</h1>
+    </header>
+
+    <p class="monitor__hint" data-hinweis hidden>Die Datenbank ist noch nicht eingerichtet. Solange kommen Online-Bestellungen per WhatsApp
+      (siehe <code>assets/js/bestell-config.js</code>).</p>
+
+    <form class="monitor__login" data-login hidden>
+      <h2>Anmelden</h2>
+      <label class="field"><span>E-Mail</span><input name="email" type="email" autocomplete="username" required></label>
+      <label class="field"><span>Passwort</span><input name="passwort" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn--primary" type="submit">Anmelden</button>
+      <p class="co-error" data-fehler aria-live="polite"></p>
+    </form>
+
+    <section data-board hidden>
+      <div class="monitor__tools">
+        <button class="m-btn m-btn--ton" type="button" data-ton aria-pressed="false">🔕 Ton aus – hier tippen</button>
+        <label>Anzeigen <select data-filter><option value="offen">Offen</option><option value="alle">Alle (24 Std.)</option>
+          <option value="fertig">Fertig</option><option value="storniert">Storniert</option></select></label>
+        <label><input type="checkbox" data-autodruck> Beim Annehmen Bon drucken</label>
+        <button class="m-btn" type="button" data-abmelden>Abmelden</button>
+      </div>
+      <div class="monitor__list" data-liste></div>
+    </section>
+  </main>
+  <div class="bon" data-bon></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" defer></script>
+  <script src="assets/js/bestell-config.js" defer></script>
+  <script src="assets/js/monitor.js" defer></script>
+</body>
+</html>

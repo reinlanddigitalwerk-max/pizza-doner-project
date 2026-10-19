@@ -54,3 +54,22 @@ Freistellen: `tools/isnet_cut.py`.
 - Eigene Fotos von Döner und Döner-Teller
 - Preis prüfen: „Döner-Sandwich mit extra Fleisch“ steht auf der alten Seite mit 8,00 € (gleich wie ohne)
 - Datenschutzerklärung für die neue Seite
+
+## Online bestellen (eigener Warenkorb wie auf der alten Seite)
+
+- `speisekarte.html`: Gerichte antippen → Größe, Extras, Wunsch, Menge → Warenkorb rechts (Handy: Leiste unten).
+  Lieferung/Abholung, Liefergebiet nach PLZ, Mindestbestellwert, aktive Rabatte aus `assets/js/offers-data.js`.
+- `kasse.html`: Formular wie auf der alten Bestellseite (Name, Telefon, Adresse, Etage, Liefertermin, Bar/Karte, Bemerkung).
+- Liefergebiete: `data/liefergebiete.json` (PLZ, Gebühr, Mindestbestellwert) – **vom Inhaber prüfen lassen**.
+- Wohin die Bestellung geht, steht in `assets/js/bestell-config.js`:
+  - leer → die Kasse öffnet WhatsApp mit der fertigen Bestellung an `telefon_mobil` aus `data/shop.json`;
+  - mit Supabase → Bestellung landet in der Datenbank und erscheint sofort auf `bestellungen.html` (mit Ton und Bon-Druck).
+
+### Datenbank einrichten (Supabase)
+
+1. Supabase-Projekt anlegen (Region Frankfurt `eu-central-1`).
+2. `supabase/migrations/20261019120000_bestellungen.sql` im SQL-Editor ausführen.
+3. Unter Authentication → Users ein Konto für den Laden anlegen und die E-Mail freischalten:
+   `insert into public.personal (email) values ('laden@…');`
+4. Project URL und Publishable Key in `assets/js/bestell-config.js` eintragen.
+5. Im Laden `bestellungen.html` auf Tablet/PC öffnen, anmelden, „Ton an“ tippen und offen lassen.

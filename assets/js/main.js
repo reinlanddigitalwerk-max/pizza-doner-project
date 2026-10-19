@@ -228,7 +228,7 @@ function naechsteOeffnung() {
         '<p>' + esc(a.text || '') + '</p>' +
         (conds.length ? '<ul class="conds">' + conds.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' : '') +
         '<div class="offer-card__foot">' + status +
-          '<a class="btn btn--primary btn--small" href="bestellen.html">Bestellen</a>' +
+          '<a class="btn btn--primary btn--small" href="speisekarte.html">Bestellen</a>' +
         '</div>' +
       '</div>';
     grid.appendChild(card);

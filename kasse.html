@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kasse – Neusser Döner &amp; Pizza</title>
+  <meta name="description" content="Bestellung bei Neusser Döner &amp; Pizza abschließen: Lieferung oder Abholung, Bezahlung bar oder mit Karte.">
+  <link rel="icon" href="assets/img/logo.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Lilita+One&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="page-checkout">
+
+  <!-- Logo-Leiste -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html" aria-label="Neusser Döner &amp; Pizza – Startseite">
+        <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
+      </a>
+      <div class="topbar__menu" id="hauptmenue">
+        <nav class="nav" aria-label="Hauptmenü">
+          <a href="index.html">Startseite</a>
+          <a href="speisekarte.html">Speisekarte</a>
+          <a href="index.html#angebote-liste">Angebote</a>
+          <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
+        </nav>
+        <a class="topbar__phone" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>02131 3166137</a>
+      </div>
+      <a class="btn btn--primary topbar__cta" href="speisekarte.html">Jetzt bestellen</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="hauptmenue">
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menü</span>
+      </button>
+    </div>
+    <script src="assets/js/nav.js" defer></script>
+  </header>
+  <nav class="quickbar" aria-label="Schnellzugriff">
+    <a class="quickbar__call" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>Anrufen</a>
+    <a class="quickbar__order" href="speisekarte.html">Jetzt bestellen</a>
+  </nav>
+
+  <!-- Kontakt: kleiner Dönerspieß unten rechts. Er dreht sich, rechts brennt das Feuer am Grill
+       entlang, das Fleisch wird weniger. Antippen öffnet WhatsApp, Instagram und Facebook.
+       Instagram/Facebook: Platzhalter (Suche nach dem Laden) – echten Profil-Link eintragen. -->
+  <div class="spiess">
+    <ul class="spiess__links" id="spiess-links">
+      <li><a class="spiess__link spiess__link--wa" href="https://wa.me/4915771066644" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.8c-.4 0-.9.5-.9 1.3 0 2.7 3.6 6.6 6.6 6.6.8 0 1.4-.6 1.4-1.1l-.1-.6-1.9-.9-.9.9c-1.1-.4-2.4-1.7-2.9-2.9l.8-.9-.8-1.9-.6-.4z" fill="currentColor"/></svg></a></li>
+      <li><a class="spiess__link spiess__link--ig" href="https://www.instagram.com/explore/search/keyword/?q=Neusser%20D%C3%B6ner%20Pizza" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></a></li>
+      <li><a class="spiess__link spiess__link--fb" href="https://www.facebook.com/search/top?q=Neusser%20D%C3%B6ner%20%26%20Pizza%20Neuss" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.3-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H8.2v2.9h2.5V21z" fill="currentColor"/></svg></a></li>
+    </ul>
+    <button class="spiess__btn" type="button" aria-expanded="false" aria-controls="spiess-links">
+      <svg class="spiess__svg" viewBox="0 0 92 146" aria-hidden="true">
+        <defs>
+          <linearGradient id="sp-stange" x1="0" x2="1"><stop offset="0" stop-color="#7D868E"/><stop offset=".5" stop-color="#EEF2F5"/><stop offset="1" stop-color="#7D868E"/></linearGradient>
+          <pattern id="sp-dreh" width="30" height="42" patternUnits="userSpaceOnUse">
+            <rect width="30" height="42" fill="#A9561D"/>
+            <rect width="6" height="42" fill="#6E3410"/><rect x="11" width="4" height="42" fill="#C97A33"/><rect x="19" width="7" height="42" fill="#8A4215"/><rect x="26" width="2" height="42" fill="#D9934A"/>
+            <ellipse cx="9" cy="9" rx="2.4" ry="1.4" fill="#E9B477"/><ellipse cx="22" cy="27" rx="2" ry="1.2" fill="#E9B477"/><ellipse cx="4" cy="34" rx="1.6" ry="1" fill="#4A1F07"/><ellipse cx="16" cy="18" rx="1.4" ry=".9" fill="#4A1F07"/>
+          </pattern>
+          <pattern id="sp-lagen" width="92" height="7" patternUnits="userSpaceOnUse"><path d="M0 6.2h92" stroke="#3E1A05" stroke-opacity=".35" stroke-width="1.3"/></pattern>
+          <linearGradient id="sp-licht" x1="0" x2="1">
+            <stop offset="0" stop-color="#1E0A00" stop-opacity=".6"/><stop offset=".3" stop-color="#1E0A00" stop-opacity="0"/>
+            <stop offset=".5" stop-color="#FFD08A" stop-opacity=".2"/><stop offset=".72" stop-color="#FF8A1E" stop-opacity=".15"/>
+            <stop offset="1" stop-color="#FF6A10" stop-opacity=".7"/>
+          </linearGradient>
+          <linearGradient id="sp-flamme" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFF4B0"/><stop offset=".45" stop-color="#FFB21E"/><stop offset="1" stop-color="#E2401C"/></linearGradient>
+          <linearGradient id="sp-grill" x1="0" x2="1"><stop offset="0" stop-color="#FF7A1A"/><stop offset=".35" stop-color="#5A3A2A"/><stop offset="1" stop-color="#2E3236"/></linearGradient>
+          <path id="sp-flamme-form" d="M0 0 C-10 -3 -14 -13 -10 -24 C-7 -16 0 -14 0.7 -7 C1 -3 .8 0 0 0 Z"/>
+          <clipPath id="sp-kegel"><path d="M6 25 Q8 15 40 14 Q72 15 74 25 Q73 62 57 106 Q40 113 23 106 Q7 62 6 25 Z"/></clipPath>
+        </defs>
+        <rect x="38.6" y="2" width="2.8" height="128" rx="1.4" fill="url(#sp-stange)"/>
+        <rect x="33" y="7" width="14" height="5" rx="2.5" fill="#B9C0C6"/>
+        <g class="sp-fleisch">
+          <g clip-path="url(#sp-kegel)">
+            <rect class="sp-drehen" x="-30" y="0" width="140" height="150" fill="url(#sp-dreh)"/>
+            <rect x="0" y="0" width="92" height="150" fill="url(#sp-lagen)"/>
+            <rect x="0" y="0" width="80" height="150" fill="url(#sp-licht)"/>
+          </g>
+        </g>
+        <ellipse cx="40" cy="15.5" rx="22" ry="3.2" fill="#F1D7A8" opacity=".85"/>
+        <g class="sp-krumen" fill="#9A4A17">
+          <ellipse cx="20" cy="98" rx="2.4" ry="1.4"/><ellipse cx="14" cy="80" rx="2" ry="1.2"/><ellipse cx="10" cy="60" rx="2.2" ry="1.3"/>
+        </g>
+        <ellipse cx="40" cy="133" rx="24" ry="5.5" fill="#5E656C"/>
+        <ellipse cx="40" cy="131.5" rx="24" ry="5" fill="#A7AFB6"/>
+        <!-- Grill rechts, Flammen am ganzen Spieß entlang -->
+        <rect x="79" y="16" width="8" height="104" rx="3" fill="url(#sp-grill)"/>
+        <g class="sp-feuer" fill="url(#sp-flamme)"><use class="sp-fl" href="#sp-flamme-form" x="79" y="30"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="44"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="58"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="72"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="86"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="100"/><use class="sp-fl" href="#sp-flamme-form" x="79" y="114"/></g>
+      </svg>
+      <span class="spiess__label">Contact us</span>
+    </button>
+  </div>
+
+
+  <main>
+    <section class="shop-head shop-head--slim">
+      <div class="container">
+        <a class="back" href="speisekarte.html">← Zurück zur Speisekarte</a>
+        <h1>Bestellung abschließen</h1>
+      </div>
+    </section>
+
+    <div class="container checkout" data-kasse>
+      <form class="checkout__form" novalidate>
+        <section class="co-card">
+          <h2><span>1</span> Lieferart</h2>
+          <div class="mode mode--big" role="radiogroup" aria-label="Lieferart">
+            <label><input type="radio" name="art" value="lieferung"> <span>Lieferung</span></label>
+            <label><input type="radio" name="art" value="abholung"> <span>Abholung</span></label>
+          </div>
+          <p class="co-hint" data-art-hinweis></p>
+        </section>
+
+        <section class="co-card">
+          <h2><span>2</span> Deine Daten</h2>
+          <div class="fields">
+            <label class="field field--wide"><span>Vor- und Nachname *</span><input name="name" autocomplete="name" required maxlength="80"></label>
+            <label class="field"><span>Telefon *</span><input name="telefon" type="tel" autocomplete="tel" required maxlength="25" placeholder="für Rückfragen"></label>
+            <label class="field"><span>E-Mail (optional)</span><input name="email" type="email" autocomplete="email" maxlength="120"></label>
+            <div class="fields fields--sub field--wide" data-nur="lieferung">
+              <label class="field field--wide"><span>Firma (optional)</span><input name="firma" autocomplete="organization" maxlength="80"></label>
+              <label class="field field--grow"><span>Straße *</span><input name="strasse" autocomplete="address-line1" maxlength="80"></label>
+              <label class="field field--small"><span>Hausnr. *</span><input name="hausnr" maxlength="10"></label>
+              <label class="field field--grow"><span>PLZ *</span><select name="plz" autocomplete="postal-code"></select></label>
+              <label class="field"><span>Ort</span><input name="ort" readonly tabindex="-1"></label>
+              <label class="field"><span>Etage</span><select name="etage"><option value="">Keine Angabe</option><option>Erdgeschoss</option><option>1. Etage</option><option>2. Etage</option><option>3. Etage</option><option>4. Etage</option><option>5. Etage</option><option>6. Etage</option><option>7. Etage</option><option>8. Etage</option><option>9. Etage</option><option>10. Etage</option></select></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="co-card">
+          <h2><span>3</span> Zeit &amp; Bezahlung</h2>
+          <div class="fields">
+            <label class="field"><span data-zeit-label>Liefertermin *</span><select name="zeit" required></select></label>
+            <fieldset class="field pay">
+              <legend>Bezahlung *</legend>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar</span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte</span></label>
+            </fieldset>
+            <label class="field field--wide"><span>Bemerkung (optional)</span><textarea name="bemerkung" rows="3" maxlength="500" placeholder="z. B. Klingel defekt, bitte anrufen"></textarea></label>
+          </div>
+          <p class="co-closed" data-geschlossen hidden></p>
+        </section>
+
+        <label class="consent"><input type="checkbox" name="datenschutz" required> <span>Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung der Bestellung verwendet werden. *</span></label>
+        <label class="consent"><input type="checkbox" name="merken"> <span>Meine Daten auf diesem Gerät für die nächste Bestellung merken</span></label>
+        <p class="co-error" role="alert" hidden></p>
+        <button class="btn btn--primary btn--big checkout__submit" type="submit">Kostenpflichtig bestellen</button>
+        <p class="co-hint co-hint--center">Lieber online mit PayPal bezahlen? <a href="bestellen.html">Über unseren Partner-Shop bestellen</a></p>
+        <p class="co-hint co-hint--center" data-wa-hinweis hidden>Die Bestellung wird als fertige WhatsApp-Nachricht an uns geöffnet – bitte dort noch auf Senden tippen.</p>
+      </form>
+
+      <aside class="checkout__sum">
+        <div class="basket__inner" data-warenkorb></div>
+        <a class="checkout__edit" href="speisekarte.html">Warenkorb bearbeiten</a>
+      </aside>
+    </div>
+
+    <section class="container done" data-fertig hidden>
+      <div class="done__card">
+        <div class="done__icon" aria-hidden="true">✓</div>
+        <h2 data-fertig-titel>Danke für deine Bestellung!</h2>
+        <p data-fertig-text></p>
+        <a class="btn btn--primary" href="index.html">Zur Startseite</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Kontakt, Öffnungszeiten, Impressum -->
+  <footer class="footer" id="kontakt">
+    <div class="container footer__inner">
+      <div class="footer__col">
+        <img class="footer__logo" src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375" loading="lazy">
+        <h2>Kontakt</h2>
+        <address>
+          Neusser Döner &amp; Pizza<br>
+          Further Straße 46<br>
+          41462 Neuss<br>
+          Tel.: <a href="tel:+4921313166137">02131 3166137</a>
+        </address>
+        <p class="footer__pay">Bezahlen: Bar, PayPal, EC- und Kreditkarte</p>
+      </div>
+      <div class="footer__col">
+        <h2>Öffnungszeiten</h2>
+        <table class="hours">
+          <tr><th scope="row">Montag</th><td>Ruhetag</td></tr>
+          <tr><th scope="row">Dienstag – Samstag</th><td>11:00 – 22:00</td></tr>
+          <tr><th scope="row">Sonntag</th><td>12:00 – 22:00</td></tr>
+        </table>
+        <h3 class="footer__sub">Lieferzeiten</h3>
+        <table class="hours">
+          <tr><th scope="row">Dienstag – Sonntag</th><td>14:30 – 21:30</td></tr>
+        </table>
+      </div>
+      <div class="footer__col">
+        <h2>Lieferung</h2>
+        <table class="hours">
+          <tr><th scope="row">bis 2 km</th><td>kostenlos</td></tr>
+          <tr><th scope="row">2 – 5 km</th><td>2,00 €</td></tr>
+          <tr><th scope="row">Mindestbestellwert</th><td>10,00 €</td></tr>
+        </table>
+        <p class="footer__pay">Abholung: in ca. 15 Minuten fertig</p>
+      </div>
+      <div class="footer__col footer__legal">
+        <h2>Rechtliches</h2>
+        <p><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="speisekarte.html#allergene">Allergene</a></p>
+        <p class="footer__credits">Fotos: Feuer von <a href="https://commons.wikimedia.org/wiki/File:Fire-Mehdi-1.JPG">Mehdi</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>), Pizzastück von <a href="https://commons.wikimedia.org/wiki/File:Paulie_Gee%27s_Slice_Shop_(35386).jpg">Rhododendrites</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), jeweils freigestellt. Weitere Fotos: CC0 / Public Domain. Abbildungen können abweichen.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/offers-data.js" defer></script>
+  <script src="assets/js/shop-daten.js" defer></script>
+  <script src="assets/js/bestell-config.js" defer></script>
+  <script src="assets/js/warenkorb.js" defer></script>
+  <script src="assets/js/kasse.js" defer></script>
+</body>
+</html>
