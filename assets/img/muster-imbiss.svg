@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">
+  <!-- Hintergrundmuster wie bei WhatsApp: kleine Imbiss-Symbole in weißen Linien, nahtlos kachelbar -->
+  <g fill="none" stroke="#fff" stroke-opacity=".13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Pizzastück -->
+    <g transform="translate(42 44) rotate(-18)">
+      <path d="M0 -21 L-16 17 Q0 25 16 17 Z"/>
+      <path d="M-17 15 Q0 24 17 15"/>
+      <circle cx="-4" cy="6" r="3"/><circle cx="5" cy="10" r="2.4"/><circle cx="1" cy="-5" r="2.4"/>
+    </g>
+    <!-- Burger -->
+    <g transform="translate(150 46) rotate(10)">
+      <path d="M-18 -3 Q-18 -19 0 -19 Q18 -19 18 -3 Z"/>
+      <path d="M-7 -12 l1 -1 M2 -14 l1 -1 M9 -10 l1 -1"/>
+      <path d="M-19 2 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0 q4 4 8 0"/>
+      <rect x="-18" y="7" width="36" height="6" rx="3"/>
+      <path d="M-18 16 h36 q0 6 -6 6 h-24 q-6 0 -6 -6 z"/>
+    </g>
+    <!-- Dönerspieß -->
+    <g transform="translate(222 120) rotate(8)">
+      <path d="M0 -28 V28"/>
+      <path d="M-14 -18 Q0 -23 14 -18 L8 16 Q0 19 -8 16 Z"/>
+      <path d="M-12 -9 h24 M-10 1 h20 M-8 10 h16"/>
+      <path d="M-12 28 h24"/>
+    </g>
+    <!-- Pommes -->
+    <g transform="translate(58 140) rotate(12)">
+      <path d="M-8 2 v-16 M-3 2 v-21 M2 2 v-18 M7 2 v-15"/>
+      <path d="M-12 0 L12 0 L9 20 L-9 20 Z"/>
+      <path d="M-4 10 q4 4 8 0"/>
+    </g>
+    <!-- Cola-Flasche -->
+    <g transform="translate(140 140) rotate(-10)">
+      <path d="M-3 -24 h6 v7 q6 6 6 14 v24 q0 4 -4 4 h-10 q-4 0 -4 -4 v-24 q0 -8 6 -14 z"/>
+      <path d="M-6 3 h12 M-6 10 h12"/>
+    </g>
+    <!-- Chili -->
+    <g transform="translate(206 214) rotate(28)">
+      <path d="M-17 4 Q-4 15 14 -6 Q16 -11 11 -10 Q1 2 -15 -2 Z"/>
+      <path d="M13 -8 q5 -4 3 -9"/>
+    </g>
+    <!-- Lahmacun / runde Pizza -->
+    <g transform="translate(52 220)">
+      <circle r="19"/>
+      <path d="M0 -19 V19 M-19 0 H19"/>
+      <circle cx="-8" cy="-8" r="2.4"/><circle cx="8" cy="9" r="2.4"/><circle cx="9" cy="-7" r="2"/>
+    </g>
+    <!-- Döner im Fladenbrot -->
+    <g transform="translate(134 222) rotate(-8)">
+      <path d="M-22 4 Q-20 -14 0 -16 Q20 -14 22 4"/>
+      <path d="M-22 4 Q0 14 22 4"/>
+      <path d="M-15 -4 q3 -4 6 0 q3 -4 6 0 q3 -4 6 0 q3 -4 6 0 q3 -4 6 0"/>
+    </g>
+    <!-- kleine Funken dazwischen -->
+    <path d="M98 92 v8 M94 96 h8 M196 182 v6 M193 185 h6 M22 96 v6 M19 99 h6 M240 34 v6 M237 37 h6 M96 186 v6 M93 189 h6"/>
+    <circle cx="186" cy="88" r="2"/><circle cx="100" cy="20" r="2"/><circle cx="246" cy="244" r="2"/><circle cx="14" cy="176" r="2"/>
+  </g>
+</svg>
