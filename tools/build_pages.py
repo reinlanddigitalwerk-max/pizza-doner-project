@@ -687,7 +687,7 @@ VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html",
          "manifest.webmanifest", "assets/css/style.css"]
 VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") if f.name != "monitor.js")
 VORAB += ["assets/img/logo.webp", "assets/img/muster-imbiss.svg"] + sorted(
-    str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons")
+    str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons", "assets/img/logo")
     for f in (ROOT / d).glob("*") if f.suffix in (".webp", ".png"))
 stand = hashlib.sha1(b"".join((ROOT / f).read_bytes() for f in VORAB if f != "./")).hexdigest()[:10]
 (ROOT / "sw.js").write_text(f"""// Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
