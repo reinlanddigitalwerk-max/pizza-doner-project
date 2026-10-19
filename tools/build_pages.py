@@ -686,7 +686,7 @@ import hashlib
 VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html", "impressum.html", "datenschutz.html",
          "manifest.webmanifest", "assets/css/style.css"]
 VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") if f.name != "monitor.js")
-VORAB += ["assets/img/logo.webp"] + sorted(
+VORAB += ["assets/img/logo.webp", "assets/img/muster-imbiss.svg"] + sorted(
     str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons")
     for f in (ROOT / d).glob("*") if f.suffix in (".webp", ".png"))
 stand = hashlib.sha1(b"".join((ROOT / f).read_bytes() for f in VORAB if f != "./")).hexdigest()[:10]
