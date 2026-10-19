@@ -73,3 +73,16 @@ Freistellen: `tools/isnet_cut.py`.
    `insert into public.personal (email) values ('laden@…');`
 4. Project URL und Publishable Key in `assets/js/bestell-config.js` eintragen.
 5. Im Laden `bestellungen.html` auf Tablet/PC öffnen, anmelden, „Ton an“ tippen und offen lassen.
+
+## App installieren
+
+`manifest.webmanifest` + `sw.js` (wird von `tools/build_pages.py` erzeugt): Die Seite lässt sich als App auf den
+Startbildschirm legen und öffnet Speisekarte, Startseite und Infos auch ohne Netz. Der Knopf „App installieren“
+erscheint im Handy-Menü und im Footer, sobald der Browser es anbietet (iPhone: kurze Anleitung).
+
+## Druckvorlagen mit QR-Code (Ordner `druck/`)
+
+- `flyer-a5.pdf` (Vorder- und Rückseite), `tischkarte-a6.pdf`, `aufkleber-7cm.pdf`, `qr-speisekarte.svg`
+- Der QR-Code führt zur Speisekarte. Neu erzeugen (z. B. bei eigener Domain oder neuen Preisen):
+  `python3 tools/druck.py && node tools/druck-pdf.js` – die Adresse steht oben in `tools/druck.py`.
+- Die PDFs haben keinen Beschnitt. Wenn die Druckerei 3 mm Beschnitt verlangt, kurz Bescheid geben.

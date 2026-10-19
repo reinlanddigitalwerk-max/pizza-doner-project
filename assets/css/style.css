@@ -1737,3 +1737,79 @@ a { color: inherit; }
   .bon td:last-child { text-align: right; white-space: nowrap; }
   @page { size: 80mm auto; margin: 4mm; }
 }
+
+/* App installieren */
+.install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 16px;
+  border: 2px solid var(--yellow);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--yellow);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.install-btn:hover { background: var(--yellow); color: var(--brown); }
+.install-btn--menu { display: none; }
+@media (max-width: 1020px) {
+  .install-btn--menu:not([hidden]) {
+    display: flex;
+    justify-content: center;
+    margin: 14px 0 0;
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--white);
+  }
+}
+.ios-install {
+  width: min(380px, calc(100% - 32px));
+  padding: 26px 24px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--white);
+  color: var(--brown);
+  text-align: center;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .6);
+}
+.ios-install::backdrop { background: rgba(30, 20, 10, .55); }
+.ios-install img { margin: 0 auto 10px; border-radius: 16px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .5); }
+.ios-install h2 { margin: 0 0 10px; font-family: var(--font-display); font-weight: 400; font-size: 26px; }
+.ios-install ol { margin: 0 0 18px; padding-left: 22px; text-align: left; }
+.ios-install li { padding-block: 4px; }
+
+/* Filter in der Speisekarte */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: -10px; }
+.filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: 2px solid #E3D4C2;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--brown);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.filters button:hover { border-color: var(--brown); }
+.filters button[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: var(--white); }
+.filters button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+.diet {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  vertical-align: 2px;
+  letter-spacing: .02em;
+}
+.diet--veg { background: #E7F1DD; color: #2F5A14; }
+.diet--hot { background: #FBE3DD; color: #9A2A14; }

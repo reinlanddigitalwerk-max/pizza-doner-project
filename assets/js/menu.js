@@ -42,11 +42,29 @@
   }
   cards.forEach(function (c) { c._s = norm(c.dataset.search || ''); });
 
+  // Filter-Knöpfe (Vegetarisch, Scharf, Bis 8 €) wirken zusammen mit der Suche
+  var filter = {};
+  var PRUEF = {
+    veg: function (c) { return c.hasAttribute('data-veg'); },
+    scharf: function (c) { return c.hasAttribute('data-scharf'); },
+    preis: function (c) { return parseFloat(c.dataset.preis) <= 8; }
+  };
+  document.querySelectorAll('.filters [data-filter]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var an = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', an);
+      if (an) filter[b.dataset.filter] = PRUEF[b.dataset.filter]; else delete filter[b.dataset.filter];
+      run();
+    });
+  });
+
   function run() {
     var words = norm(input.value.trim()).split(/\s+/).filter(Boolean);
+    var aktiv = Object.keys(filter);
     var hits = 0;
     cards.forEach(function (c) {
-      var ok = words.every(function (w) { return c._s.indexOf(w) !== -1; });
+      var ok = words.every(function (w) { return c._s.indexOf(w) !== -1; }) &&
+        aktiv.every(function (k) { return filter[k](c); });
       c.hidden = !ok;
       if (ok) hits++;
     });
@@ -54,7 +72,8 @@
       s.hidden = !s.querySelector('.meal:not([hidden])');
     });
     empty.hidden = hits !== 0;
-    count.textContent = words.length && hits ? hits + (hits === 1 ? ' Treffer' : ' Treffer') : '';
+    count.textContent = (words.length || aktiv.length) && hits ? hits + (hits === 1 ? ' Gericht' : ' Gerichte') : '';
+    document.querySelector('.legend').hidden = !!(words.length || aktiv.length);
   }
 
   input.addEventListener('input', run);

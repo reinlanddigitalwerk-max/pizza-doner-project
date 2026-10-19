@@ -6,6 +6,10 @@
   <title>Datenschutz – Neusser Döner &amp; Pizza</title>
   <meta name="description" content="Datenschutzerklärung von Neusser Döner &amp; Pizza.">
   <link rel="icon" href="assets/img/logo.webp" type="image/webp">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/icons/app-180.png">
+  <meta name="theme-color" content="#4F7A2C">
+  <meta name="apple-mobile-web-app-title" content="Neusser Döner">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Lilita+One&display=swap">
@@ -26,6 +30,7 @@
           <a href="index.html#angebote-liste">Angebote</a>
           <a href="ueber-uns.html">Über uns &amp; Kontakt</a>
         </nav>
+        <button class="install-btn install-btn--menu" type="button" data-install hidden>📲 App installieren</button>
         <a class="topbar__phone" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>02131 3166137</a>
       </div>
       <a class="btn btn--primary topbar__cta" href="speisekarte.html">Jetzt bestellen</a>
@@ -40,6 +45,19 @@
     <a class="quickbar__call" href="tel:+4921313166137"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>Anrufen</a>
     <a class="quickbar__order" href="speisekarte.html">Jetzt bestellen</a>
   </nav>
+
+  <dialog class="ios-install" aria-labelledby="ios-install-title">
+    <form method="dialog">
+      <img src="assets/img/icons/app-180.png" alt="" width="72" height="72">
+      <h2 id="ios-install-title">Als App aufs iPhone</h2>
+      <ol>
+        <li>Unten in Safari auf <b>Teilen</b> tippen <span aria-hidden="true">(□↑)</span></li>
+        <li><b>„Zum Home-Bildschirm“</b> wählen</li>
+        <li>Oben rechts auf <b>Hinzufügen</b> tippen</li>
+      </ol>
+      <button class="btn btn--primary" value="ok">Alles klar</button>
+    </form>
+  </dialog>
 
   <!-- Kontakt: kleiner Dönerspieß unten rechts. Er dreht sich, rechts brennt das Feuer am Grill
        entlang, das Fleisch wird weniger. Antippen öffnet WhatsApp, Instagram und Facebook.
@@ -267,6 +285,7 @@
           Tel.: <a href="tel:+4921313166137">02131 3166137</a>
         </address>
         <p class="footer__pay">Bezahlen: Bar, PayPal, EC- und Kreditkarte</p>
+        <button class="install-btn" type="button" data-install hidden>📲 Als App installieren</button>
       </div>
       <div class="footer__col">
         <h2>Öffnungszeiten</h2>

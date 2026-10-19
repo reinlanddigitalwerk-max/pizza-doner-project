@@ -4,6 +4,7 @@
   kasse.html        – Kasse: Formular, Absenden an die Datenbank oder per WhatsApp
   bestellungen.html – Bestell-Monitor für den Laden (nicht verlinkt)
   bestellen.html    – Bestellshop von Speisebaron eingebettet (Alternative mit PayPal)
+  sw.js             – Service Worker: Seiten und Bilder offline, damit die „App“ auch ohne Netz öffnet
   ueber-uns.html    – Über uns, Kontakt, Öffnungs- und Lieferzeiten (data/shop.json)
   impressum.html    – Impressum (data/shop.json)
   datenschutz.html  – Datenschutzerklärung (data/quellen/datenschutz-shop.txt)
@@ -157,14 +158,31 @@ def item_daten(item, cat):
     return d
 
 
+# Filter in der Speisekarte. „Vegetarisch“ heißt hier: ohne Fleisch und Fisch laut Name und Zutaten.
+FLEISCH = re.compile(r"fleisch|döner|drehspieß|salami|schinken|thunfisch|tonno|hähnchen|chicken|sucuk|hack|rind|pute|kalb|"
+                     r"wurst|schnitzel|lahmacun|nugget|lamm|fisch|bacon|speck|jäger", re.I)  # Jägersauce oft mit Speck
+SCHARF = re.compile(r"scharf|diavolo|peperoni|chili|jalape", re.I)
+
+
+def ist_vegetarisch(item, cat):
+    if cat["kategorie"] in ("Getränke",):
+        return False
+    text = " ".join([item["name"], item.get("beschreibung", ""), cat["kategorie"]])
+    return not FLEISCH.search(text)
+
+
+def ist_scharf(item, cat):
+    # Peperoni als eine von vielen Salatzutaten macht den Salat noch nicht scharf
+    text = item["name"] if cat["kategorie"] == "Salate" else item["name"] + " " + item.get("beschreibung", "")
+    return bool(SCHARF.search(text))
+
+
 def zeile_html(item, cat):
     """Eine Zeile wie bei Lieferando: Name, Zutaten, Preis, Foto rechts, Plus-Knopf."""
     key = item_key(item, cat)
     name = item["name"]
-    if "preise" in item:
-        preis = "ab " + euro(min(item["preise"].values()))
-    else:
-        preis = euro(item["preis"])
+    ab = min(item["preise"].values()) if "preise" in item else item["preis"]
+    preis = ("ab " if "preise" in item else "") + euro(ab)
     codes, al, zs = allergen_namen(item)
     sup = f'<sup class="codes" title="{esc(", ".join(al + zs))}">{esc(", ".join(codes))}</sup>' if codes else ""
     small, _ = bild(item)
@@ -177,9 +195,12 @@ def zeile_html(item, cat):
     search = " ".join([name, cat["kategorie"], item.get("nr", ""), text]
                       + [c["name"] for g in groups for c in g["auswahl"] if c["aufpreis"]]).lower()
     return (
-        f'<li class="meal" data-id="{key}" data-search="{esc(search)}">'
+        f'<li class="meal" data-id="{key}" data-search="{esc(search)}" data-preis="{ab:.2f}"'
+        + (' data-veg' if ist_vegetarisch(item, cat) else '') + (' data-scharf' if ist_scharf(item, cat) else '') + '>'
         '<div class="meal__text">'
-        f'<h3 class="meal__name">{esc(name)}{sup}</h3>'
+        f'<h3 class="meal__name">{esc(name)}{sup}'
+        + (' <span class="diet diet--veg" title="vegetarisch">vegetarisch</span>' if ist_vegetarisch(item, cat) and cat["kategorie"] != "Imbiss & Saucen" else "")
+        + (' <span class="diet diet--hot" title="scharf">scharf</span>' if ist_scharf(item, cat) else "") + "</h3>"
         + (f'<p class="meal__desc">{esc(text)}</p>' if text else "")
         + f'<p class="meal__price">{preis}{" <span>· Extras möglich</span>" if extras else ""}</p>'
         "</div>"
@@ -360,6 +381,11 @@ page(
 
     <div class="container shop-layout">
       <div class="menu">
+        <div class="filters" role="group" aria-label="Filter">
+          <button type="button" data-filter="veg" aria-pressed="false"><span aria-hidden="true">🌱</span> Vegetarisch</button>
+          <button type="button" data-filter="scharf" aria-pressed="false"><span aria-hidden="true">🌶️</span> Scharf</button>
+          <button type="button" data-filter="preis" aria-pressed="false"><span aria-hidden="true">💶</span> Bis 8&nbsp;€</button>
+        </div>
         <p class="search-empty" hidden>Nichts gefunden. Versuch es mit einem anderen Wort, z. B. „Käse“ oder „Hähnchen“.</p>
         <p class="search-count" aria-live="polite"></p>
         {"".join(section_html(c) for c in cats)}
@@ -652,3 +678,55 @@ page(
     </div>""",
     body_class="page-legal",
 )
+
+
+# ---------- Service Worker (App installieren, Speisekarte offline) ----------
+import hashlib
+
+VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html", "impressum.html", "datenschutz.html",
+         "manifest.webmanifest", "assets/css/style.css"]
+VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") if f.name != "monitor.js")
+VORAB += ["assets/img/logo.webp"] + sorted(
+    str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons")
+    for f in (ROOT / d).glob("*") if f.suffix in (".webp", ".png"))
+stand = hashlib.sha1(b"".join((ROOT / f).read_bytes() for f in VORAB if f != "./")).hexdigest()[:10]
+(ROOT / "sw.js").write_text(f"""// Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
+// Seiten: erst Netz, sonst gespeicherte Fassung. Bilder, CSS, JS: sofort aus dem Speicher, im Hintergrund erneuern.
+const STAND = 'neusser-{stand}';
+const VORAB = {json.dumps(VORAB, indent=2)};
+
+self.addEventListener('install', (e) => {{
+  e.waitUntil(caches.open(STAND).then((c) => c.addAll(VORAB)).then(() => self.skipWaiting()));
+}});
+
+self.addEventListener('activate', (e) => {{
+  e.waitUntil(caches.keys()
+    .then((keys) => Promise.all(keys.filter((k) => k !== STAND).map((k) => caches.delete(k))))
+    .then(() => self.clients.claim()));
+}});
+
+self.addEventListener('fetch', (e) => {{
+  const req = e.request;
+  const url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html')) return;
+
+  if (req.mode === 'navigate') {{
+    e.respondWith(fetch(req).then((res) => {{
+      const kopie = res.clone();
+      caches.open(STAND).then((c) => c.put(req, kopie));
+      return res;
+    }}).catch(() => caches.match(req, {{ ignoreSearch: true }}).then((r) => r || caches.match('speisekarte.html'))));
+    return;
+  }}
+
+  e.respondWith(caches.match(req).then((alt) => {{
+    const neu = fetch(req).then((res) => {{
+      if (res.ok) {{ const kopie = res.clone(); caches.open(STAND).then((c) => c.put(req, kopie)); }}
+      return res;
+    }}).catch(() => alt);
+    return alt || neu;
+  }}));
+}});
+""", encoding="utf-8")
+print("geschrieben: sw.js (Stand", stand + ")")
+

@@ -69,3 +69,40 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && box.classList.contains('is-open')) { setze(false); knopf.focus(); }
   });
 })();
+
+// App installieren: Service Worker anmelden, Knopf zeigen, wenn der Browser es anbietet
+(function () {
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').catch(function () { /* z. B. in der Vorschau nicht erlaubt */ });
+  }
+  var knoepfe = document.querySelectorAll('[data-install]');
+  if (!knoepfe.length) return;
+  var installiert = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (installiert) return;
+
+  var angebot = null;
+  function zeigen(an) { knoepfe.forEach(function (k) { k.hidden = !an; }); }
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    angebot = e;
+    zeigen(true);
+  });
+  window.addEventListener('appinstalled', function () { zeigen(false); });
+
+  // iPhone/iPad: kein Installieren-Dialog, darum kurze Anleitung
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var anleitung = document.querySelector('.ios-install');
+  if (ios && anleitung) zeigen(true);
+
+  knoepfe.forEach(function (k) {
+    k.addEventListener('click', function () {
+      if (angebot) {
+        angebot.prompt();
+        angebot.userChoice.then(function () { angebot = null; zeigen(false); });
+      } else if (ios && anleitung) {
+        anleitung.showModal();
+      }
+    });
+  });
+})();
