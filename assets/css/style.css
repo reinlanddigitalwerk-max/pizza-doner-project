@@ -111,22 +111,15 @@ a { color: inherit; }
 }
 .brand .logo .logo__flammen { left: 0; top: 9.434%; width: 100%; animation: logo-flackern .9s ease-in-out infinite alternate; transform-origin: 50% 100%; }
 @keyframes logo-flackern { from { transform: scaleY(.96); filter: brightness(1); } to { transform: scaleY(1.04); filter: brightness(1.12); } }
-.logo__spiess-wrap { position: absolute; left: 15.179%; top: 0; width: 82.143%; height: 96.226%; }
-.brand .logo .logo__spiess-bild { inset: 0; width: 100%; }   /* stehendes Bild, falls die Maske nicht lädt */
+/* Spieß: 24 Bilder einer Umdrehung, gerendert in Blender (tools/blender/spiess.py) */
 .logo__spiess {
   position: absolute;
-  inset: 0;
-  background: url("../img/logo/spiess-streifen.webp") 0 0 / 200% 100% repeat-x;
-  -webkit-mask: url("../img/logo/spiess-maske.png") 0 0 / 100% 100% no-repeat;
-  mask: url("../img/logo/spiess-maske.png") 0 0 / 100% 100% no-repeat;
-  animation: logo-drehen 4s ease-in-out infinite;
-}
-/* Rundung: Ränder dunkler, Mitte heller – bleibt stehen, während das Fleisch durchläuft */
-.logo__spiess::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(30, 10, 0, .45), rgba(30, 10, 0, 0) 30%, rgba(255, 220, 160, .18) 50%, rgba(30, 10, 0, 0) 70%, rgba(30, 10, 0, .45));
+  left: 15.179%;
+  top: 0;
+  width: 82.143%;
+  height: 96.226%;
+  background: url("../img/logo/spiess-dreh.webp") 0 0 / 2400% 100% no-repeat;
+  animation: logo-drehen 4s linear infinite;
 }
 @keyframes logo-auftauchen {
   0%   { transform: none; opacity: 1; }
@@ -136,8 +129,9 @@ a { color: inherit; }
   40%, 100% { transform: none; opacity: 1; }
 }
 @keyframes logo-drehen {
-  0%, 12% { background-position: 0 0; }
-  48%, 100% { background-position: 200% 0; }
+  0%, 12% { background-position: 0 0; animation-timing-function: steps(24, jump-none); }
+  48% { background-position: 100% 0; }
+  48.01%, 100% { background-position: 0 0; }
 }
 @keyframes logo-name {
   0%, 22% { transform: none; }
@@ -1211,7 +1205,7 @@ a { color: inherit; }
   .offer-card, .offer-card__media img, .cat-tile img { transition: none; }
 }
 
-@media print { .app-promo, .quickbar { display: none !important; } }
+@media print { .quickbar { display: none !important; } }
 
 /* =====================================================================
    Online bestellen: Speisekarte wie bei Lieferando, Warenkorb, Kasse
@@ -1569,8 +1563,6 @@ a { color: inherit; }
   /* Auf der Bestellseite ersetzt die Warenkorb-Leiste die Schnellleiste */
   .page-shop .quickbar { display: none; }
   .page-shop { padding-bottom: 90px; }
-  /* Das App-Handy würde die Plus-Knöpfe verdecken; „App installieren“ steht im Menü */
-  .page-shop .app-promo, .page-checkout .app-promo { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .item-dialog[open], .basket__inner { animation: none; }
@@ -1776,87 +1768,7 @@ a { color: inherit; }
 .diet--veg { background: #E7F1DD; color: #2F5A14; }
 .diet--hot { background: #FBE3DD; color: #9A2A14; }
 
-/* ---------- „Unsere App laden“: Pizza-Handy unten rechts ---------- */
-.app-promo {
-  position: fixed;
-  right: max(14px, env(safe-area-inset-right, 0px));
-  bottom: max(14px, env(safe-area-inset-bottom, 0px));
-  z-index: 55;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 112px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  filter: drop-shadow(0 10px 14px rgba(58, 28, 5, .35));
-  transition: transform .25s var(--spring);
-}
-.app-promo[hidden] { display: none; }
-.app-promo:hover { transform: translateY(-4px) scale(1.04); }
-.app-promo:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; border-radius: 16px; }
-.app-promo__svg { width: 88px; height: auto; overflow: visible; }
-/* alle 4 Sekunden ein kurzer Lichtring, damit man das Handy bemerkt */
-.app-promo::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  width: 70px;
-  height: 70px;
-  margin: -35px 0 0 -35px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(249, 192, 21, .6);
-  animation: app-ring 4s ease-out infinite;
-  pointer-events: none;
-}
-@keyframes app-ring {
-  0%, 60% { box-shadow: 0 0 0 0 rgba(249, 192, 21, .55); }
-  100% { box-shadow: 0 0 0 34px rgba(249, 192, 21, 0); }
-}
-.app-promo__handy { transform-box: view-box; transform-origin: 50px 0; animation: app-wiegen 3.2s ease-in-out infinite; }
-.app-promo__faeden { transform-box: view-box; transform-origin: 50px 80px; animation: app-ziehen 3.2s ease-in-out infinite; }
-.app-promo__pfeil { animation: app-pfeil 1.6s ease-in-out infinite; }
-.app-promo__schild {
-  position: relative;
-  margin-top: -4px;
-  padding: 7px 10px 8px;
-  border-radius: 14px;
-  background: linear-gradient(#FFE48A, #F5C33B);
-  color: var(--brown);
-  font-family: var(--font-display);
-  font-size: 15px;
-  line-height: 1.05;
-  text-align: center;
-  box-shadow: inset 0 -3px 0 rgba(184, 100, 28, .35);
-  animation: app-schild 3.2s ease-in-out infinite;
-}
-/* Käse tropft unten vom Schild */
-.app-promo__schild::before, .app-promo__schild::after {
-  content: "";
-  position: absolute;
-  top: calc(100% - 6px);
-  width: 9px;
-  height: 14px;
-  border-radius: 0 0 6px 6px;
-  background: #F5C33B;
-}
-.app-promo__schild::before { left: 18px; height: 12px; }
-.app-promo__schild::after { right: 24px; height: 16px; width: 8px; }
-@keyframes app-wiegen { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
-@keyframes app-ziehen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.06); } }
-@keyframes app-schild { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
-@keyframes app-pfeil { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 .app-hinweis p { margin: 0 0 18px; text-align: left; }
-@media (max-width: 600px) {
-  .app-promo { right: 8px; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); width: 90px; }
-  .app-promo__svg { width: 68px; }
-  .app-promo__schild { font-size: 13px; padding: 6px 8px 7px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .app-promo__handy, .app-promo__faeden, .app-promo__pfeil, .app-promo__schild, .app-promo::before { animation: none; }
-}
 .app-hinweis__text { text-align: left; }
 .app-hinweis__text p { margin: 0 0 12px; }
 .app-hinweis .ico { display: inline-block; width: 20px; height: 20px; vertical-align: -4px; color: #0A7AFF; }

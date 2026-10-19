@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// App installieren: Service Worker anmelden; Knöpfe und Pizza-Handy starten die Installation.
+// App installieren: Service Worker anmelden; die Knöpfe in Menü und Footer starten die Installation.
 // Chrome, Edge, Samsung Internet und Opera zeigen sofort den Installieren-Dialog. Safari und Firefox
 // erlauben das keiner Website – dort erklärt ein kurzer Hinweis, passend zum Browser, die zwei Handgriffe.
 (function () {
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (installiert) return;
 
   var knoepfe = document.querySelectorAll('[data-install]');      // Menü und Footer
-  var promo = document.querySelector('[data-install-promo]');      // Pizza-Handy, immer sichtbar
   var hilfe = document.querySelector('.app-hinweis');
   var ua = navigator.userAgent;
   var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -106,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function zeigen(an) { knoepfe.forEach(function (k) { k.hidden = !an; }); }
-  if (promo) promo.hidden = false;
   if (ios) zeigen(true);
 
   window.addEventListener('beforeinstallprompt', function (e) {
@@ -114,18 +112,12 @@ document.addEventListener('DOMContentLoaded', function () {
     angebot = e;
     zeigen(true);
   });
-  window.addEventListener('appinstalled', function () {
-    zeigen(false);
-    if (promo) promo.hidden = true;
-  });
+  window.addEventListener('appinstalled', function () { zeigen(false); });
 
   function installieren() {
     if (angebot) {
       angebot.prompt();
-      angebot.userChoice.then(function (w) {
-        angebot = null;
-        if (w.outcome === 'accepted' && promo) promo.hidden = true;
-      });
+      angebot.userChoice.then(function () { angebot = null; zeigen(false); });
       return;
     }
     if (!hilfe) return;
@@ -135,5 +127,4 @@ document.addEventListener('DOMContentLoaded', function () {
     hilfe.showModal();
   }
   knoepfe.forEach(function (k) { k.addEventListener('click', installieren); });
-  if (promo) promo.addEventListener('click', installieren);
 })();

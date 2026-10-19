@@ -25,10 +25,7 @@
           <img class="logo__pizza" src="assets/img/logo/pizza.webp" alt="" width="197" height="101">
           <span class="logo__grill" aria-hidden="true">
             <img class="logo__flammen" src="assets/img/logo/flammen.webp" alt="" width="112" height="144">
-            <span class="logo__spiess-wrap">
-              <img class="logo__spiess-bild" src="assets/img/logo/spiess.webp" alt="" width="92" height="153">
-              <span class="logo__spiess"></span>
-            </span>
+            <span class="logo__spiess"></span>
           </span>
           <img class="logo__basis" src="assets/img/logo/basis.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
         </span>
@@ -56,53 +53,6 @@
     <a class="quickbar__order" href="speisekarte.html">Jetzt bestellen</a>
   </nav>
 
-
-  <!-- „Unsere App laden“: Handy mit Pizzarand, Käsefäden halten das Schild. Antippen startet die Installation. -->
-  <button class="app-promo" type="button" data-install-promo hidden aria-label="Unsere App laden">
-    <svg class="app-promo__svg" viewBox="0 0 100 118" aria-hidden="true">
-      <defs>
-        <linearGradient id="ap-kruste" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0B35A"/><stop offset=".55" stop-color="#D98A32"/><stop offset="1" stop-color="#B8641C"/></linearGradient>
-        <linearGradient id="ap-kaese" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE48A"/><stop offset="1" stop-color="#F5C33B"/></linearGradient>
-        <clipPath id="ap-schirm"><rect x="31" y="15" width="38" height="70" rx="6"/></clipPath>
-        <clipPath id="ap-icon"><rect x="36" y="27" width="28" height="28" rx="7"/></clipPath>
-        <linearGradient id="ap-glanz" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
-      </defs>
-      <!-- Käsefäden zum Schild -->
-      <g class="app-promo__faeden" fill="url(#ap-kaese)">
-        <path d="M27 80 C25 92 30 100 26 118 L33 118 C34 104 31 94 33 82 Z"/>
-        <path d="M73 80 C75 92 70 100 74 118 L67 118 C66 104 69 94 67 82 Z"/>
-        <path d="M44 90 C43 98 46 104 44 112 C44 115 48 115 48 112 C48 105 46 98 48 90 Z"/>
-      </g>
-      <!-- Handy mit Pizzarand -->
-      <g class="app-promo__handy">
-        <rect x="20" y="3" width="60" height="92" rx="14" fill="url(#ap-kruste)" stroke="#8E4A12" stroke-width="1.5"/>
-        <g fill="#8E4A12" opacity=".55">
-          <ellipse cx="25" cy="22" rx="1.6" ry="1"/><ellipse cx="76" cy="40" rx="1.4" ry="1"/><ellipse cx="24" cy="66" rx="1.3" ry=".9"/>
-          <ellipse cx="52" cy="6" rx="1.5" ry=".9"/><ellipse cx="74" cy="80" rx="1.6" ry="1"/><ellipse cx="38" cy="92" rx="1.4" ry=".9"/>
-        </g>
-        <g fill="#FCD38A" opacity=".7">
-          <ellipse cx="34" cy="6" rx="3" ry="1.2"/><ellipse cx="66" cy="6.5" rx="2.4" ry="1"/><ellipse cx="22.6" cy="44" rx="1" ry="3"/>
-          <ellipse cx="77.4" cy="22" rx="1" ry="2.6"/><ellipse cx="77.4" cy="62" rx="1" ry="2.4"/><ellipse cx="60" cy="92" rx="2.6" ry="1"/>
-        </g>
-        <rect x="26" y="9" width="48" height="80" rx="9" fill="#C8361E"/>
-        <rect x="28.5" y="11.5" width="43" height="75" rx="7.5" fill="url(#ap-kaese)"/>
-        <g fill="#B8321F"><circle cx="30" cy="30" r="2.2"/><circle cx="70" cy="56" r="2"/><circle cx="31" cy="76" r="1.8"/></g>
-        <rect x="31" y="15" width="38" height="70" rx="6" fill="#1D1410"/>
-        <g clip-path="url(#ap-schirm)">
-          <rect x="31" y="15" width="38" height="70" fill="#4F7A2C"/>
-          <rect x="44" y="17" width="12" height="3" rx="1.5" fill="#1D1410"/>
-          <image href="assets/img/icons/app-192.png" x="36" y="27" width="28" height="28" clip-path="url(#ap-icon)" preserveAspectRatio="xMidYMid slice"/>
-          <text x="50" y="62" text-anchor="middle" font-size="5.2" font-weight="800" fill="#FAF3E8" font-family="Figtree, sans-serif">Neusser</text>
-          <path d="M31 15 L69 15 L31 60 Z" fill="url(#ap-glanz)"/>
-          <path class="app-promo__pfeil" d="M50 66 v10 M45.5 72 l4.5 4.5 4.5 -4.5" fill="none" stroke="#FFE48A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <!-- Käse läuft am Rand herunter -->
-        <path d="M20 74 C20 82 22 88 27 88 C30 88 31 84 31 80 L31 74 Z" fill="url(#ap-kaese)"/>
-        <path d="M80 74 C80 82 78 88 73 88 C70 88 69 84 69 80 L69 74 Z" fill="url(#ap-kaese)"/>
-      </g>
-    </svg>
-    <span class="app-promo__schild">Unsere App laden</span>
-  </button>
 
   <dialog class="ios-install app-hinweis" aria-labelledby="app-hinweis-title">
     <form method="dialog">
