@@ -91,24 +91,31 @@ a { color: inherit; }
 .brand { flex: none; }
 .brand img { height: 100px; width: auto; }
 
-/* Logo in Schichten: alle 4 Sekunden dreht sich der Spieß und die Pizza steigt aus dem Schriftzug */
+/* Logo in Schichten. Alle 4 Sekunden: Pizza und Dönerspieß tauchen hinter dem Schriftzug ab und steigen
+   wieder auf, der Spieß dreht sich dabei, und der Name springt kurz größer. */
 .logo { position: relative; display: block; height: 100px; aspect-ratio: 560 / 375; }
 .brand .logo img { position: absolute; height: auto; }
-.logo__basis { inset: 0; width: 100%; z-index: 2; }
-.logo__pizza { left: 22.857%; top: 18.933%; width: 35.179% !important; z-index: 1; transform-origin: 50% 100%; animation: logo-pizza 4s cubic-bezier(.3, .7, .3, 1) infinite; }
-/* stehendes Bild darunter, falls die Maske nicht lädt */
-.logo__spiess-bild { left: 57.679%; top: 2.4%; width: 16.429% !important; z-index: 2; }
-.logo__spiess {
+.logo__basis { inset: 0; width: 100%; z-index: 3; transform-origin: 50% 70%; animation: logo-name 4s ease-in-out infinite; }
+.logo__pizza { left: 22.857%; top: 18.933%; width: 35.179% !important; z-index: 1; transform-origin: 50% 100%; animation: logo-auftauchen 4s cubic-bezier(.3, .7, .3, 1) infinite; }
+.logo__spiess-wrap {
   position: absolute;
   left: 57.679%;
   top: 2.4%;
   width: 16.429%;
   height: 40.8%;
-  z-index: 3;
+  z-index: 2;
+  transform-origin: 50% 100%;
+  animation: logo-auftauchen 4s cubic-bezier(.3, .7, .3, 1) infinite;
+  animation-delay: .06s;
+}
+.brand .logo .logo__spiess-bild { inset: 0; width: 100%; }   /* stehendes Bild, falls die Maske nicht lädt */
+.logo__spiess {
+  position: absolute;
+  inset: 0;
   background: url("../img/logo/spiess-streifen.webp") 0 0 / 200% 100% repeat-x;
   -webkit-mask: url("../img/logo/spiess-maske.png") 0 0 / 100% 100% no-repeat;
   mask: url("../img/logo/spiess-maske.png") 0 0 / 100% 100% no-repeat;
-  animation: logo-spiess 4s ease-in-out infinite;
+  animation: logo-drehen 4s ease-in-out infinite;
 }
 /* Rundung: Ränder dunkler, Mitte heller – bleibt stehen, während das Fleisch durchläuft */
 .logo__spiess::after {
@@ -117,19 +124,25 @@ a { color: inherit; }
   inset: 0;
   background: linear-gradient(90deg, rgba(30, 10, 0, .45), rgba(30, 10, 0, 0) 30%, rgba(255, 220, 160, .18) 50%, rgba(30, 10, 0, 0) 70%, rgba(30, 10, 0, .45));
 }
-@keyframes logo-spiess {
-  0%, 10% { background-position: 0 0; }
-  40%, 100% { background-position: 200% 0; }
-}
-@keyframes logo-pizza {
+@keyframes logo-auftauchen {
   0%   { transform: none; opacity: 1; }
   8%   { transform: translateY(70%) scale(.45); opacity: 0; }
   12%  { transform: translateY(70%) scale(.45); opacity: 0; }
-  32%  { transform: translateY(-8%) scale(1.06); opacity: 1; }
+  30%  { transform: translateY(-8%) scale(1.06); opacity: 1; }
   40%, 100% { transform: none; opacity: 1; }
 }
+@keyframes logo-drehen {
+  0%, 12% { background-position: 0 0; }
+  48%, 100% { background-position: 200% 0; }
+}
+@keyframes logo-name {
+  0%, 22% { transform: none; }
+  31% { transform: scale(1.12); }
+  38% { transform: scale(.97); }
+  44%, 100% { transform: none; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .logo__pizza, .logo__spiess { animation: none; }
+  .logo__pizza, .logo__spiess, .logo__spiess-wrap, .logo__basis { animation: none; }
 }
 .topbar__menu {
   display: flex;
@@ -1780,6 +1793,24 @@ a { color: inherit; }
 .app-promo:hover { transform: translateY(-4px) scale(1.04); }
 .app-promo:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; border-radius: 16px; }
 .app-promo__svg { width: 88px; height: auto; overflow: visible; }
+/* alle 4 Sekunden ein kurzer Lichtring, damit man das Handy bemerkt */
+.app-promo::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 70px;
+  height: 70px;
+  margin: -35px 0 0 -35px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(249, 192, 21, .6);
+  animation: app-ring 4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes app-ring {
+  0%, 60% { box-shadow: 0 0 0 0 rgba(249, 192, 21, .55); }
+  100% { box-shadow: 0 0 0 34px rgba(249, 192, 21, 0); }
+}
 .app-promo__handy { transform-box: view-box; transform-origin: 50px 0; animation: app-wiegen 3.2s ease-in-out infinite; }
 .app-promo__faeden { transform-box: view-box; transform-origin: 50px 80px; animation: app-ziehen 3.2s ease-in-out infinite; }
 .app-promo__pfeil { animation: app-pfeil 1.6s ease-in-out infinite; }
@@ -1820,5 +1851,5 @@ a { color: inherit; }
   .app-promo__schild { font-size: 13px; padding: 6px 8px 7px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .app-promo__handy, .app-promo__faeden, .app-promo__pfeil, .app-promo__schild { animation: none; }
+  .app-promo__handy, .app-promo__faeden, .app-promo__pfeil, .app-promo__schild, .app-promo::before { animation: none; }
 }
