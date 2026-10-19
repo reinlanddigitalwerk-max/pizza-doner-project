@@ -23,9 +23,12 @@
       <a class="brand" href="index.html" aria-label="Neusser Döner &amp; Pizza – Startseite">
         <span class="logo">
           <img class="logo__pizza" src="assets/img/logo/pizza.webp" alt="" width="197" height="101">
-          <span class="logo__spiess-wrap" aria-hidden="true">
-            <img class="logo__spiess-bild" src="assets/img/logo/spiess.webp" alt="" width="92" height="153">
-            <span class="logo__spiess"></span>
+          <span class="logo__grill" aria-hidden="true">
+            <img class="logo__flammen" src="assets/img/logo/flammen.webp" alt="" width="112" height="144">
+            <span class="logo__spiess-wrap">
+              <img class="logo__spiess-bild" src="assets/img/logo/spiess.webp" alt="" width="92" height="153">
+              <span class="logo__spiess"></span>
+            </span>
           </span>
           <img class="logo__basis" src="assets/img/logo/basis.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
         </span>
@@ -53,18 +56,6 @@
     <a class="quickbar__order" href="speisekarte.html">Jetzt bestellen</a>
   </nav>
 
-  <dialog class="ios-install" aria-labelledby="ios-install-title">
-    <form method="dialog">
-      <img src="assets/img/icons/app-180.png" alt="" width="72" height="72">
-      <h2 id="ios-install-title">Als App aufs iPhone</h2>
-      <ol>
-        <li>Unten in Safari auf <b>Teilen</b> tippen <span aria-hidden="true">(□↑)</span></li>
-        <li><b>„Zum Home-Bildschirm“</b> wählen</li>
-        <li>Oben rechts auf <b>Hinzufügen</b> tippen</li>
-      </ol>
-      <button class="btn btn--primary" value="ok">Alles klar</button>
-    </form>
-  </dialog>
 
   <!-- „Unsere App laden“: Handy mit Pizzarand, Käsefäden halten das Schild. Antippen startet die Installation. -->
   <button class="app-promo" type="button" data-install-promo hidden aria-label="Unsere App laden">
@@ -117,7 +108,7 @@
     <form method="dialog">
       <img src="assets/img/icons/app-180.png" alt="" width="72" height="72">
       <h2 id="app-hinweis-title">App installieren</h2>
-      <p>Öffne das Menü deines Browsers (<b>⋮</b> oder <b>⋯</b>) und wähle <b>„App installieren“</b> oder <b>„Zum Startbildschirm hinzufügen“</b>.</p>
+      <div class="app-hinweis__text" data-hilfe></div>
       <button class="btn btn--primary" value="ok">Alles klar</button>
     </form>
   </dialog>

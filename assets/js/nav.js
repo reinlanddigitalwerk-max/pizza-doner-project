@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// App installieren: Service Worker anmelden; Knöpfe und Pizza-Handy starten die Installation
+// App installieren: Service Worker anmelden; Knöpfe und Pizza-Handy starten die Installation.
+// Chrome, Edge, Samsung Internet und Opera zeigen sofort den Installieren-Dialog. Safari und Firefox
+// erlauben das keiner Website – dort erklärt ein kurzer Hinweis, passend zum Browser, die zwei Handgriffe.
 (function () {
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('sw.js').catch(function () { /* z. B. in der Vorschau nicht erlaubt */ });
@@ -59,16 +61,53 @@ document.addEventListener('DOMContentLoaded', function () {
   var installiert = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   if (installiert) return;
 
-  var knoepfe = document.querySelectorAll('[data-install]');      // Menü und Footer: nur wenn es klappt
-  var promo = document.querySelector('[data-install-promo]');      // Pizza-Handy: immer sichtbar
-  var iosHilfe = document.querySelector('.ios-install:not(.app-hinweis)');
+  var knoepfe = document.querySelectorAll('[data-install]');      // Menü und Footer
+  var promo = document.querySelector('[data-install-promo]');      // Pizza-Handy, immer sichtbar
   var hilfe = document.querySelector('.app-hinweis');
-  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var ua = navigator.userAgent;
+  var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var angebot = null;
+
+  var TEILEN = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11H5v10h14V11h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+  var PLUS = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  function schritte(liste) { return '<ol>' + liste.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol>'; }
+
+  // Welcher Browser? Danach richtet sich der Hinweis.
+  function anleitung() {
+    if (/Instagram|FBAN|FBAV|FB_IAB|TikTok|Snapchat|Line\//i.test(ua) || (/Android/i.test(ua) && /; wv\)/.test(ua))) {
+      return { text: '<p>Du bist gerade in einer App (z. B. Instagram oder Facebook). Dort kann man nichts installieren.</p>' +
+        schritte(['Oben auf <b>⋯</b> oder <b>⋮</b> tippen', '<b>„Im Browser öffnen“</b> wählen', 'Dort noch einmal auf <b>„Unsere App laden“</b> tippen']) };
+    }
+    if (ios && /CriOS|EdgiOS/i.test(ua)) {
+      return { text: schritte(['Oben in der Adressleiste auf ' + TEILEN + ' <b>Teilen</b> tippen', '<b>„Zum Home-Bildschirm“</b> ' + PLUS + ' wählen', 'Auf <b>Hinzufügen</b> tippen']) };
+    }
+    if (ios && /FxiOS/i.test(ua)) {
+      return { text: schritte(['Unten auf das Menü <b>≡</b> tippen', '<b>Teilen</b> ' + TEILEN + ' wählen', '<b>„Zum Home-Bildschirm“</b> ' + PLUS + ' wählen']) };
+    }
+    if (ios) {
+      var ipad = /ipad/i.test(ua) || navigator.maxTouchPoints > 1 && !/iphone/i.test(ua);
+      return { unten: !ipad, text: schritte([(ipad ? 'Oben rechts' : 'Unten in der Leiste') + ' auf ' + TEILEN + ' <b>Teilen</b> tippen',
+        'Nach unten wischen und <b>„Zum Home-Bildschirm“</b> ' + PLUS + ' wählen', 'Oben rechts auf <b>Hinzufügen</b> tippen']) };
+    }
+    if (/Android/i.test(ua) && /Firefox/i.test(ua)) {
+      return { text: schritte(['Oben rechts auf das Menü <b>⋮</b> tippen', '<b>„Installieren“</b> wählen', 'Bestätigen – fertig']) };
+    }
+    if (/SamsungBrowser/i.test(ua)) {
+      return { text: schritte(['Unten auf das Menü <b>≡</b> tippen', '<b>„Seite hinzufügen zu“</b> → <b>„Startbildschirm“</b>', 'Auf <b>Hinzufügen</b> tippen']) };
+    }
+    if (/Macintosh/i.test(ua) && /Safari/i.test(ua) && !/Chrome|Chromium|Edg|OPR|Firefox/i.test(ua)) {
+      return { text: schritte(['Oben im Menü auf <b>Ablage</b> klicken', '<b>„Zum Dock hinzufügen …“</b> wählen', 'Auf <b>Hinzufügen</b> klicken']) };
+    }
+    if (/Firefox/i.test(ua)) {
+      return { text: '<p>Firefox kann Websites leider nicht als App installieren. Öffne die Seite in <b>Chrome</b> oder <b>Edge</b> – dort geht es mit einem Klick. Oder lege dir ein Lesezeichen an (<b>Strg + D</b>).</p>' };
+    }
+    return { text: schritte(['Rechts in der Adressleiste auf das Installieren-Symbol ' + PLUS + ' klicken – oder im Menü <b>⋮</b> <b>„App installieren“</b> wählen', 'Mit <b>Installieren</b> bestätigen']) };
+  }
 
   function zeigen(an) { knoepfe.forEach(function (k) { k.hidden = !an; }); }
   if (promo) promo.hidden = false;
-  if (ios && iosHilfe) zeigen(true);
+  if (ios) zeigen(true);
 
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
@@ -87,11 +126,13 @@ document.addEventListener('DOMContentLoaded', function () {
         angebot = null;
         if (w.outcome === 'accepted' && promo) promo.hidden = true;
       });
-    } else if (ios && iosHilfe) {
-      iosHilfe.showModal();
-    } else if (hilfe) {
-      hilfe.showModal();
+      return;
     }
+    if (!hilfe) return;
+    var a = anleitung();
+    hilfe.querySelector('[data-hilfe]').innerHTML = a.text;
+    hilfe.classList.toggle('app-hinweis--unten', !!a.unten);
+    hilfe.showModal();
   }
   knoepfe.forEach(function (k) { k.addEventListener('click', installieren); });
   if (promo) promo.addEventListener('click', installieren);

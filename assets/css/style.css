@@ -97,17 +97,21 @@ a { color: inherit; }
 .brand .logo img { position: absolute; height: auto; }
 .logo__basis { inset: 0; width: 100%; z-index: 3; transform-origin: 50% 70%; animation: logo-name 4s ease-in-out infinite; }
 .logo__pizza { left: 22.857%; top: 18.933%; width: 35.179% !important; z-index: 1; transform-origin: 50% 100%; animation: logo-auftauchen 4s cubic-bezier(.3, .7, .3, 1) infinite; }
-.logo__spiess-wrap {
+/* Grill: Flammen und Spieß steigen gemeinsam auf */
+.logo__grill {
   position: absolute;
-  left: 57.679%;
+  left: 54.643%;
   top: 2.4%;
-  width: 16.429%;
-  height: 40.8%;
+  width: 20%;
+  height: 42.4%;
   z-index: 2;
   transform-origin: 50% 100%;
   animation: logo-auftauchen 4s cubic-bezier(.3, .7, .3, 1) infinite;
   animation-delay: .06s;
 }
+.brand .logo .logo__flammen { left: 0; top: 9.434%; width: 100%; animation: logo-flackern .9s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes logo-flackern { from { transform: scaleY(.96); filter: brightness(1); } to { transform: scaleY(1.04); filter: brightness(1.12); } }
+.logo__spiess-wrap { position: absolute; left: 15.179%; top: 0; width: 82.143%; height: 96.226%; }
 .brand .logo .logo__spiess-bild { inset: 0; width: 100%; }   /* stehendes Bild, falls die Maske nicht lädt */
 .logo__spiess {
   position: absolute;
@@ -142,7 +146,7 @@ a { color: inherit; }
   44%, 100% { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .logo__pizza, .logo__spiess, .logo__spiess-wrap, .logo__basis { animation: none; }
+  .logo__pizza, .logo__spiess, .logo__grill, .logo__flammen, .logo__basis { animation: none; }
 }
 .topbar__menu {
   display: flex;
@@ -1853,3 +1857,21 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .app-promo__handy, .app-promo__faeden, .app-promo__pfeil, .app-promo__schild, .app-promo::before { animation: none; }
 }
+.app-hinweis__text { text-align: left; }
+.app-hinweis__text p { margin: 0 0 12px; }
+.app-hinweis .ico { display: inline-block; width: 20px; height: 20px; vertical-align: -4px; color: #0A7AFF; }
+/* iPhone-Safari: Fenster unten, Pfeil zeigt auf den Teilen-Knopf in der Leiste */
+.app-hinweis--unten { margin-bottom: 84px; overflow: visible; }
+.app-hinweis--unten::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -46px;
+  width: 0;
+  height: 0;
+  margin-left: -16px;
+  border: 16px solid transparent;
+  border-top: 24px solid var(--white);
+  animation: hinweis-pfeil 1s ease-in-out infinite alternate;
+}
+@keyframes hinweis-pfeil { from { transform: translateY(0); } to { transform: translateY(10px); } }
