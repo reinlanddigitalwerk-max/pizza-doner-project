@@ -1,27 +1,93 @@
-// Speisekarte: aktive Kategorie in der Leiste markieren und sichtbar halten.
+// Kategorie-Leiste: mit der Maus greifen und ziehen (mit Schwung), Mausrad schiebt waagrecht,
+// alles gleitet weich. Die aktive Kategorie wird markiert und in Sicht gehalten.
 (function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll('.cat-nav a'));
-  if (!links.length || !('IntersectionObserver' in window)) return;
   var bar = document.querySelector('.cat-nav__inner');
+  if (!bar) return;
+  var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ziel = null, raf = 0, zuletztBenutzt = 0;
+
+  function max() { return bar.scrollWidth - bar.clientWidth; }
+  function begrenzen(x) { return Math.max(0, Math.min(max(), x)); }
+  function raender() {
+    bar.classList.toggle('is-start', bar.scrollLeft <= 2);
+    bar.classList.toggle('is-ende', bar.scrollLeft >= max() - 2);
+  }
+  function gleiten() {
+    var d = ziel - bar.scrollLeft;
+    if (Math.abs(d) < .5) { bar.scrollLeft = ziel; ziel = null; raender(); return; }
+    bar.scrollLeft += d * .16;
+    raf = requestAnimationFrame(gleiten);
+  }
+  function gleitenNach(x) {
+    ziel = begrenzen(x);
+    if (ruhig) { bar.scrollLeft = ziel; ziel = null; raender(); return; }
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(gleiten);
+  }
+
+  // Ziehen mit der Maus (Finger scrollen ohnehin nativ und flüssig)
+  var unten = false, gezogen = false, startX = 0, startLinks = 0, letztX = 0, letztT = 0, tempo = 0;
+  bar.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    unten = true; gezogen = false;
+    startX = letztX = e.clientX; startLinks = bar.scrollLeft; letztT = performance.now(); tempo = 0;
+    cancelAnimationFrame(raf); ziel = null;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!unten) return;
+    var dx = e.clientX - startX;
+    if (!gezogen && Math.abs(dx) > 5) { gezogen = true; bar.classList.add('is-drag'); }
+    if (!gezogen) return;
+    bar.scrollLeft = begrenzen(startLinks - dx);
+    var jetzt = performance.now();
+    tempo = (e.clientX - letztX) / Math.max(1, jetzt - letztT);   // Pixel pro ms
+    letztX = e.clientX; letztT = jetzt;
+    zuletztBenutzt = jetzt;
+    raender();
+  });
+  window.addEventListener('pointerup', function () {
+    if (!unten) return;
+    unten = false;
+    bar.classList.remove('is-drag');
+    if (gezogen && Math.abs(tempo) > .05) gleitenNach(bar.scrollLeft - tempo * 320);   // Schwung
+  });
+  // Nach dem Ziehen keinen Klick auf einen Chip auslösen
+  bar.addEventListener('click', function (e) {
+    if (gezogen) { e.preventDefault(); e.stopPropagation(); gezogen = false; }
+  }, true);
+  bar.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  // Mausrad: senkrecht drehen schiebt die Leiste waagrecht, solange sie noch Platz hat
+  bar.addEventListener('wheel', function (e) {
+    var dy = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (!dy || max() <= 0) return;
+    var basis = ziel === null ? bar.scrollLeft : ziel;
+    if ((dy < 0 && basis <= 0) || (dy > 0 && basis >= max())) return;   // am Rand: Seite scrollt weiter
+    e.preventDefault();
+    zuletztBenutzt = performance.now();
+    gleitenNach(basis + dy * (e.deltaMode === 1 ? 30 : 1.2));
+  }, { passive: false });
+
+  bar.addEventListener('scroll', raender, { passive: true });
+  window.addEventListener('resize', raender);
+  raender();
+
+  // Aktive Kategorie markieren und den Chip sanft ins Bild holen
+  var links = Array.prototype.slice.call(bar.querySelectorAll('a'));
+  if (!('IntersectionObserver' in window)) return;
   var byId = {};
   links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
-
   function activate(id) {
     links.forEach(function (a) { a.classList.toggle('is-active', a === byId[id]); });
     var a = byId[id];
-    if (!a || !bar) return;
+    if (!a || unten || performance.now() - zuletztBenutzt < 1200) return;   // nicht gegen den Nutzer schieben
     var ar = a.getBoundingClientRect();
     var br = bar.getBoundingClientRect();
-    // nur scrollen, wenn der Chip nicht ganz sichtbar ist
-    if (ar.left < br.left + 16 || ar.right > br.right - 16) {
-      bar.scrollTo({ left: bar.scrollLeft + ar.left - br.left - 16, behavior: 'smooth' });
-    }
+    if (ar.left < br.left + 24 || ar.right > br.right - 24) gleitenNach(bar.scrollLeft + ar.left - br.left - 24);
   }
-
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { if (e.isIntersecting) activate(e.target.id); });
   }, { rootMargin: '-45% 0px -50% 0px' });
-
   Object.keys(byId).forEach(function (id) {
     var el = document.getElementById(id);
     if (el) obs.observe(el);
