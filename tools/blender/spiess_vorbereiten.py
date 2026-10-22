@@ -41,10 +41,18 @@ def vorbereiten():
     b = sum((y - my) * ((rows[y][0] + rows[y][1]) / 2 - mc) for y in fleisch) / sum((y - my) ** 2 for y in fleisch)
     a = mc - b * my
     breite = {y: (rows[y][1] - rows[y][0]) / 2 for y in rows if y <= yb}
-    glatt = {}
+    median = {}
     for y in breite:
-        fenster = sorted(breite[t] for t in range(y - 2, y + 3) if t in breite)
-        glatt[y] = fenster[len(fenster) // 2]
+        fenster = sorted(breite[t] for t in range(y - 3, y + 4) if t in breite)
+        median[y] = fenster[len(fenster) // 2]
+    # danach weich mitteln, damit der Umriss keine Stufen hat (Stange oben bleibt schmal)
+    glatt = {}
+    for y in median:
+        if median[y] < 8:
+            glatt[y] = median[y]
+            continue
+        fenster = [median[t] for t in range(y - 6, y + 7) if t in median and median[t] >= 8]
+        glatt[y] = sum(fenster) / len(fenster)
     # Zeilen auffüllen: Lücken bekommen das nächste gültige Pixel derselben Zeile
     voll = {}
     for y in rows:
@@ -60,7 +68,10 @@ def vorbereiten():
         c = a + b * yy if rows[yy][1] - rows[yy][0] > 12 else (rows[yy][0] + rows[yy][1]) / 2
         w = glatt.get(yy, (rows[yy][1] - rows[yy][0]) / 2)
         for u in range(TW):
-            x = c + 0.8 * w * math.sin(2 * math.pi * u / TW)   # Vorderseite rundum, Rückseite gespiegelt
+            # Nur die Mitte des Fleischs verwenden (Ränder sind dunkel und ausgefranst) und gleichmäßig
+            # rundum legen: Dreieckswelle statt Sinus, sonst wirken Seiten und Rückseite angefressen
+            tri = 2 / math.pi * math.asin(math.sin(2 * math.pi * u / TW))
+            x = c + 0.55 * w * tri
             x0 = int(max(0, min(W - 2, x)))
             f = x - x0
             p0, p1 = voll[yy][x0], voll[yy][x0 + 1]
