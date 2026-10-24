@@ -1,0 +1,49 @@
+# Lädt die Website bei jedem Push automatisch per FTP auf den Webspace bei United Domains.
+# Einmalig einrichten (GitHub → Settings → Secrets and variables → Actions):
+#   Secrets:   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD   (aus dem United-Domains-Portal, FTP-Zugang)
+#   Variables: FTP_PROTOKOLL = ftps (oder ftp, falls ftps nicht geht)
+#              FTP_ORDNER    = Zielordner auf dem Server, z. B. ./ oder ./httpdocs/
+# Solange FTP_SERVER fehlt, läuft der Job durch, ohne etwas hochzuladen.
+name: Auf United Domains hochladen
+
+on:
+  push:
+    branches: [claude/peaceful-einstein-qj0d00, main]
+  workflow_dispatch:
+
+concurrency:
+  group: united-domains
+  cancel-in-progress: false
+
+jobs:
+  hochladen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Zugangsdaten vorhanden?
+        id: pruefen
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -n "$FTP_SERVER" ]; then echo "los=ja" >> "$GITHUB_OUTPUT"; else echo "FTP_SERVER fehlt – nichts hochgeladen."; fi
+
+      - uses: actions/checkout@v4
+        if: steps.pruefen.outputs.los == 'ja'
+
+      - name: Hochladen
+        if: steps.pruefen.outputs.los == 'ja'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOKOLL || 'ftps' }}
+          server-dir: ${{ vars.FTP_ORDNER || './' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            tools/**
+            supabase/**
+            data/quellen/**
+            druck/*.html
+            README.md
