@@ -18,7 +18,7 @@ from reportlab.graphics.barcode import qrencoder
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "druck"
-SEITE = "https://reinlanddigitalwerk-max.github.io/pizza-doner-project/"
+SEITE = "https://neusser-doner-pizza.de/"
 ZIEL = SEITE + "speisekarte.html"
 
 menu = json.loads((ROOT / "data/menu.json").read_text(encoding="utf-8"))
