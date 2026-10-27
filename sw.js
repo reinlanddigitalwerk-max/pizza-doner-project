@@ -1,6 +1,6 @@
 // Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
 // Seiten: erst Netz, sonst gespeicherte Fassung. Bilder, CSS, JS: sofort aus dem Speicher, im Hintergrund erneuern.
-const STAND = 'neusser-e4274f9236';
+const STAND = 'neusser-37e391a0a9';
 const VORAB = [
   "./",
   "index.html",
@@ -68,7 +68,7 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   const url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html')) return;
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html') || url.pathname.includes('/api/')) return;
 
   if (req.mode === 'navigate') {
     e.respondWith(fetch(req).then((res) => {

@@ -8,6 +8,7 @@
   ueber-uns.html    – Über uns, Kontakt, Öffnungs- und Lieferzeiten (data/shop.json)
   impressum.html    – Impressum (data/shop.json)
   datenschutz.html  – Datenschutzerklärung (data/quellen/datenschutz-shop.txt)
+  data/angebote.json – Zeiten und Rabatte aus assets/js/offers-data.js für die Zahlung auf dem Server (api/)
 
 Logo-Leiste und Footer kommen aus index.html, damit alle Seiten gleich aussehen.
 Aufruf (im Projektordner): python3 tools/build_pages.py
@@ -15,6 +16,7 @@ Aufruf (im Projektordner): python3 tools/build_pages.py
 import html
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -341,6 +343,15 @@ shop_daten = {
     "window.SHOP = " + json.dumps(shop_daten, ensure_ascii=False, indent=2) + ";\n", encoding="utf-8")
 print("geschrieben: assets/js/shop-daten.js")
 
+# Öffnungszeiten und Rabatte auch für den Server (api/lib.php rechnet die Bestellung selbst nach)
+angebote = json.loads(subprocess.run(
+    ["node", "-e", "global.window = {}; require('./assets/js/offers-data.js'); process.stdout.write(JSON.stringify(window.NEUSSER))"],
+    cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+(ROOT / "data/angebote.json").write_text(
+    json.dumps({"hinweis": "Wird von tools/build_pages.py aus assets/js/offers-data.js erzeugt – nicht von Hand ändern.", **angebote},
+               ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print("geschrieben: data/angebote.json")
+
 menu_daten = {item_key(a, c): item_daten(a, c) for c in cats for a in c["artikel"] if a.get("aktiv", True)}
 gratis = [z["plz"] for z in gebiete["zonen"] if not z["gebuehr"]]
 SHOP_SCRIPTS = ('  <script src="assets/js/offers-data.js" defer></script>\n'
@@ -457,8 +468,9 @@ page(
             <label class="field"><span data-zeit-label>Liefertermin *</span><select name="zeit" required></select></label>
             <fieldset class="field pay">
               <legend>Bezahlung *</legend>
-              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar</span></label>
-              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte</span></label>
+              <label class="pay__opt pay__opt--online" data-online hidden><input type="radio" name="zahlung" value="online"> <span>Jetzt online bezahlen <small>Karte, Apple Pay, Google Pay</small></span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar bei Übergabe</span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte bei Übergabe</span></label>
             </fieldset>
             <label class="field field--wide"><span>Bemerkung (optional)</span><textarea name="bemerkung" rows="3" maxlength="500" placeholder="z. B. Klingel defekt, bitte anrufen"></textarea></label>
           </div>
@@ -470,6 +482,7 @@ page(
         <p class="co-error" role="alert" hidden></p>
         <button class="btn btn--primary btn--big checkout__submit" type="submit">Kostenpflichtig bestellen</button>
         <p class="co-hint co-hint--center">Lieber online mit PayPal bezahlen? <a href="bestellen.html">Über unseren Partner-Shop bestellen</a></p>
+        <p class="co-hint co-hint--center" data-online-hinweis hidden>Du wirst zur sicheren Bezahlseite von Stripe weitergeleitet. Die Bestellung ist erst nach der Zahlung bei uns.</p>
         <p class="co-hint co-hint--center" data-wa-hinweis hidden>Die Bestellung wird als fertige WhatsApp-Nachricht an uns geöffnet – bitte dort noch auf Senden tippen.</p>
       </form>
 
@@ -673,6 +686,9 @@ page(
       <p>Wenn du über die Speisekarte und die Kasse dieser Website bestellst, verarbeiten wir die Angaben aus dem Bestellformular (Name, Telefonnummer, bei Lieferung die Adresse, freiwillig E-Mail, Firma, Etage und Bemerkung) sowie die bestellten Gerichte, um deine Bestellung zuzubereiten, zu liefern und bei Rückfragen anzurufen (Art. 6 Abs. 1 lit. b DSGVO).</p>
       <p>Der Warenkorb wird nur in deinem Browser gespeichert (localStorage). Wenn du „Meine Daten merken“ ankreuzt, werden auch deine Kontaktdaten nur in deinem Browser gespeichert, bis du das Häkchen wieder entfernst oder die Website-Daten löschst.</p>
       <p>Je nach Einstellung wird die Bestellung entweder in unserer Bestell-Datenbank bei Supabase (Supabase Inc., Server in Frankfurt am Main, EU) gespeichert, solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist, oder als WhatsApp-Nachricht geöffnet, die du selbst an uns sendest. Für WhatsApp gelten zusätzlich die Datenschutzhinweise von WhatsApp Ireland Ltd.</p>
+      <h2>Online-Zahlung mit Stripe</h2>
+      <p>Wenn du in der Kasse „Jetzt online bezahlen“ wählst, wirst du zur Bezahlseite von Stripe weitergeleitet (Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, D02 H210, Irland). Dafür übermitteln wir an Stripe die bestellten Gerichte, den Betrag, deinen Namen, deine Telefonnummer, bei Lieferung die Adresse und – falls angegeben – deine E-Mail-Adresse. Deine Karten- oder Kontodaten gibst du direkt bei Stripe ein; wir sehen sie nicht. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Abwicklung der Bestellung). Stripe kann Daten auch in den USA verarbeiten; Stripe ist dafür nach dem EU-US Data Privacy Framework zertifiziert. Mehr dazu: <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener">stripe.com/de/privacy</a>.</p>
+      <p>Bezahlte Bestellungen werden auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert und per E-Mail an uns geschickt, solange es für die Abwicklung, Rückfragen und die gesetzlichen Aufbewahrungspflichten nötig ist.</p>
       <p>Die folgenden Abschnitte stammen aus der Datenschutzerklärung unseres Bestellshops (Speisebaron) und gelten für Bestellungen über die Seite „Online bestellen“.</p>
       {datenschutz_html()}
     </div>""",
@@ -708,7 +724,7 @@ self.addEventListener('activate', (e) => {{
 self.addEventListener('fetch', (e) => {{
   const req = e.request;
   const url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html')) return;
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html') || url.pathname.includes('/api/')) return;
 
   if (req.mode === 'navigate') {{
     e.respondWith(fetch(req).then((res) => {{

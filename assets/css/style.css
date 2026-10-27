@@ -1610,6 +1610,9 @@ a { color: inherit; }
 .pay__opt { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 2px solid #E3D4C2; border-radius: 12px; font-weight: 600; cursor: pointer; }
 .pay__opt:has(input:checked) { border-color: var(--green); background: #F1F5EC; }
 .pay__opt input { accent-color: var(--green); width: 18px; height: 18px; margin: 0; }
+.pay__opt[hidden] { display: none; }
+.pay__opt--online { width: 100%; }
+.pay__opt--online small { display: block; font-weight: 500; font-size: var(--text-xs); color: var(--ink-faint); }
 .co-closed, .co-error { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: #FBE9E5; color: #8E2414; font-weight: 600; }
 .co-error { margin: 0; }
 .co-error a { color: inherit; }

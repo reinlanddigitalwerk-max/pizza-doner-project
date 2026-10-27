@@ -230,7 +230,7 @@
     var n = 1;
 
     function auswahl() {
-      var groesse = '', basis = preisVon(d), extra = 0, opts = [];
+      var groesse = '', basis = preisVon(d), extra = 0, opts = [], wahl = [];
       if (d.preise) {
         var g = d.preise[+form.querySelector('input[name="groesse"]:checked').value];
         groesse = g[0]; basis = g[1];
@@ -239,11 +239,12 @@
         form.querySelectorAll('input[name="o' + gi + '"]:checked').forEach(function (inp) {
           var c = g.auswahl[+inp.value];
           extra += c.aufpreis;
+          wahl.push([gi, +inp.value]);   // für die Preisprüfung auf dem Server
           // Nichtssagendes wie „ohne Wunsch“ oder „normal“ nicht auf den Bon schreiben
           if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single)/i.test(c.name)) opts.push(c.name);
         });
       });
-      return { groesse: groesse, stueck: Math.round((basis + extra) * 100) / 100, opts: opts };
+      return { groesse: groesse, stueck: Math.round((basis + extra) * 100) / 100, opts: opts, wahl: wahl };
     }
     function preis() {
       form.querySelector('[data-preis]').textContent = euro(auswahl().stueck * n);
@@ -261,7 +262,7 @@
       if (wer !== 'ok') return;
       var a = auswahl();
       W.hinzu({
-        id: id, name: d.name, groesse: a.groesse, optionen: a.opts,
+        id: id, name: d.name, groesse: a.groesse, optionen: a.opts, wahl: a.wahl,
         notiz: form.notiz.value.trim().slice(0, 120), preis: a.stueck, menge: n
       });
       melden(n + '× ' + d.name + ' im Warenkorb');

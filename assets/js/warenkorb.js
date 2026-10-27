@@ -123,7 +123,7 @@ window.Warenkorb = (function () {
   }
 
   // ---------- Ändern ----------
-  function schluessel(p) { return [p.id, p.groesse || '', (p.optionen || []).join('|'), p.notiz || ''].join('#'); }
+  function schluessel(p) { return [p.id, p.groesse || '', JSON.stringify(p.wahl || p.optionen || []), p.notiz || ''].join('#'); }
 
   function hinzu(p) {
     var k = schluessel(p);

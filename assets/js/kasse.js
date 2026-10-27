@@ -1,6 +1,6 @@
 // Kasse: Formular wie auf der alten Bestellseite, Zusammenfassung rechts.
-// Mit Datenbank (assets/js/bestell-config.js) wird die Bestellung dort gespeichert,
-// sonst als fertige WhatsApp-Nachricht an den Laden geöffnet.
+// „Jetzt online bezahlen“ (nur wenn api/checkout.php eingerichtet ist): weiter zu Stripe, danach zurück mit ?bezahlt=…
+// Sonst mit Datenbank (assets/js/bestell-config.js) dort speichern, ohne als fertige WhatsApp-Nachricht an den Laden.
 (function () {
   var W = window.Warenkorb;
   var SHOP = window.SHOP;
@@ -27,10 +27,22 @@
     if (alt.name) form.merken.checked = true;
   } catch (e) { /* nichts gemerkt */ }
 
-  if (!mitDb) {
-    form.querySelector('.checkout__submit').textContent = 'Per WhatsApp bestellen';
-    box.querySelector('[data-wa-hinweis]').hidden = false;
+  var knopfText = mitDb ? 'Kostenpflichtig bestellen' : 'Per WhatsApp bestellen';
+  function zahlungAnzeigen() {
+    var online = form.zahlung.value === 'online';
+    form.querySelector('.checkout__submit').textContent = online ? 'Zahlungspflichtig bestellen' : knopfText;
+    box.querySelector('[data-online-hinweis]').hidden = !online;
+    box.querySelector('[data-wa-hinweis]').hidden = online || mitDb;
   }
+  zahlungAnzeigen();
+
+  // Online-Zahlung nur anbieten, wenn der Server dafür eingerichtet ist
+  fetch('api/checkout.php', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) {
+    if (!j.aktiv) return;
+    box.querySelector('[data-online]').hidden = false;
+    form.zahlung.value = 'online';
+    zahlungAnzeigen();
+  }).catch(function () { /* kein PHP (z. B. GitHub Pages) – dann eben bar oder Karte bei Übergabe */ });
 
   function aktualisieren() {
     var s = W.get();
@@ -58,6 +70,7 @@
   form.addEventListener('change', function (e) {
     if (e.target.name === 'art') W.modus(e.target.value);
     if (e.target.name === 'plz') W.plz(e.target.value);
+    if (e.target.name === 'zahlung') zahlungAnzeigen();
   });
   W.on(aktualisieren);
   aktualisieren();
@@ -113,7 +126,7 @@
       zahlung: form.zahlung.value,
       bemerkung: form.bemerkung.value.trim() || null,
       positionen: s.pos.map(function (p) {
-        return { id: p.id, name: p.name, groesse: p.groesse || null, optionen: p.optionen || [], notiz: p.notiz || null, menge: p.menge, preis: p.preis };
+        return { id: p.id, name: p.name, groesse: p.groesse || null, optionen: p.optionen || [], wahl: p.wahl || null, notiz: p.notiz || null, menge: p.menge, preis: p.preis };
       }),
       zwischensumme: sm.zw,
       rabatt: sm.rabatt ? sm.rabatt.betrag : 0,
@@ -168,6 +181,39 @@
     window.scrollTo({ top: 0 });
   }
 
+  // Zurück von der Bezahlseite
+  var such = new URLSearchParams(location.search);
+  if (such.get('abgebrochen')) {
+    history.replaceState(null, '', location.pathname);
+    fehler('Die Zahlung wurde abgebrochen – es wurde nichts abgebucht. Du kannst es noch einmal versuchen oder bei Übergabe bezahlen.');
+  }
+  var sitzung = such.get('bezahlt');
+  if (sitzung) {
+    box.hidden = true;
+    var versuche = 0;
+    (function nachsehen() {
+      fetch('api/status.php?id=' + encodeURIComponent(sitzung), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (!j.bezahlt) {
+            if (++versuche < 6) return setTimeout(nachsehen, 2500);
+            throw new Error('offen');
+          }
+          W.leeren();
+          history.replaceState(null, '', location.pathname);
+          fertig('Danke, bezahlt!', 'Deine Bestellung <strong>Nr. ' + W.esc(j.nr) + '</strong> über <strong>' + euro(j.betrag) + '</strong> ist bezahlt und bei uns angekommen. ' +
+            (j.art === 'lieferung' ? 'Wir liefern ' : 'Abholbereit ') + (j.zeit === 'schnellstmöglich'
+              ? 'in ca. ' + (j.art === 'lieferung' ? SHOP.lieferungMin : SHOP.abholungMin) + ' Minuten.'
+              : 'um ' + W.esc(j.zeit) + ' Uhr.') +
+            ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
+        })
+        .catch(function () {
+          fertig('Zahlung wird noch geprüft', 'Wir konnten die Zahlung noch nicht bestätigen. Wenn Geld abgebucht wurde, ist die Bestellung bei uns – ' +
+            'sonst ruf uns bitte kurz an: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
+        });
+    })();
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var f = pruefen();
@@ -176,6 +222,20 @@
     var d = daten();
     merken();
     var knopf = form.querySelector('.checkout__submit');
+
+    if (d.zahlung === 'online') {
+      knopf.disabled = true;
+      knopf.textContent = 'Bezahlseite wird geöffnet …';
+      fetch('api/checkout.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+        .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.url) throw new Error(j.fehler || 'Fehler'); return j; }); })
+        .then(function (j) { window.location.href = j.url; })
+        .catch(function (err) {
+          knopf.disabled = false;
+          zahlungAnzeigen();
+          fehler(W.esc(err.message) + ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
+        });
+      return;
+    }
 
     if (!mitDb) {
       window.open('https://wa.me/' + SHOP.whatsapp + '?text=' + encodeURIComponent(whatsappText(d)), '_blank', 'noopener');
@@ -201,7 +261,7 @@
         ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
     }).catch(function (err) {
       knopf.disabled = false;
-      knopf.textContent = 'Kostenpflichtig bestellen';
+      zahlungAnzeigen();
       fehler('Die Bestellung konnte nicht gesendet werden (' + W.esc(err.message) + '). Bitte noch einmal versuchen oder anrufen: <a href="tel:' +
         SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
     });

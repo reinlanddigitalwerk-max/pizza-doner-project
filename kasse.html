@@ -106,8 +106,9 @@
             <label class="field"><span data-zeit-label>Liefertermin *</span><select name="zeit" required></select></label>
             <fieldset class="field pay">
               <legend>Bezahlung *</legend>
-              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar</span></label>
-              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte</span></label>
+              <label class="pay__opt pay__opt--online" data-online hidden><input type="radio" name="zahlung" value="online"> <span>Jetzt online bezahlen <small>Karte, Apple Pay, Google Pay</small></span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar bei Übergabe</span></label>
+              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte bei Übergabe</span></label>
             </fieldset>
             <label class="field field--wide"><span>Bemerkung (optional)</span><textarea name="bemerkung" rows="3" maxlength="500" placeholder="z. B. Klingel defekt, bitte anrufen"></textarea></label>
           </div>
@@ -119,6 +120,7 @@
         <p class="co-error" role="alert" hidden></p>
         <button class="btn btn--primary btn--big checkout__submit" type="submit">Kostenpflichtig bestellen</button>
         <p class="co-hint co-hint--center">Lieber online mit PayPal bezahlen? <a href="bestellen.html">Über unseren Partner-Shop bestellen</a></p>
+        <p class="co-hint co-hint--center" data-online-hinweis hidden>Du wirst zur sicheren Bezahlseite von Stripe weitergeleitet. Die Bestellung ist erst nach der Zahlung bei uns.</p>
         <p class="co-hint co-hint--center" data-wa-hinweis hidden>Die Bestellung wird als fertige WhatsApp-Nachricht an uns geöffnet – bitte dort noch auf Senden tippen.</p>
       </form>
 

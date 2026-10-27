@@ -1,0 +1,8 @@
+# Nur checkout.php, status.php und webhook.php sind von außen erreichbar.
+Options -Indexes
+<FilesMatch "^(lib|geheim)\.php$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header always set Cache-Control "no-store"
+</IfModule>
