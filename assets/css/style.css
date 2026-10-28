@@ -508,6 +508,10 @@ a { color: inherit; }
 .footer__pay { margin-top: 10px !important; font-size: var(--text-sm); color: var(--cream-soft); }
 .footer__sub { margin: 14px 0 6px; font-size: 16px; font-weight: 600; color: var(--yellow); }
 .footer__credits { margin-top: 10px !important; font-size: var(--text-xs) !important; color: #D9C9B4 !important; }
+.footer__dev { padding-block: 16px 22px; border-top: 1px solid rgba(250, 243, 232, .15); text-align: center; }
+.footer__dev p { font-size: var(--text-xs); color: var(--cream-soft); }
+.footer__dev a { color: var(--yellow); font-weight: 600; text-decoration: none; }
+.footer__dev a:hover, .footer__dev a:focus-visible { text-decoration: underline; }
 
 /* ---------- Tablet / Mobil ---------- */
 @media (max-width: 960px) {
