@@ -1,6 +1,8 @@
 """Druckvorlagen mit QR-Code zur Speisekarte:
 
   druck/qr-speisekarte.svg   – QR-Code allein (für eigene Vorlagen)
+  druck/qr-website.svg / .png       – QR-Code zur Startseite, schwarz (für fremde Flyer und Druckereien)
+  druck/qr-website-logo.png         – QR-Code zur Startseite in Braun mit Logo in der Mitte
   druck/flyer-a5.html        – Flyer A5, Vorder- und Rückseite
   druck/tischkarte-a6.html   – Tischaufsteller A6
   druck/aufkleber-7cm.html   – Aufkleber 7 × 7 cm für Tüten und Kartons
@@ -14,6 +16,7 @@ import html
 import json
 from pathlib import Path
 
+from PIL import Image, ImageDraw
 from reportlab.graphics.barcode import qrencoder
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -37,13 +40,19 @@ def preis(name):
     raise KeyError(name)
 
 
-def qr_svg(text, farbe="#3A1C05"):
-    qr = qrencoder.QRCode(None, qrencoder.QRErrorCorrectLevel.M)
+def qr_matrix(text, stufe=qrencoder.QRErrorCorrectLevel.M):
+    qr = qrencoder.QRCode(None, stufe)
     qr.addData(text)
     qr.make()
     n = qr.getModuleCount()
+    return [[qr.isDark(r, c) for c in range(n)] for r in range(n)]
+
+
+def qr_svg(text, farbe="#3A1C05"):
+    m = qr_matrix(text)
+    n = len(m)
     rand = 4
-    pfad = "".join(f"M{c + rand} {r + rand}h1v1h-1z" for r in range(n) for c in range(n) if qr.isDark(r, c))
+    pfad = "".join(f"M{c + rand} {r + rand}h1v1h-1z" for r in range(n) for c in range(n) if m[r][c])
     g = n + 2 * rand
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {g} {g}" shape-rendering="crispEdges">'
             f'<rect width="{g}" height="{g}" fill="#fff"/><path fill="{farbe}" d="{pfad}"/></svg>')
@@ -83,6 +92,36 @@ def schreiben(datei, titel, breite, hoehe, css, inhalt):
 OUT.mkdir(exist_ok=True)
 (OUT / "qr-speisekarte.svg").write_text(QR, encoding="utf-8")
 print("geschrieben: druck/qr-speisekarte.svg →", ZIEL)
+
+
+def qr_png(text, datei, farbe="#000000", logo=None, px=2400):
+    """QR-Code als großes PNG zum Drucken; mit Logo höchste Fehlerkorrektur (H), damit er trotzdem lesbar bleibt."""
+    m = qr_matrix(text, qrencoder.QRErrorCorrectLevel.H if logo else qrencoder.QRErrorCorrectLevel.M)
+    n, rand = len(m), 4
+    modul = px // (n + 2 * rand)
+    groesse = modul * (n + 2 * rand)
+    bild = Image.new("RGB", (groesse, groesse), "white")
+    d = ImageDraw.Draw(bild)
+    for r in range(n):
+        for c in range(n):
+            if m[r][c]:
+                x, y = (c + rand) * modul, (r + rand) * modul
+                d.rectangle([x, y, x + modul - 1, y + modul - 1], fill=farbe)
+    if logo:
+        lg = Image.open(logo).convert("RGBA")
+        breite = int(n * modul * 0.34)                     # höchstens ca. 8 % der Fläche – H verträgt 30 %
+        lg = lg.resize((breite, round(lg.height * breite / lg.width)), Image.LANCZOS)
+        pad = modul
+        x0, y0 = (groesse - lg.width) // 2, (groesse - lg.height) // 2
+        d.rounded_rectangle([x0 - pad, y0 - pad, x0 + lg.width + pad, y0 + lg.height + pad], radius=pad * 2, fill="white")
+        bild.paste(lg, (x0, y0), lg)
+    bild.save(OUT / datei, dpi=(600, 600))
+    print("geschrieben: druck/" + datei, "→", text)
+
+
+(OUT / "qr-website.svg").write_text(qr_svg(SEITE, farbe="#000"), encoding="utf-8")
+qr_png(SEITE, "qr-website.png")
+qr_png(SEITE, "qr-website-logo.png", farbe="#3A1C05", logo=ROOT / "assets/img/logo.webp")
 
 IMG = "../assets/img"
 z = shop["oeffnungszeiten"]
