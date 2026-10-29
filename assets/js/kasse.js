@@ -1,17 +1,17 @@
 // Kasse: Formular wie auf der alten Bestellseite, Zusammenfassung rechts.
 // „Jetzt online bezahlen“ (nur wenn api/checkout.php eingerichtet ist): weiter zu Stripe, danach zurück mit ?bezahlt=…
-// Sonst mit Datenbank (assets/js/bestell-config.js) dort speichern, ohne als fertige WhatsApp-Nachricht an den Laden.
+// Bar oder Karte bei Übergabe: an das Rheinland Bestellsystem im Laden (api/bestellen.php), wenn das Tablet an ist –
+// sonst als fertige WhatsApp-Nachricht an den Laden.
 (function () {
   var W = window.Warenkorb;
   var SHOP = window.SHOP;
-  var CFG = window.BESTELL_CONFIG || {};
   var box = document.querySelector('[data-kasse]');
   if (!W || !box) return;
 
   var form = box.querySelector('form');
   var euro = W.euro;
   var MERK = 'neusser-kunde-v1';
-  var mitDb = !!(CFG.supabaseUrl && CFG.supabaseKey);
+  var mitSystem = false;   // Tablet im Laden ist an (meldet api/checkout.php)
 
   W.binden(box.querySelector('[data-warenkorb]'), { bearbeiten: false, modus: false, kasse: false });
 
@@ -27,20 +27,22 @@
     if (alt.name) form.merken.checked = true;
   } catch (e) { /* nichts gemerkt */ }
 
-  var knopfText = mitDb ? 'Kostenpflichtig bestellen' : 'Per WhatsApp bestellen';
   function zahlungAnzeigen() {
     var online = form.zahlung.value === 'online';
-    form.querySelector('.checkout__submit').textContent = online ? 'Zahlungspflichtig bestellen' : knopfText;
+    form.querySelector('.checkout__submit').textContent = online ? 'Zahlungspflichtig bestellen'
+      : mitSystem ? 'Kostenpflichtig bestellen' : 'Per WhatsApp bestellen';
     box.querySelector('[data-online-hinweis]').hidden = !online;
-    box.querySelector('[data-wa-hinweis]').hidden = online || mitDb;
+    box.querySelector('[data-wa-hinweis]').hidden = online || mitSystem;
   }
   zahlungAnzeigen();
 
   // Online-Zahlung nur anbieten, wenn der Server dafür eingerichtet ist
   fetch('api/checkout.php', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) {
-    if (!j.aktiv) return;
-    box.querySelector('[data-online]').hidden = false;
-    form.zahlung.value = 'online';
+    mitSystem = !!j.system;
+    if (j.aktiv) {
+      box.querySelector('[data-online]').hidden = false;
+      form.zahlung.value = 'online';
+    }
     zahlungAnzeigen();
   }).catch(function () { /* kein PHP (z. B. GitHub Pages) – dann eben bar oder Karte bei Übergabe */ });
 
@@ -201,7 +203,7 @@
           }
           W.leeren();
           history.replaceState(null, '', location.pathname);
-          fertig('Danke, bezahlt!', 'Deine Bestellung <strong>Nr. ' + W.esc(j.nr) + '</strong> über <strong>' + euro(j.betrag) + '</strong> ist bezahlt und bei uns angekommen. ' +
+          fertig('Danke, bezahlt!', 'Deine Bestellung <strong>#' + W.esc(j.nr.slice(-4)) + '</strong> über <strong>' + euro(j.betrag) + '</strong> ist bezahlt und bei uns angekommen. ' +
             (j.art === 'lieferung' ? 'Wir liefern ' : 'Abholbereit ') + (j.zeit === 'schnellstmöglich'
               ? 'in ca. ' + (j.art === 'lieferung' ? SHOP.lieferungMin : SHOP.abholungMin) + ' Minuten.'
               : 'um ' + W.esc(j.zeit) + ' Uhr.') +
@@ -237,7 +239,7 @@
       return;
     }
 
-    if (!mitDb) {
+    if (!mitSystem) {
       window.open('https://wa.me/' + SHOP.whatsapp + '?text=' + encodeURIComponent(whatsappText(d)), '_blank', 'noopener');
       fertig('Fast geschafft!', 'WhatsApp ist mit deiner Bestellung geöffnet. Bitte tippe dort auf <strong>Senden</strong> – erst dann ist sie bei uns. ' +
         'Kein WhatsApp? Ruf uns an: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
@@ -246,15 +248,13 @@
 
     knopf.disabled = true;
     knopf.textContent = 'Wird gesendet …';
-    fetch(CFG.supabaseUrl.replace(/\/$/, '') + '/rest/v1/rpc/bestellung_aufgeben', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', apikey: CFG.supabaseKey, Authorization: 'Bearer ' + CFG.supabaseKey },
-      body: JSON.stringify({ daten: d })
-    }).then(function (r) {
-      return r.json().then(function (j) { if (!r.ok) throw new Error(j && j.message || 'Fehler'); return j; });
-    }).then(function (nr) {
+    fetch('api/bestellen.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+      .then(function (r) {
+        return r.json().then(function (j) { if (!r.ok || !j.nr) throw new Error(j.fehler || 'Fehler'); return j; });
+      }).then(function (j) {
       W.leeren();
-      fertig('Danke, ' + d.name.split(' ')[0] + '!', 'Deine Bestellung <strong>Nr. ' + nr + '</strong> ist bei uns angekommen. ' +
+      fertig('Danke, ' + d.name.split(' ')[0] + '!', 'Deine Bestellung <strong>#' + W.esc(j.nr.slice(-4)) + '</strong> über <strong>' + euro(j.gesamt) +
+        '</strong> ist bei uns angekommen. ' +
         (d.art === 'lieferung' ? 'Wir liefern ' : 'Abholbereit ') + (d.zeit === 'schnellstmöglich'
           ? 'in ca. ' + (d.art === 'lieferung' ? SHOP.lieferungMin : SHOP.abholungMin) + ' Minuten.'
           : 'um ' + d.zeit + ' Uhr.') +
@@ -262,7 +262,7 @@
     }).catch(function (err) {
       knopf.disabled = false;
       zahlungAnzeigen();
-      fehler('Die Bestellung konnte nicht gesendet werden (' + W.esc(err.message) + '). Bitte noch einmal versuchen oder anrufen: <a href="tel:' +
+      fehler(W.esc(err.message) + ' Bitte noch einmal versuchen oder anrufen: <a href="tel:' +
         SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
     });
   });

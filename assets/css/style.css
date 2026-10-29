@@ -1643,58 +1643,6 @@ a { color: inherit; }
   .page-checkout { padding-bottom: 0; }
 }
 
-/* Bestell-Monitor im Laden */
-.page-monitor { background: #F3EBDD; }
-.monitor { max-width: 1400px; margin-inline: auto; padding: 16px; }
-.monitor__bar { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.monitor__bar img { height: 52px; width: auto; }
-.monitor__bar h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 34px; }
-.monitor.has-new .monitor__bar h1::after { content: " – NEUE BESTELLUNG"; color: var(--red); animation: blink 1s steps(2) infinite; }
-@keyframes blink { 50% { opacity: .2; } }
-.monitor__hint, .monitor__login { max-width: 420px; padding: 22px; border-radius: 18px; background: var(--white); }
-.monitor__login { display: flex; flex-direction: column; gap: 12px; }
-.monitor__login h2 { margin: 0; font-family: var(--font-display); font-weight: 400; }
-.monitor__login .co-error:empty { display: none; }
-.monitor__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: 14px; font-weight: 600; }
-.monitor__tools select { margin-left: 6px; padding: 6px 10px; border-radius: 10px; border: 2px solid #E3D4C2; font: inherit; }
-.monitor__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; align-items: start; }
-.m-empty { font-weight: 600; color: var(--ink-soft); }
-.m-btn { padding: 10px 14px; border: 2px solid var(--brown); border-radius: 10px; background: var(--white); color: var(--brown); font: inherit; font-weight: 700; cursor: pointer; }
-.m-btn--go { background: var(--green); border-color: var(--green); color: var(--white); }
-.m-btn--ton[aria-pressed="false"] { background: var(--red); border-color: var(--red); color: var(--white); }
-.order { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 16px; background: var(--white); border-left: 8px solid #CBBBA6; }
-.order--neu { border-left-color: var(--red); box-shadow: 0 0 0 3px rgba(184, 50, 31, .35); }
-.order--angenommen { border-left-color: var(--yellow); }
-.order--fertig { border-left-color: var(--green); opacity: .75; }
-.order--storniert { opacity: .5; }
-.order header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.order header strong { font-size: 22px; }
-.order .tag { padding: 2px 10px; border-radius: 999px; font-weight: 800; font-size: 14px; }
-.tag--lieferung { background: #FDF3D3; }
-.tag--abholung { background: #EEF4E6; }
-.order__time { margin-left: auto; font-weight: 700; }
-.order p { margin: 0; }
-.order__note { padding: 6px 10px; border-radius: 8px; background: #FFF5D6; font-weight: 600; }
-.order__pos { margin: 4px 0; padding: 0; list-style: none; border-top: 1px dashed #E3D4C2; }
-.order__pos li { display: grid; grid-template-columns: auto 1fr auto; column-gap: 8px; padding: 6px 0; border-bottom: 1px dashed #E3D4C2; }
-.order__pos small, .order__pos em { grid-column: 2; font-size: 14px; color: var(--ink-soft); }
-.order__pos span { grid-column: 3; grid-row: 1; font-weight: 700; }
-.order__sum { text-align: right; }
-.order footer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
-.order__status { margin-left: auto; font-size: 13px; text-transform: uppercase; font-weight: 800; color: var(--ink-faint); }
-.bon { display: none; }
-@media print {
-  body.page-monitor > *:not(.bon) { display: none !important; }
-  .bon { display: block; width: 72mm; font: 12pt/1.35 monospace; color: #000; }
-  .bon h1 { font-size: 14pt; margin: 0 0 2mm; }
-  .bon h2 { font-size: 13pt; margin: 2mm 0; }
-  .bon p { margin: 0 0 2mm; }
-  .bon table { width: 100%; border-collapse: collapse; margin-bottom: 2mm; }
-  .bon td { vertical-align: top; padding: 1mm 0; border-bottom: 1px dashed #000; }
-  .bon td:last-child { text-align: right; white-space: nowrap; }
-  @page { size: 80mm auto; margin: 4mm; }
-}
-
 /* App installieren */
 .install-btn {
   display: inline-flex;

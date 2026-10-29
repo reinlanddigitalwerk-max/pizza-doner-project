@@ -1,0 +1,18 @@
+{
+  "name": "Rheinland Bestellsystem",
+  "short_name": "Bestellungen",
+  "description": "Bestellungen von neusser-doner-pizza.de annehmen und Bons drucken – von Rheinland Digitalwerk",
+  "id": "/bestellsystem/",
+  "start_url": "/bestellsystem/",
+  "scope": "/bestellsystem/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0B1422",
+  "theme_color": "#0B1422",
+  "lang": "de",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

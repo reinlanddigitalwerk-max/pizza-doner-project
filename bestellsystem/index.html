@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0B1422">
+  <title>Rheinland Bestellsystem</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- Anmelden -->
+  <main class="anmelden" data-anmelden hidden>
+    <form class="anmelden__karte" data-login>
+      <img class="anmelden__logo" src="rdw-logo.png" alt="Rheinland Digitalwerk" width="522" height="194">
+      <h1>Bestellsystem</h1>
+      <p class="anmelden__laden">Neusser Döner &amp; Pizza</p>
+      <label class="feld"><span>Passwort</span><input name="passwort" type="password" autocomplete="current-password" required></label>
+      <button class="knopf knopf--gross" type="submit">Anmelden</button>
+      <p class="fehler" data-login-fehler aria-live="polite"></p>
+    </form>
+    <p class="marke">Rheinland Bestellsystem · <a href="https://www.rheinlanddigitalwerk.de/" target="_blank" rel="noopener">rheinlanddigitalwerk.de</a></p>
+  </main>
+
+  <!-- Schicht starten: nötig, damit Ton und „Bildschirm bleibt an“ erlaubt sind -->
+  <div class="start" data-start hidden>
+    <img src="rdw-zeichen.png" alt="" width="96" height="96">
+    <h2>Bereit für Bestellungen</h2>
+    <p>Tippe auf Start – dann klingelt es bei neuen Bestellungen und der Bon wird gedruckt.</p>
+    <button class="knopf knopf--gross" type="button" data-starten>Start</button>
+  </div>
+
+  <!-- Hauptansicht -->
+  <div class="app" data-app hidden>
+    <header class="leiste">
+      <img class="leiste__zeichen" src="rdw-zeichen.png" alt="Rheinland Digitalwerk" width="96" height="96">
+      <div class="leiste__titel">
+        <strong>Bestellsystem</strong>
+        <span>Neusser Döner &amp; Pizza</span>
+      </div>
+      <div class="leiste__status">
+        <span class="lampe" data-lampe-server title="Verbindung zum Server">Server</span>
+        <span class="lampe" data-lampe-drucker title="Bondrucker">Drucker</span>
+        <time class="leiste__uhr" data-uhr></time>
+        <button class="knopf knopf--rund" type="button" data-einstellungen-oeffnen aria-label="Einstellungen">⚙</button>
+      </div>
+    </header>
+
+    <p class="hinweis" data-hinweis hidden></p>
+
+    <nav class="reiter" role="tablist">
+      <button type="button" role="tab" data-reiter="neu" aria-selected="true">Neu <b data-zahl="neu">0</b></button>
+      <button type="button" role="tab" data-reiter="arbeit">In Arbeit <b data-zahl="arbeit">0</b></button>
+      <button type="button" role="tab" data-reiter="fertig">Fertig <b data-zahl="fertig">0</b></button>
+      <button type="button" role="tab" data-reiter="erledigt">Erledigt <b data-zahl="erledigt">0</b></button>
+    </nav>
+
+    <main class="liste" data-liste></main>
+  </div>
+
+  <!-- Einstellungen -->
+  <dialog class="einstellungen" data-einstellungen>
+    <form method="dialog">
+      <h2>Einstellungen</h2>
+      <label class="feld"><span>IP-Adresse des Bondruckers</span><input name="ip" inputmode="decimal" placeholder="192.168.178.82" required></label>
+      <label class="haken"><input type="checkbox" name="autodruck"> <span>Neue Bestellungen automatisch drucken</span></label>
+      <label class="feld feld--klein"><span>Bons pro Bestellung</span>
+        <select name="kopien"><option value="1">1</option><option value="2">2 (Küche + Fahrer)</option></select></label>
+      <label class="haken"><input type="checkbox" name="ton"> <span>Klingeln bei neuen Bestellungen</span></label>
+      <label class="haken"><input type="checkbox" name="https"> <span>Sichere Verbindung zum Drucker (https)</span></label>
+      <div class="einstellungen__knoepfe">
+        <button class="knopf knopf--zweit" type="button" data-freischalten>Drucker freischalten</button>
+        <button class="knopf knopf--zweit" type="button" data-testdruck>Testdruck</button>
+      </div>
+      <p class="klein" data-druck-meldung aria-live="polite"></p>
+      <p class="klein">„Drucker freischalten“ öffnet den Drucker einmalig im Browser. Dort auf <b>Erweitert</b> → <b>Weiter zu …</b> tippen
+        und das Fenster wieder schließen. Fragt Chrome nach Geräten im lokalen Netzwerk, auf <b>Zulassen</b> tippen.</p>
+      <div class="einstellungen__fuss">
+        <button class="knopf knopf--leise" type="button" data-abmelden>Abmelden</button>
+        <button class="knopf" value="ok">Fertig</button>
+      </div>
+      <p class="marke">Rheinland Bestellsystem 1.0 · <a href="https://www.rheinlanddigitalwerk.de/" target="_blank" rel="noopener">rheinlanddigitalwerk.de</a></p>
+    </form>
+  </dialog>
+
+  <div class="meldung" role="status" aria-live="polite" data-meldung hidden></div>
+
+  <script src="bon.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

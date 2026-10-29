@@ -1,5 +1,5 @@
 <?php
-// Gemeinsame Funktionen für die Online-Zahlung mit Stripe.
+// Gemeinsame Funktionen für Bestellungen, die Online-Zahlung mit Stripe und das Rheinland Bestellsystem (Tablet im Laden).
 // Preise, Liefergebiete, Öffnungszeiten und Rabatte kommen aus den Daten der Website
 // (data/menu.json, data/liefergebiete.json, data/angebote.json) – nie aus dem Browser.
 declare(strict_types=1);
@@ -287,10 +287,12 @@ function nr_ok(string $nr): bool
     return (bool) preg_match('/^W\d{6}-\d{4}-[A-F0-9]{4}$/', $nr);
 }
 
-function bestellung_text(array $b, array $s): string
+function bestellung_text(array $b, array $s = []): string
 {
+    $online = ($b['zahlung'] ?? 'online') === 'online';
     $z = [];
-    $z[] = 'NEUE ONLINE-BESTELLUNG Nr. ' . $b['nr'] . ' – ' . strtoupper($b['art']) . ' – BEREITS BEZAHLT';
+    $z[] = 'NEUE BESTELLUNG Nr. ' . $b['nr'] . ' – ' . strtoupper($b['art']) . ' – '
+        . ($online ? 'BEREITS BEZAHLT' : (($b['zahlung'] ?? '') === 'karte' ? 'KARTE BEI ÜBERGABE' : 'BAR KASSIEREN'));
     $z[] = 'Zeit: ' . $b['zeit'];
     $z[] = '';
     foreach ($b['positionen'] as $p) {
@@ -300,10 +302,13 @@ function bestellung_text(array $b, array $s): string
     $z[] = 'Zwischensumme: ' . euro($b['zwischensumme']);
     if (!empty($b['rabatt'])) $z[] = $b['rabatt']['titel'] . ': −' . euro($b['rabatt']['betrag']);
     if ($b['art'] === 'lieferung') $z[] = 'Liefergebühr: ' . ($b['liefergebuehr'] ? euro($b['liefergebuehr']) : 'gratis');
-    $bezahlt = ($s['amount_total'] ?? 0) / 100;
-    $z[] = 'GESAMT: ' . euro($b['gesamt']) . ' – online bezahlt: ' . euro($bezahlt);
-    if (cent($b['gesamt']) !== (int) ($s['amount_total'] ?? 0)) {
-        $z[] = '!!! ACHTUNG: Bezahlter Betrag weicht ab – bitte im Stripe-Dashboard prüfen !!!';
+    if ($online) {
+        $z[] = 'GESAMT: ' . euro($b['gesamt']) . ' – online bezahlt: ' . euro(($s['amount_total'] ?? 0) / 100);
+        if (cent($b['gesamt']) !== (int) ($s['amount_total'] ?? 0)) {
+            $z[] = '!!! ACHTUNG: Bezahlter Betrag weicht ab – bitte im Stripe-Dashboard prüfen !!!';
+        }
+    } else {
+        $z[] = 'GESAMT: ' . euro($b['gesamt']) . ' – ' . (($b['zahlung'] ?? '') === 'karte' ? 'mit Karte bei Übergabe' : 'bar bei Übergabe');
     }
     $z[] = '';
     $z[] = $b['name'] . ', Tel. ' . $b['telefon'] . ($b['email'] !== '' ? ', ' . $b['email'] : '');
@@ -314,8 +319,10 @@ function bestellung_text(array $b, array $s): string
         $z[] = 'Abholung im Laden';
     }
     if ($b['bemerkung'] !== '') $z[] = 'Bemerkung: ' . $b['bemerkung'];
-    $z[] = '';
-    $z[] = 'Stripe-Zahlung: ' . ($s['payment_intent'] ?? $s['id'] ?? '');
+    if ($online) {
+        $z[] = '';
+        $z[] = 'Stripe-Zahlung: ' . ($s['payment_intent'] ?? $s['id'] ?? '');
+    }
     return implode("\n", $z);
 }
 
@@ -348,28 +355,85 @@ function verarbeiten(array $s): ?array
                   'positionen' => [], 'zwischensumme' => 0, 'rabatt' => null, 'liefergebuehr' => 0,
                   'gesamt' => ($s['amount_total'] ?? 0) / 100, 'notiz' => 'Positionen siehe Stripe-Dashboard: ' . ($m['positionen'] ?? '')];
         }
+        $b['zahlung'] = 'online';
         $b['bezahlt'] = ['session' => $s['id'] ?? '', 'payment_intent' => $s['payment_intent'] ?? '',
                          'betrag' => ($s['amount_total'] ?? 0) / 100, 'zeit' => jetzt()->format('c')];
-        file_put_contents($fertig, json_encode($b, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        $b = speichern($b);
         if (is_file($offen)) {
             unlink($offen);
         }
-
-        $an = (string) (geheim()['shop_email'] ?? '');
-        if ($an !== '') {
-            $text = bestellung_text($b, $s) . (isset($b['notiz']) ? "\n" . $b['notiz'] : '');
-            $betreff = 'Bestellung ' . $nr . ' – ' . ($b['art'] === 'lieferung' ? 'Lieferung' : 'Abholung') . ' ' . $b['zeit']
-                . ' – ' . euro((float) $b['gesamt']) . ' bezahlt';
-            $kopf = "From: Neusser Döner & Pizza <bestellung@neusser-doner-pizza.de>\r\n"
-                . ($b['email'] !== '' ? 'Reply-To: ' . $b['email'] . "\r\n" : '')
-                . "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit";
-            if (!mail($an, mb_encode_mimeheader($betreff, 'UTF-8'), $text, $kopf)) {
-                error_log('Bestellung ' . $nr . ': E-Mail konnte nicht gesendet werden');
-            }
-        }
+        melden($b, $s);
         return $b;
     } finally {
         flock($lock, LOCK_UN);
         fclose($lock);
+    }
+}
+
+/** Neue Bestellung ablegen (Status „neu“, noch nicht gedruckt) */
+function speichern(array $b): array
+{
+    $b += ['eingang' => jetzt()->format('c')];
+    $b['status'] = $b['status'] ?? 'neu';
+    $b['gedruckt'] = $b['gedruckt'] ?? false;
+    file_put_contents(ordner() . '/' . $b['nr'] . '.json', json_encode($b, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), LOCK_EX);
+    return $b;
+}
+
+function neue_nr(DateTimeImmutable $n): string
+{
+    return 'W' . $n->format('ymd-Hi') . '-' . strtoupper(bin2hex(random_bytes(2)));
+}
+
+/** E-Mail an den Laden (Sicherheit, falls das Tablet aus ist) */
+function melden(array $b, array $s = []): void
+{
+    $an = (string) (geheim()['shop_email'] ?? '');
+    if ($an === '') {
+        return;
+    }
+    $online = ($b['zahlung'] ?? '') === 'online';
+    $text = bestellung_text($b, $s) . (isset($b['notiz']) ? "\n" . $b['notiz'] : '');
+    $betreff = 'Bestellung ' . $b['nr'] . ' – ' . ($b['art'] === 'lieferung' ? 'Lieferung' : 'Abholung') . ' ' . $b['zeit']
+        . ' – ' . euro((float) $b['gesamt']) . ($online ? ' bezahlt' : ' bei Übergabe');
+    $kopf = "From: Neusser Döner & Pizza <bestellung@neusser-doner-pizza.de>\r\n"
+        . ($b['email'] !== '' ? 'Reply-To: ' . $b['email'] . "\r\n" : '')
+        . "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit";
+    if (!mail($an, mb_encode_mimeheader($betreff, 'UTF-8'), $text, $kopf)) {
+        error_log('Bestellung ' . $b['nr'] . ': E-Mail konnte nicht gesendet werden');
+    }
+}
+
+// ---------- Rheinland Bestellsystem (Tablet im Laden) ----------
+const MONITOR_HERZSCHLAG = 90;   // Sekunden: so lange gilt das Tablet nach der letzten Abfrage als „an“
+
+/** Ist das Tablet im Laden gerade an? Dann gehen auch Bar- und Kartenbestellungen direkt dorthin. */
+function system_an(): bool
+{
+    $f = __DIR__ . '/bestellungen/.herzschlag';
+    return is_file($f) && filemtime($f) > time() - MONITOR_HERZSCHLAG;
+}
+
+function monitor_schluessel(): string
+{
+    $pw = (string) (geheim()['monitor_passwort'] ?? '');
+    return $pw === '' ? '' : hash('sha256', 'rheinland-bestellsystem|' . $pw);
+}
+
+/** Anmeldung fürs Tablet: „Ablauf.Signatur“, 60 Tage gültig; neues Passwort macht alte Anmeldungen ungültig */
+function monitor_token(): string
+{
+    $bis = (string) (time() + 60 * 86400);
+    return $bis . '.' . hash_hmac('sha256', $bis, monitor_schluessel());
+}
+
+function monitor_pruefen(): void
+{
+    $k = monitor_schluessel();
+    // eigener Kopf statt „Authorization“, den manche Apache-Einstellungen nicht an PHP weitergeben
+    $t = (string) ($_SERVER['HTTP_X_TOKEN'] ?? '');
+    [$bis, $sig] = array_pad(explode('.', $t, 2), 2, '');
+    if ($k === '' || !ctype_digit($bis) || (int) $bis < time() || !hash_equals(hash_hmac('sha256', $bis, $k), $sig)) {
+        antwort(['fehler' => 'Bitte neu anmelden.'], 401);
     }
 }

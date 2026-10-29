@@ -1,8 +1,7 @@
 """Baut die Unterseiten aus den Daten in data/:
 
   speisekarte.html  – Speisekarte zum Bestellen mit Warenkorb (data/menu.json)
-  kasse.html        – Kasse: Formular, Absenden an die Datenbank oder per WhatsApp
-  bestellungen.html – Bestell-Monitor für den Laden (nicht verlinkt)
+  kasse.html        – Kasse: online bezahlen (Stripe) oder bei Übergabe – an das Rheinland Bestellsystem, sonst per WhatsApp
   bestellen.html    – Bestellshop von Speisebaron eingebettet (Alternative mit PayPal)
   sw.js             – Service Worker: Seiten und Bilder offline, damit die „App“ auch ohne Netz öffnet
   ueber-uns.html    – Über uns, Kontakt, Öffnungs- und Lieferzeiten (data/shop.json)
@@ -356,7 +355,6 @@ menu_daten = {item_key(a, c): item_daten(a, c) for c in cats for a in c["artikel
 gratis = [z["plz"] for z in gebiete["zonen"] if not z["gebuehr"]]
 SHOP_SCRIPTS = ('  <script src="assets/js/offers-data.js" defer></script>\n'
                 '  <script src="assets/js/shop-daten.js" defer></script>\n'
-                '  <script src="assets/js/bestell-config.js" defer></script>\n'
                 '  <script src="assets/js/warenkorb.js" defer></script>\n')
 
 page(
@@ -504,47 +502,6 @@ page(
     "page-checkout",
 )
 
-# ---------- Bestell-Monitor fürs Geschäft (nicht verlinkt, nicht in Suchmaschinen) ----------
-mon_head = re.sub(r"<title>.*?</title>", "<title>Bestellungen – Neusser Döner &amp; Pizza</title>", HEAD, flags=re.S)
-mon_head = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="robots" content="noindex, nofollow">', mon_head)
-(ROOT / "bestellungen.html").write_text(f"""{mon_head}<body class="page-monitor">
-  <main class="monitor" data-monitor>
-    <header class="monitor__bar">
-      <img src="assets/img/logo.webp" alt="Neusser Döner &amp; Pizza" width="560" height="375">
-      <h1>Bestellungen</h1>
-    </header>
-
-    <p class="monitor__hint" data-hinweis hidden>Die Datenbank ist noch nicht eingerichtet. Solange kommen Online-Bestellungen per WhatsApp
-      (siehe <code>assets/js/bestell-config.js</code>).</p>
-
-    <form class="monitor__login" data-login hidden>
-      <h2>Anmelden</h2>
-      <label class="field"><span>E-Mail</span><input name="email" type="email" autocomplete="username" required></label>
-      <label class="field"><span>Passwort</span><input name="passwort" type="password" autocomplete="current-password" required></label>
-      <button class="btn btn--primary" type="submit">Anmelden</button>
-      <p class="co-error" data-fehler aria-live="polite"></p>
-    </form>
-
-    <section data-board hidden>
-      <div class="monitor__tools">
-        <button class="m-btn m-btn--ton" type="button" data-ton aria-pressed="false">🔕 Ton aus – hier tippen</button>
-        <label>Anzeigen <select data-filter><option value="offen">Offen</option><option value="alle">Alle (24 Std.)</option>
-          <option value="fertig">Fertig</option><option value="storniert">Storniert</option></select></label>
-        <label><input type="checkbox" data-autodruck> Beim Annehmen Bon drucken</label>
-        <button class="m-btn" type="button" data-abmelden>Abmelden</button>
-      </div>
-      <div class="monitor__list" data-liste></div>
-    </section>
-  </main>
-  <div class="bon" data-bon></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" defer></script>
-  <script src="assets/js/bestell-config.js" defer></script>
-  <script src="assets/js/monitor.js" defer></script>
-</body>
-</html>
-""", encoding="utf-8")
-print("geschrieben: bestellungen.html")
-
 # ---------- Bestellen (Shop eingebettet) ----------
 page(
     "bestellen.html",
@@ -685,7 +642,7 @@ page(
       <h2>Online-Bestellung über diese Website</h2>
       <p>Wenn du über die Speisekarte und die Kasse dieser Website bestellst, verarbeiten wir die Angaben aus dem Bestellformular (Name, Telefonnummer, bei Lieferung die Adresse, freiwillig E-Mail, Firma, Etage und Bemerkung) sowie die bestellten Gerichte, um deine Bestellung zuzubereiten, zu liefern und bei Rückfragen anzurufen (Art. 6 Abs. 1 lit. b DSGVO).</p>
       <p>Der Warenkorb wird nur in deinem Browser gespeichert (localStorage). Wenn du „Meine Daten merken“ ankreuzt, werden auch deine Kontaktdaten nur in deinem Browser gespeichert, bis du das Häkchen wieder entfernst oder die Website-Daten löschst.</p>
-      <p>Je nach Einstellung wird die Bestellung entweder in unserer Bestell-Datenbank bei Supabase (Supabase Inc., Server in Frankfurt am Main, EU) gespeichert, solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist, oder als WhatsApp-Nachricht geöffnet, die du selbst an uns sendest. Für WhatsApp gelten zusätzlich die Datenschutzhinweise von WhatsApp Ireland Ltd.</p>
+      <p>Die Bestellung wird auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert, auf dem Tablet in unserem Laden angezeigt, als Bon gedruckt und uns per E-Mail geschickt – solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist. Ist das Tablet gerade aus, wird die Bestellung stattdessen als WhatsApp-Nachricht geöffnet, die du selbst an uns sendest; dafür gelten zusätzlich die Datenschutzhinweise von WhatsApp Ireland Ltd.</p>
       <h2>Online-Zahlung mit Stripe</h2>
       <p>Wenn du in der Kasse „Jetzt online bezahlen“ wählst, wirst du zur Bezahlseite von Stripe weitergeleitet (Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, D02 H210, Irland). Dafür übermitteln wir an Stripe die bestellten Gerichte, den Betrag, deinen Namen, deine Telefonnummer, bei Lieferung die Adresse und – falls angegeben – deine E-Mail-Adresse. Deine Karten- oder Kontodaten gibst du direkt bei Stripe ein; wir sehen sie nicht. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Abwicklung der Bestellung). Stripe kann Daten auch in den USA verarbeiten; Stripe ist dafür nach dem EU-US Data Privacy Framework zertifiziert. Mehr dazu: <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener">stripe.com/de/privacy</a>.</p>
       <p>Bezahlte Bestellungen werden auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert und per E-Mail an uns geschickt, solange es für die Abwicklung, Rückfragen und die gesetzlichen Aufbewahrungspflichten nötig ist.</p>
@@ -701,7 +658,7 @@ import hashlib
 
 VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html", "impressum.html", "datenschutz.html",
          "manifest.webmanifest", "assets/css/style.css"]
-VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") if f.name != "monitor.js")
+VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") )
 VORAB += ["assets/img/logo.webp", "assets/img/muster-imbiss.svg"] + sorted(
     str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons", "assets/img/logo")
     for f in (ROOT / d).glob("*") if f.suffix in (".webp", ".png"))
@@ -724,7 +681,7 @@ self.addEventListener('activate', (e) => {{
 self.addEventListener('fetch', (e) => {{
   const req = e.request;
   const url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.endsWith('/bestellungen.html') || url.pathname.includes('/api/')) return;
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.includes('/bestellsystem/') || url.pathname.includes('/api/')) return;
 
   if (req.mode === 'navigate') {{
     e.respondWith(fetch(req).then((res) => {{

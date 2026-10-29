@@ -8,7 +8,8 @@ require __DIR__ . '/lib.php';
 $aktiv = (string) (geheim()['stripe_secret'] ?? '') !== '';
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 if ($methode === 'GET') {
-    antwort(['aktiv' => $aktiv]);
+    // aktiv: Online-Zahlung möglich · system: Tablet im Laden ist an (sonst Bar/Karte per WhatsApp)
+    antwort(['aktiv' => $aktiv, 'system' => system_an()]);
 }
 if ($methode !== 'POST') {
     antwort(['fehler' => 'Nicht erlaubt.'], 405);
@@ -33,7 +34,7 @@ try {
 } catch (InvalidArgumentException $e) {
     antwort(['fehler' => $e->getMessage()], 422);
 }
-$b['nr'] = 'W' . $n->format('ymd-Hi') . '-' . strtoupper(bin2hex(random_bytes(2)));
+$b['nr'] = neue_nr($n);
 $b['eingang'] = $n->format('c');
 
 // Positionen für Stripe

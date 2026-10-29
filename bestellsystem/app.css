@@ -1,0 +1,167 @@
+/* Rheinland Bestellsystem – Farben von Rheinland Digitalwerk (dunkel, Cyan und Orange) */
+:root {
+  --bg: #0B1422;
+  --flaeche: #121E31;
+  --flaeche-2: #1A2943;
+  --linie: rgba(140, 185, 230, .16);
+  --text: #E6EEFA;
+  --leise: #9DB0CC;
+  --cyan: #3FD8E6;
+  --cyan-tief: #00B2C0;
+  --orange: #E4791E;
+  --orange-hell: #F59A45;
+  --gruen: #34C77B;
+  --rot: #F0605A;
+  --navy: #01247A;
+  --r: 14px;
+  --schrift: Roboto, "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--bg); color: var(--text); font: 400 17px/1.4 var(--schrift); -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+a { color: var(--cyan); }
+h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
+
+/* ---------- Knöpfe und Felder ---------- */
+.knopf {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px; border: 0; border-radius: 12px;
+  background: var(--cyan); color: #04202B; font: 700 17px/1 var(--schrift); cursor: pointer;
+  touch-action: manipulation;
+}
+.knopf:active { transform: scale(.97); }
+.knopf:disabled { opacity: .5; }
+.knopf--gross { min-height: 60px; font-size: 20px; width: 100%; }
+.knopf--orange { background: var(--orange); color: #fff; }
+.knopf--gruen { background: var(--gruen); color: #04220F; }
+.knopf--zweit { background: var(--flaeche-2); color: var(--text); border: 1px solid var(--linie); }
+.knopf--leise { background: transparent; color: var(--leise); border: 1px solid var(--linie); }
+.knopf--gefahr { background: transparent; color: var(--rot); border: 1px solid rgba(240, 96, 90, .4); }
+.knopf--rund { width: 48px; padding: 0; border-radius: 50%; background: var(--flaeche-2); color: var(--text); font-size: 22px; }
+
+.feld { display: grid; gap: 6px; margin: 0 0 14px; }
+.feld span { font-size: 14px; color: var(--leise); font-weight: 600; }
+.feld input, .feld select {
+  width: 100%; min-height: 50px; padding: 0 14px; border-radius: 10px;
+  border: 1px solid var(--linie); background: var(--bg); color: var(--text); font: 500 18px var(--schrift);
+}
+.feld input:focus, .feld select:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+.feld--klein select { max-width: 260px; }
+.haken { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 4px; cursor: pointer; }
+.haken input { width: 22px; height: 22px; accent-color: var(--cyan-tief); }
+.fehler { min-height: 1.4em; margin: 10px 0 0; color: var(--rot); font-weight: 600; }
+.klein { font-size: 14px; color: var(--leise); }
+.marke { margin: 18px 0 0; text-align: center; font-size: 13px; color: var(--leise); }
+.marke a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+
+/* ---------- Anmelden und Start ---------- */
+.anmelden, .start {
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+  background: radial-gradient(900px 500px at 15% -10%, rgba(63, 216, 230, .14), transparent 60%),
+              radial-gradient(700px 400px at 100% 110%, rgba(228, 121, 30, .14), transparent 60%), var(--bg);
+}
+.anmelden__karte { width: min(420px, 100%); padding: 28px; border: 1px solid var(--linie); border-radius: 20px; background: var(--flaeche); }
+.anmelden__logo { display: block; width: 240px; height: auto; margin: 0 auto 18px; padding: 12px 16px; border-radius: 12px; background: #fff; }
+.anmelden h1 { text-align: center; font-size: 26px; }
+.anmelden__laden { margin: 4px 0 22px; text-align: center; color: var(--leise); }
+.start { position: fixed; inset: 0; z-index: 20; text-align: center; gap: 10px; }
+.start img { border-radius: 20px; background: #fff; padding: 10px; }
+.start p { max-width: 420px; color: var(--leise); margin: 0 0 12px; }
+.start .knopf { width: min(320px, 100%); }
+
+/* ---------- Leiste ---------- */
+.leiste {
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top));
+  background: rgba(11, 20, 34, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linie);
+}
+.leiste__zeichen { width: 44px; height: 44px; border-radius: 10px; background: #fff; padding: 4px; }
+.leiste__titel { display: grid; line-height: 1.15; }
+.leiste__titel strong { font-size: 19px; }
+.leiste__titel span { font-size: 14px; color: var(--leise); }
+.leiste__status { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.leiste__uhr { font: 700 22px var(--schrift); font-variant-numeric: tabular-nums; min-width: 64px; text-align: right; }
+.lampe { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: var(--flaeche-2); font-size: 13px; font-weight: 600; color: var(--leise); }
+.lampe::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--leise); }
+.lampe.ist-ok::before { background: var(--gruen); box-shadow: 0 0 8px var(--gruen); }
+.lampe.ist-aus::before { background: var(--rot); box-shadow: 0 0 8px var(--rot); }
+.lampe.ist-aus { color: var(--rot); }
+
+.hinweis { margin: 12px 16px 0; padding: 12px 16px; border-radius: 12px; background: rgba(240, 96, 90, .14); border: 1px solid rgba(240, 96, 90, .4); color: #FFD0CD; font-weight: 600; }
+
+/* ---------- Reiter ---------- */
+.reiter { display: flex; gap: 8px; padding: 12px 16px 4px; overflow-x: auto; }
+.reiter button {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px;
+  border: 1px solid var(--linie); border-radius: 999px; background: var(--flaeche); color: var(--leise); font: 700 16px var(--schrift);
+}
+.reiter b { min-width: 26px; padding: 2px 8px; border-radius: 999px; background: var(--flaeche-2); color: var(--text); font-size: 14px; }
+.reiter [aria-selected="true"] { background: var(--cyan); color: #04202B; border-color: var(--cyan); }
+.reiter [aria-selected="true"] b { background: rgba(4, 32, 43, .18); color: #04202B; }
+.reiter [data-reiter="neu"].hat-neue b { background: var(--orange); color: #fff; animation: puls 1.2s infinite; }
+
+/* ---------- Bestellungen ---------- */
+.liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr)); gap: 14px; padding: 12px 16px 40px; align-items: start; }
+.leer { grid-column: 1 / -1; padding: 60px 20px; text-align: center; color: var(--leise); }
+.leer strong { display: block; font-size: 20px; color: var(--text); margin-bottom: 6px; }
+
+.karte { border: 1px solid var(--linie); border-radius: 18px; background: var(--flaeche); overflow: hidden; }
+.karte--neu { border-color: var(--orange); box-shadow: 0 0 0 2px rgba(228, 121, 30, .35); animation: leuchten 1.6s ease-in-out infinite; }
+.karte__kopf { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--flaeche-2); }
+.art { padding: 5px 10px; border-radius: 8px; font-weight: 800; font-size: 14px; letter-spacing: .04em; }
+.art--lieferung { background: var(--orange); color: #fff; }
+.art--abholung { background: var(--cyan); color: #04202B; }
+.karte__nr { font-weight: 800; font-size: 20px; }
+.karte__zeit { margin-left: auto; text-align: right; line-height: 1.15; }
+.karte__zeit strong { display: block; font-size: 18px; }
+.karte__zeit span { font-size: 13px; color: var(--leise); }
+.karte__zeit--bald strong { color: var(--orange-hell); }
+
+.posten { list-style: none; margin: 0; padding: 10px 14px; }
+.posten li { padding: 7px 0; border-bottom: 1px dashed var(--linie); }
+.posten li:last-child { border-bottom: 0; }
+.posten__zeile { display: flex; gap: 10px; font-weight: 700; font-size: 18px; }
+.posten__zeile span:last-child { margin-left: auto; color: var(--leise); font-weight: 500; font-size: 15px; white-space: nowrap; }
+.posten__extra { margin: 2px 0 0 28px; color: var(--leise); font-size: 15px; }
+.posten__notiz { margin: 4px 0 0 28px; color: var(--orange-hell); font-weight: 700; font-size: 15px; }
+.bemerkung { margin: 0 14px 10px; padding: 10px 12px; border-radius: 10px; background: rgba(228, 121, 30, .14); color: #FFD9B5; font-weight: 600; }
+
+.kunde { margin: 0 14px; padding: 10px 0; border-top: 1px solid var(--linie); display: grid; gap: 2px; }
+.kunde strong { font-size: 18px; }
+.kunde a { color: var(--cyan); font-weight: 600; text-decoration: none; }
+
+.summe { display: flex; align-items: center; gap: 10px; margin: 0 14px; padding: 10px 0; border-top: 1px solid var(--linie); }
+.summe__betrag { font-size: 22px; font-weight: 800; }
+.zahlung { margin-left: auto; padding: 6px 10px; border-radius: 8px; font-weight: 800; font-size: 14px; }
+.zahlung--online { background: rgba(52, 199, 123, .16); color: var(--gruen); }
+.zahlung--bar { background: rgba(228, 121, 30, .18); color: var(--orange-hell); }
+.zahlung--karte { background: rgba(63, 216, 230, .14); color: var(--cyan); }
+
+.karte__fuss { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px 14px; }
+.karte__fuss .knopf { flex: 1 1 auto; }
+.karte__fuss .knopf--haupt { flex: 2 1 100%; min-height: 56px; font-size: 19px; }
+.karte__stand { padding: 0 14px 12px; font-size: 13px; color: var(--leise); }
+
+/* ---------- Einstellungen ---------- */
+.einstellungen { width: min(520px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 24px; border: 1px solid var(--linie); border-radius: 20px; background: var(--flaeche); color: var(--text); }
+.einstellungen::backdrop { background: rgba(3, 8, 16, .7); }
+.einstellungen h2 { margin-bottom: 16px; }
+.einstellungen__knoepfe { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 6px; }
+.einstellungen__fuss { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; }
+
+.meldung {
+  position: fixed; left: 50%; bottom: 24px; z-index: 30; transform: translateX(-50%);
+  max-width: calc(100% - 32px); padding: 14px 20px; border-radius: 14px; background: var(--flaeche-2); border: 1px solid var(--linie);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .8); font-weight: 600;
+}
+.meldung--fehler { border-color: rgba(240, 96, 90, .6); color: #FFD0CD; }
+
+@keyframes puls { 50% { transform: scale(1.15); } }
+@keyframes leuchten { 50% { box-shadow: 0 0 0 6px rgba(228, 121, 30, .18); } }
+@media (prefers-reduced-motion: reduce) { .karte--neu, .reiter [data-reiter="neu"].hat-neue b { animation: none; } }
+@media (max-width: 560px) {
+  .leiste__titel span, .lampe { font-size: 0; gap: 0; padding: 6px; }
+  .leiste__uhr { font-size: 18px; min-width: 0; }
+}

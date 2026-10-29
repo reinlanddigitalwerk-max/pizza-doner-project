@@ -1,0 +1,7 @@
+# Rheinland Bestellsystem: nicht in Suchmaschinen, immer die neueste Fassung laden
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  <FilesMatch "\.(html|js|css|webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

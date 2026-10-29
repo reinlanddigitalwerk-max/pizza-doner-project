@@ -61,18 +61,21 @@ Freistellen: `tools/isnet_cut.py`.
   Lieferung/Abholung, Liefergebiet nach PLZ, Mindestbestellwert, aktive Rabatte aus `assets/js/offers-data.js`.
 - `kasse.html`: Formular wie auf der alten Bestellseite (Name, Telefon, Adresse, Etage, Liefertermin, Bar/Karte, Bemerkung).
 - Liefergebiete: `data/liefergebiete.json` (PLZ, Gebühr, Mindestbestellwert) – **vom Inhaber prüfen lassen**.
-- Wohin die Bestellung geht, steht in `assets/js/bestell-config.js`:
-  - leer → die Kasse öffnet WhatsApp mit der fertigen Bestellung an `telefon_mobil` aus `data/shop.json`;
-  - mit Supabase → Bestellung landet in der Datenbank und erscheint sofort auf `bestellungen.html` (mit Ton und Bon-Druck).
+- Bezahlen: **online** mit Stripe (`api/checkout.php`, `api/webhook.php`) oder **bar / Karte bei Übergabe** (`api/bestellen.php`).
+  Der Server rechnet Preise, Zeiten und Liefergebiet selbst nach (`api/lib.php`).
+- Alle Bestellungen landen in `api/bestellungen/` (nicht im Web abrufbar) und per E-Mail an `SHOP_EMAIL`.
+- Ist das Tablet im Laden aus (seit 90 Sekunden keine Abfrage), öffnet die Kasse für Bar/Karte wieder WhatsApp.
 
-### Datenbank einrichten (Supabase)
+### Rheinland Bestellsystem (Tablet im Laden)
 
-1. Supabase-Projekt anlegen (Region Frankfurt `eu-central-1`).
-2. `supabase/migrations/20261019120000_bestellungen.sql` im SQL-Editor ausführen.
-3. Unter Authentication → Users ein Konto für den Laden anlegen und die E-Mail freischalten:
-   `insert into public.personal (email) values ('laden@…');`
-4. Project URL und Publishable Key in `assets/js/bestell-config.js` eintragen.
-5. Im Laden `bestellungen.html` auf Tablet/PC öffnen, anmelden, „Ton an“ tippen und offen lassen.
+`/bestellsystem/` – App von Rheinland Digitalwerk fürs Tablet: Bestellungen mit Klingeln, Status
+(Annehmen → Fertig → Unterwegs/Abgeholt) und automatischem Bon auf dem Epson TM-m30II (ePOS-Print, Bon als Bild).
+
+1. GitHub-Secret `MONITOR_PASSWORT` anlegen und einmal hochladen lassen.
+2. Drucker per LAN-Kabel an den Router, Tablet im selben WLAN. IP steht auf dem Status-Bon (Knopf hinten am Drucker).
+3. Auf dem Tablet in Chrome `https://neusser-doner-pizza.de/bestellsystem/` öffnen, anmelden, ⚙ → IP prüfen →
+   „Drucker freischalten“ (Zertifikat einmal erlauben) → „Testdruck“. Über das Chrome-Menü „Zum Startbildschirm hinzufügen“.
+4. Jeden Tag: App öffnen, „Start“ tippen, Tablet am Strom lassen.
 
 ## App installieren
 
