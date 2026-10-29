@@ -2,6 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
+  <script>
+    // Alte Vorschau auf GitHub Pages (ohne Server, Zahlung und Tablet) → immer zur echten Domain
+    if (/\.github\.io$/.test(location.hostname)) {
+      location.replace('https://neusser-doner-pizza.de' + location.pathname.replace(/^\/pizza-doner-project/, '') + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Neusser Döner &amp; Pizza – Further Str. 46, Neuss</title>
   <meta name="description" content="Neusser Döner & Pizza in Neuss: Döner, Pizza, Lahmacun, Pide und mehr. Online bestellen, abholen oder liefern lassen.">

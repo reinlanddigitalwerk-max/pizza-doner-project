@@ -2,6 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
+  <script>
+    // Alte Vorschau auf GitHub Pages (ohne Server, Zahlung und Tablet) → immer zur echten Domain
+    if (/\.github\.io$/.test(location.hostname)) {
+      location.replace('https://neusser-doner-pizza.de' + location.pathname.replace(/^\/pizza-doner-project/, '') + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Datenschutz – Neusser Döner &amp; Pizza</title>
   <meta name="description" content="Datenschutzerklärung von Neusser Döner &amp; Pizza.">
