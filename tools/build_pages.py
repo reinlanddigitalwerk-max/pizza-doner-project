@@ -653,16 +653,34 @@ page(
 )
 
 
-# ---------- Service Worker (App installieren, Speisekarte offline) ----------
+# ---------- Versionsnummern für CSS/JS ----------
+# Jede Seite lädt assets/…?v=<Prüfsumme>. So holt sich jedes Handy nach einem Update sofort die neuen Dateien,
+# statt eine alte Kasse aus dem Speicher des Service Workers zu benutzen.
 import hashlib
+
+
+def version(pfad):
+    return hashlib.sha1((ROOT / pfad).read_bytes()).hexdigest()[:8]
+
+
+ASSET = re.compile(r'((?:src|href)=")(assets/(?:js|css)/[^"?]+)(?:\?v=[0-9a-f]+)?"')
+for html_datei in sorted(ROOT.glob("*.html")):
+    alt = html_datei.read_text(encoding="utf-8")
+    neu = ASSET.sub(lambda m: f'{m.group(1)}{m.group(2)}?v={version(m.group(2))}"', alt)
+    if neu != alt:
+        html_datei.write_text(neu, encoding="utf-8")
+
+
+# ---------- Service Worker (App installieren, Speisekarte offline) ----------
 
 VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html", "impressum.html", "datenschutz.html",
          "manifest.webmanifest", "assets/css/style.css"]
-VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js") )
+VORAB += sorted(f"assets/js/{f.name}" for f in (ROOT / "assets/js").glob("*.js"))
 VORAB += ["assets/img/logo.webp", "assets/img/muster-imbiss.svg"] + sorted(
     str(f.relative_to(ROOT)) for d in ("assets/img/kategorien", "assets/img/dishes", "assets/img/icons", "assets/img/logo")
     for f in (ROOT / d).glob("*") if f.suffix in (".webp", ".png"))
 stand = hashlib.sha1(b"".join((ROOT / f).read_bytes() for f in VORAB if f != "./")).hexdigest()[:10]
+VORAB = [f + "?v=" + version(f) if f.startswith(("assets/js/", "assets/css/")) else f for f in VORAB]
 (ROOT / "sw.js").write_text(f"""// Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
 // Seiten: erst Netz, sonst gespeicherte Fassung. Bilder, CSS, JS: sofort aus dem Speicher, im Hintergrund erneuern.
 const STAND = 'neusser-{stand}';
