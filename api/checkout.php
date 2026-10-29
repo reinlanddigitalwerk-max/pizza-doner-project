@@ -8,7 +8,7 @@ require __DIR__ . '/lib.php';
 $aktiv = (string) (geheim()['stripe_secret'] ?? '') !== '';
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 if ($methode === 'GET') {
-    // aktiv: Online-Zahlung möglich · system: Tablet im Laden ist an (sonst Bar/Karte per WhatsApp)
+    // aktiv: Online-Zahlung möglich · system: Tablet im Laden ist gerade an (nur zur Kontrolle)
     antwort(['aktiv' => $aktiv, 'system' => system_an()]);
 }
 if ($methode !== 'POST') {

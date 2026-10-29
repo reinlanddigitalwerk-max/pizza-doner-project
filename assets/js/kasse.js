@@ -1,7 +1,6 @@
 // Kasse: Formular wie auf der alten Bestellseite, Zusammenfassung rechts.
 // „Jetzt online bezahlen“ (nur wenn api/checkout.php eingerichtet ist): weiter zu Stripe, danach zurück mit ?bezahlt=…
-// Bar oder Karte bei Übergabe: an das Rheinland Bestellsystem im Laden (api/bestellen.php), wenn das Tablet an ist –
-// sonst als fertige WhatsApp-Nachricht an den Laden.
+// Bar oder Karte bei Übergabe: direkt an das Rheinland Bestellsystem im Laden (api/bestellen.php).
 (function () {
   var W = window.Warenkorb;
   var SHOP = window.SHOP;
@@ -11,7 +10,6 @@
   var form = box.querySelector('form');
   var euro = W.euro;
   var MERK = 'neusser-kunde-v1';
-  var mitSystem = false;   // Tablet im Laden ist an (meldet api/checkout.php)
 
   W.binden(box.querySelector('[data-warenkorb]'), { bearbeiten: false, modus: false, kasse: false });
 
@@ -29,16 +27,13 @@
 
   function zahlungAnzeigen() {
     var online = form.zahlung.value === 'online';
-    form.querySelector('.checkout__submit').textContent = online ? 'Zahlungspflichtig bestellen'
-      : mitSystem ? 'Kostenpflichtig bestellen' : 'Per WhatsApp bestellen';
+    form.querySelector('.checkout__submit').textContent = online ? 'Zahlungspflichtig bestellen' : 'Kostenpflichtig bestellen';
     box.querySelector('[data-online-hinweis]').hidden = !online;
-    box.querySelector('[data-wa-hinweis]').hidden = online || mitSystem;
   }
   zahlungAnzeigen();
 
   // Online-Zahlung nur anbieten, wenn der Server dafür eingerichtet ist
   fetch('api/checkout.php', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) {
-    mitSystem = !!j.system;
     if (j.aktiv) {
       box.querySelector('[data-online]').hidden = false;
       form.zahlung.value = 'online';
@@ -137,31 +132,6 @@
     };
   }
 
-  function whatsappText(d) {
-    var z = [];
-    z.push('*Neue Bestellung – ' + (d.art === 'lieferung' ? 'LIEFERUNG' : 'ABHOLUNG') + '*');
-    z.push('Zeit: ' + d.zeit);
-    z.push('');
-    d.positionen.forEach(function (p) {
-      var det = [p.groesse].concat(p.optionen).filter(Boolean).join(', ');
-      z.push(p.menge + '× ' + p.name + (det ? ' (' + det + ')' : '') + ' – ' + euro(p.preis * p.menge));
-      if (p.notiz) z.push('   Wunsch: ' + p.notiz);
-    });
-    z.push('');
-    z.push('Zwischensumme: ' + euro(d.zwischensumme));
-    if (d.rabatt) z.push('Rabatt: −' + euro(d.rabatt));
-    if (d.art === 'lieferung') z.push('Liefergebühr: ' + (d.liefergebuehr ? euro(d.liefergebuehr) : 'gratis'));
-    z.push('*Gesamt: ' + euro(d.gesamt) + '* (' + (d.zahlung === 'bar' ? 'bar' : 'mit Karte') + ')');
-    z.push('');
-    z.push(d.name + ', Tel. ' + d.telefon);
-    if (d.art === 'lieferung') {
-      if (d.firma) z.push(d.firma);
-      z.push(d.strasse + ' ' + d.hausnr + ', ' + d.plz + ' ' + d.ort + (d.etage ? ', ' + d.etage : ''));
-    }
-    if (d.bemerkung) z.push('Bemerkung: ' + d.bemerkung);
-    return z.join('\n');
-  }
-
   function merken() {
     try {
       if (form.merken.checked) {
@@ -239,18 +209,14 @@
       return;
     }
 
-    if (!mitSystem) {
-      window.open('https://wa.me/' + SHOP.whatsapp + '?text=' + encodeURIComponent(whatsappText(d)), '_blank', 'noopener');
-      fertig('Fast geschafft!', 'WhatsApp ist mit deiner Bestellung geöffnet. Bitte tippe dort auf <strong>Senden</strong> – erst dann ist sie bei uns. ' +
-        'Kein WhatsApp? Ruf uns an: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
-      return;
-    }
-
     knopf.disabled = true;
     knopf.textContent = 'Wird gesendet …';
     fetch('api/bestellen.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
       .then(function (r) {
-        return r.json().then(function (j) { if (!r.ok || !j.nr) throw new Error(j.fehler || 'Fehler'); return j; });
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok || !j.nr) throw new Error(j.fehler || 'Die Bestellung konnte nicht gesendet werden.');
+          return j;
+        });
       }).then(function (j) {
       W.leeren();
       fertig('Danke, ' + d.name.split(' ')[0] + '!', 'Deine Bestellung <strong>#' + W.esc(j.nr.slice(-4)) + '</strong> über <strong>' + euro(j.gesamt) +
@@ -262,7 +228,8 @@
     }).catch(function (err) {
       knopf.disabled = false;
       zahlungAnzeigen();
-      fehler(W.esc(err.message) + ' Bitte noch einmal versuchen oder anrufen: <a href="tel:' +
+      var text = err instanceof TypeError ? 'Keine Verbindung – bitte Internet prüfen.' : err.message;
+      fehler(W.esc(text) + ' Bitte noch einmal versuchen oder anrufen: <a href="tel:' +
         SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
     });
   });

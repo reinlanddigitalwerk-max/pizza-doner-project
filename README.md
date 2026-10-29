@@ -64,7 +64,7 @@ Freistellen: `tools/isnet_cut.py`.
 - Bezahlen: **online** mit Stripe (`api/checkout.php`, `api/webhook.php`) oder **bar / Karte bei Übergabe** (`api/bestellen.php`).
   Der Server rechnet Preise, Zeiten und Liefergebiet selbst nach (`api/lib.php`).
 - Alle Bestellungen landen in `api/bestellungen/` (nicht im Web abrufbar) und per E-Mail an `SHOP_EMAIL`.
-- Ist das Tablet im Laden aus (seit 90 Sekunden keine Abfrage), öffnet die Kasse für Bar/Karte wieder WhatsApp.
+- Ist das Tablet gerade aus, bleibt die Bestellung gespeichert, kommt per E-Mail und wird gedruckt, sobald das Tablet wieder läuft.
 
 ### Rheinland Bestellsystem (Tablet im Laden)
 

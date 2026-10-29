@@ -1,7 +1,7 @@
 """Baut die Unterseiten aus den Daten in data/:
 
   speisekarte.html  – Speisekarte zum Bestellen mit Warenkorb (data/menu.json)
-  kasse.html        – Kasse: online bezahlen (Stripe) oder bei Übergabe – an das Rheinland Bestellsystem, sonst per WhatsApp
+  kasse.html        – Kasse: online bezahlen (Stripe) oder bei Übergabe – alles an das Rheinland Bestellsystem
   bestellen.html    – Bestellshop von Speisebaron eingebettet (Alternative mit PayPal)
   sw.js             – Service Worker: Seiten und Bilder offline, damit die „App“ auch ohne Netz öffnet
   ueber-uns.html    – Über uns, Kontakt, Öffnungs- und Lieferzeiten (data/shop.json)
@@ -481,7 +481,6 @@ page(
         <button class="btn btn--primary btn--big checkout__submit" type="submit">Kostenpflichtig bestellen</button>
         <p class="co-hint co-hint--center">Lieber online mit PayPal bezahlen? <a href="bestellen.html">Über unseren Partner-Shop bestellen</a></p>
         <p class="co-hint co-hint--center" data-online-hinweis hidden>Du wirst zur sicheren Bezahlseite von Stripe weitergeleitet. Die Bestellung ist erst nach der Zahlung bei uns.</p>
-        <p class="co-hint co-hint--center" data-wa-hinweis hidden>Die Bestellung wird als fertige WhatsApp-Nachricht an uns geöffnet – bitte dort noch auf Senden tippen.</p>
       </form>
 
       <aside class="checkout__sum">
@@ -642,7 +641,7 @@ page(
       <h2>Online-Bestellung über diese Website</h2>
       <p>Wenn du über die Speisekarte und die Kasse dieser Website bestellst, verarbeiten wir die Angaben aus dem Bestellformular (Name, Telefonnummer, bei Lieferung die Adresse, freiwillig E-Mail, Firma, Etage und Bemerkung) sowie die bestellten Gerichte, um deine Bestellung zuzubereiten, zu liefern und bei Rückfragen anzurufen (Art. 6 Abs. 1 lit. b DSGVO).</p>
       <p>Der Warenkorb wird nur in deinem Browser gespeichert (localStorage). Wenn du „Meine Daten merken“ ankreuzt, werden auch deine Kontaktdaten nur in deinem Browser gespeichert, bis du das Häkchen wieder entfernst oder die Website-Daten löschst.</p>
-      <p>Die Bestellung wird auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert, auf dem Tablet in unserem Laden angezeigt, als Bon gedruckt und uns per E-Mail geschickt – solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist. Ist das Tablet gerade aus, wird die Bestellung stattdessen als WhatsApp-Nachricht geöffnet, die du selbst an uns sendest; dafür gelten zusätzlich die Datenschutzhinweise von WhatsApp Ireland Ltd.</p>
+      <p>Die Bestellung wird auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert, auf dem Tablet in unserem Laden angezeigt, als Bon gedruckt und uns per E-Mail geschickt – solange es für die Abwicklung, Rückfragen und gesetzliche Aufbewahrungspflichten nötig ist.</p>
       <h2>Online-Zahlung mit Stripe</h2>
       <p>Wenn du in der Kasse „Jetzt online bezahlen“ wählst, wirst du zur Bezahlseite von Stripe weitergeleitet (Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, D02 H210, Irland). Dafür übermitteln wir an Stripe die bestellten Gerichte, den Betrag, deinen Namen, deine Telefonnummer, bei Lieferung die Adresse und – falls angegeben – deine E-Mail-Adresse. Deine Karten- oder Kontodaten gibst du direkt bei Stripe ein; wir sehen sie nicht. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Abwicklung der Bestellung). Stripe kann Daten auch in den USA verarbeiten; Stripe ist dafür nach dem EU-US Data Privacy Framework zertifiziert. Mehr dazu: <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener">stripe.com/de/privacy</a>.</p>
       <p>Bezahlte Bestellungen werden auf unserem Webspace bei der united-domains GmbH (Gautinger Straße 10, 82319 Starnberg) gespeichert und per E-Mail an uns geschickt, solange es für die Abwicklung, Rückfragen und die gesetzlichen Aufbewahrungspflichten nötig ist.</p>
