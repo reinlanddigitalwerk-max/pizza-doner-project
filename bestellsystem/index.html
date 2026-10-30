@@ -45,6 +45,7 @@
         <span class="lampe" data-lampe-server title="Verbindung zum Server">Server</span>
         <span class="lampe" data-lampe-drucker title="Bondrucker">Drucker</span>
         <time class="leiste__uhr" data-uhr></time>
+        <button class="knopf knopf--rund" type="button" data-ton-schalter aria-label="Ton an/aus">🔔</button>
         <button class="knopf knopf--rund" type="button" data-einstellungen-oeffnen aria-label="Einstellungen">⚙</button>
       </div>
     </header>
@@ -56,9 +57,23 @@
       <button type="button" role="tab" data-reiter="arbeit">In Arbeit <b data-zahl="arbeit">0</b></button>
       <button type="button" role="tab" data-reiter="fertig">Fertig <b data-zahl="fertig">0</b></button>
       <button type="button" role="tab" data-reiter="erledigt">Erledigt <b data-zahl="erledigt">0</b></button>
+      <button type="button" role="tab" data-reiter="archiv">🗂 Archiv</button>
     </nav>
 
     <main class="liste" data-liste></main>
+
+    <!-- Archiv: alle Bestellungen eines Tages mit Summen, Belege ansehen und nachdrucken -->
+    <section class="archiv" data-archiv hidden>
+      <div class="archiv__leiste">
+        <button class="knopf knopf--zweit" type="button" data-tag-schritt="-1" aria-label="Tag zurück">◀</button>
+        <input class="archiv__datum" type="date" data-tag>
+        <button class="knopf knopf--zweit" type="button" data-tag-schritt="1" aria-label="Tag vor">▶</button>
+        <button class="knopf knopf--leise" type="button" data-heute>Heute</button>
+        <button class="knopf knopf--zweit archiv__csv" type="button" data-csv>⬇ Monat als Tabelle (CSV)</button>
+      </div>
+      <div class="kacheln" data-summen></div>
+      <div class="tabelle" data-tabelle></div>
+    </section>
   </div>
 
   <!-- Einstellungen -->
@@ -68,7 +83,8 @@
       <label class="feld"><span>IP-Adresse des Bondruckers</span><input name="ip" inputmode="decimal" placeholder="192.168.178.82" required></label>
       <label class="haken"><input type="checkbox" name="autodruck"> <span>Neue Bestellungen automatisch drucken</span></label>
       <label class="feld feld--klein"><span>Bons pro Bestellung</span>
-        <select name="kopien"><option value="1">1</option><option value="2">2 (Küche + Fahrer)</option></select></label>
+        <select name="belege"><option value="beide">2 Bons: Restaurant + Kunde</option><option value="laden">1 Bon: nur Restaurant</option></select></label>
+      <label class="haken"><input type="checkbox" name="autoannehmen"> <span>Nach dem Druck automatisch annehmen (Klingeln hört sofort auf)</span></label>
       <label class="haken"><input type="checkbox" name="ton"> <span>Klingeln bei neuen Bestellungen</span></label>
       <label class="haken"><input type="checkbox" name="https"> <span>Sichere Verbindung zum Drucker (https)</span></label>
       <div class="einstellungen__knoepfe">
@@ -84,6 +100,16 @@
       </div>
       <p class="marke">Rheinland Bestellsystem 1.0 · <a href="https://www.rheinlanddigitalwerk.de/" target="_blank" rel="noopener">rheinlanddigitalwerk.de</a></p>
     </form>
+  </dialog>
+
+  <!-- Beleg ansehen -->
+  <dialog class="beleg" data-beleg>
+    <div class="beleg__bild" data-beleg-bild></div>
+    <div class="beleg__knoepfe">
+      <button class="knopf" type="button" data-beleg-druck="laden">🖨 Restaurant-Bon</button>
+      <button class="knopf knopf--zweit" type="button" data-beleg-druck="kunde">🖨 Kunden-Bon</button>
+      <button class="knopf knopf--leise" type="button" data-beleg-zu>Schließen</button>
+    </div>
   </dialog>
 
   <div class="meldung" role="status" aria-live="polite" data-meldung hidden></div>

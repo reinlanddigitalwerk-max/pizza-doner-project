@@ -1,4 +1,4 @@
-// Rheinland Bestellsystem – Bestellungen vom Server holen, klingeln, Bon drucken, Status setzen.
+// Rheinland Bestellsystem – Bestellungen vom Server holen, klingeln, Bons drucken, Status setzen, Archiv.
 (function () {
   var API = '../api/monitor.php';
   var TOKEN = 'rdw-token';
@@ -6,13 +6,15 @@
   var ABFRAGE_MS = 4000;
   var $ = function (s) { return document.querySelector(s); };
 
-  var cfg = laden(EINST, { ip: '192.168.178.82', autodruck: true, kopien: 1, ton: true, https: true });
+  var cfg = laden(EINST, { ip: '192.168.178.82', autodruck: true, belege: 'beide', autoannehmen: true, ton: true, https: true });
   var token = laden(TOKEN, '');
   var bestellungen = [];
   var bekannt = null;             // Nummern, die schon einmal da waren (erst nach der ersten Abfrage gefüllt)
   var reiter = 'neu';
   var druckt = false;
   var druckFehler = {};           // nr → Zeitpunkt des letzten Fehlversuchs
+  var ankunft = {};               // nr → wann die Bestellung hier zuerst als „neu“ auftauchte (fürs Erinnerungs-Klingeln)
+  var ERINNERN_MS = 2 * 60000;    // so lange wird an eine nicht angenommene Bestellung erinnert
   var abfrage = null;
 
   function laden(k, std) {
@@ -35,8 +37,8 @@
   }
 
   // ---------- Server ----------
-  function api(methode, daten) {
-    return fetch(API, {
+  function api(methode, daten, abfrageText) {
+    return fetch(API + (abfrageText || ''), {
       method: methode,
       cache: 'no-store',
       headers: Object.assign({ 'X-Token': token }, daten ? { 'Content-Type': 'application/json' } : {}),
@@ -119,10 +121,25 @@
       o.stop(t + n[1] + .55);
     });
   }
-  // Klingelt alle 15 Sekunden weiter, solange eine Bestellung nicht angenommen ist
+  // Erinnert alle 20 Sekunden an neue, noch nicht angenommene Bestellungen – höchstens 2 Minuten lang
   setInterval(function () {
-    if (bestellungen.some(function (b) { return b.status === 'neu'; })) klingeln();
-  }, 15000);
+    var jetzt = Date.now();
+    if (bestellungen.some(function (b) { return b.status === 'neu' && jetzt - (ankunft[b.nr] || 0) < ERINNERN_MS; })) klingeln();
+  }, 20000);
+
+  function tonZeigen() {
+    var k = $('[data-ton-schalter]');
+    k.textContent = cfg.ton ? '🔔' : '🔕';
+    k.setAttribute('aria-pressed', String(cfg.ton));
+  }
+  $('[data-ton-schalter]').addEventListener('click', function () {
+    cfg.ton = !cfg.ton;
+    merken(EINST, cfg);
+    tonZeigen();
+    if (cfg.ton) { tonBereit(); klingeln(); }
+    melden(cfg.ton ? 'Ton an' : 'Ton aus');
+  });
+  tonZeigen();
 
   // ---------- Abfrage ----------
   function holen() {
@@ -132,10 +149,13 @@
       bestellungen = j.bestellungen || [];
       var neue = bestellungen.filter(function (b) { return bekannt && !bekannt[b.nr]; });
       bekannt = bekannt || {};
-      bestellungen.forEach(function (b) { bekannt[b.nr] = true; });
+      bestellungen.forEach(function (b) {
+        bekannt[b.nr] = true;
+        if (b.status === 'neu' && !ankunft[b.nr]) ankunft[b.nr] = Date.now();
+      });
       if (neue.length) {
         klingeln();
-        reiterWaehlen('neu');
+        if (reiter !== 'archiv') reiterWaehlen('neu');
         melden(neue.length === 1 ? 'Neue Bestellung ' + kurz(neue[0]) + '!' : neue.length + ' neue Bestellungen!');
       }
       zeichnen();
@@ -167,7 +187,9 @@
   function reiterWaehlen(r) {
     reiter = r;
     document.querySelectorAll('[data-reiter]').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.reiter === r)); });
-    zeichnen();
+    $('[data-liste]').hidden = r === 'archiv';
+    $('[data-archiv]').hidden = r !== 'archiv';
+    if (r === 'archiv') archivLaden(); else zeichnen();
   }
   document.querySelectorAll('[data-reiter]').forEach(function (b) {
     b.addEventListener('click', function () { reiterWaehlen(b.dataset.reiter); });
@@ -227,6 +249,7 @@
   }
 
   function zeichnen() {
+    if (reiter === 'archiv') return;
     var zahl = { neu: 0, arbeit: 0, fertig: 0, erledigt: 0 };
     bestellungen.forEach(function (b) { zahl[GRUPPE[b.status]]++; });
     Object.keys(zahl).forEach(function (k) { $('[data-zahl="' + k + '"]').textContent = zahl[k]; });
@@ -248,9 +271,10 @@
   $('[data-liste]').addEventListener('click', function (e) {
     var k = e.target.closest('button');
     var art = e.target.closest('[data-nr]');
-    if (!k || !art) return;
+    if (!art) return;
     var b = bestellungen.find(function (x) { return x.nr === art.dataset.nr; });
     if (!b) return;
+    if (!k) { if (e.target.closest('.karte__kopf')) belegZeigen(b); return; }
     if (k.dataset.aktion === 'drucken') { druckeBon(b, true); return; }
     var neu = k.dataset.status;
     if (neu === 'storniert' && !confirm('Bestellung ' + kurz(b) + ' wirklich ablehnen?' +
@@ -270,8 +294,12 @@
       lampe('drucker', true);
       delete druckFehler[b.nr];
       b.gedruckt = new Date().toISOString();
+      var annehmen = !vonHand && cfg.autoannehmen && b.status === 'neu';
+      if (annehmen) b.status = 'angenommen';
       zeichnen();
-      return api('POST', { aktion: 'gedruckt', nr: b.nr }).catch(function () { /* nächste Abfrage */ });
+      return api('POST', { aktion: 'gedruckt', nr: b.nr }).then(function () {
+        if (annehmen) return api('POST', { aktion: 'status', nr: b.nr, status: 'angenommen' });
+      }).catch(function () { /* nächste Abfrage */ });
     }).catch(function (err) {
       lampe('drucker', false);
       druckFehler[b.nr] = Date.now();
@@ -299,15 +327,18 @@
   $('[data-einstellungen-oeffnen]').addEventListener('click', function () {
     form.ip.value = cfg.ip;
     form.autodruck.checked = cfg.autodruck;
-    form.kopien.value = String(cfg.kopien);
+    form.belege.value = cfg.belege;
+    form.autoannehmen.checked = cfg.autoannehmen;
     form.ton.checked = cfg.ton;
     form.https.checked = cfg.https;
     $('[data-druck-meldung]').textContent = '';
     dlg.showModal();
   });
   function uebernehmen() {
-    cfg = { ip: form.ip.value.trim(), autodruck: form.autodruck.checked, kopien: +form.kopien.value, ton: form.ton.checked, https: form.https.checked };
+    cfg = { ip: form.ip.value.trim(), autodruck: form.autodruck.checked, belege: form.belege.value, autoannehmen: form.autoannehmen.checked,
+      ton: form.ton.checked, https: form.https.checked };
     merken(EINST, cfg);
+    tonZeigen();
   }
   form.addEventListener('change', uebernehmen);
   dlg.addEventListener('close', function () { uebernehmen(); druckerPruefen(); automatischDrucken(); });
@@ -323,6 +354,108 @@
       function (err) { m.textContent = '✗ ' + err.message; lampe('drucker', false); });
   });
   $('[data-abmelden]').addEventListener('click', abmelden);
+
+  // ---------- Archiv ----------
+  var archivListe = [];
+  function isoTag(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  var tagFeld = $('[data-tag]');
+  tagFeld.value = isoTag(new Date());
+  tagFeld.max = tagFeld.value;
+
+  function zaehlt(b) { return b.status !== 'storniert'; }
+  function archivLaden() {
+    var tag = tagFeld.value;
+    $('[data-tabelle]').innerHTML = '<p class="leer">Lädt …</p>';
+    api('GET', null, '?tag=' + tag).then(function (j) {
+      if (tagFeld.value !== tag) return;
+      archivListe = j.bestellungen || [];
+      archivZeichnen();
+    }).catch(function (err) { $('[data-tabelle]').innerHTML = '<p class="leer">' + esc(err.message) + '</p>'; });
+  }
+  function summe(liste, f) { return liste.filter(zaehlt).filter(f || function () { return true; }).reduce(function (t, b) { return t + b.gesamt; }, 0); }
+  function archivZeichnen() {
+    var l = archivListe;
+    var gueltig = l.filter(zaehlt);
+    $('[data-summen]').innerHTML = [
+      ['kachel--haupt', 'Umsatz', euro(summe(l))],
+      ['', 'Bestellungen', gueltig.length + (l.length > gueltig.length ? ' <small>(+' + (l.length - gueltig.length) + ' abgelehnt)</small>' : '')],
+      ['', 'Bar', euro(summe(l, function (b) { return b.zahlung === 'bar'; }))],
+      ['', 'Karte', euro(summe(l, function (b) { return b.zahlung === 'karte'; }))],
+      ['', 'Online bezahlt', euro(summe(l, function (b) { return b.zahlung === 'online'; }))],
+      ['', 'Lieferung / Abholung', gueltig.filter(function (b) { return b.art === 'lieferung'; }).length + ' / ' + gueltig.filter(function (b) { return b.art !== 'lieferung'; }).length]
+    ].map(function (k) { return '<div class="kachel ' + k[0] + '"><span>' + k[1] + '</span><strong>' + k[2] + '</strong></div>'; }).join('');
+    var ZAHLUNG = { online: ['online', 'Online'], bar: ['bar', 'Bar'], karte: ['karte', 'Karte'] };
+    $('[data-tabelle]').innerHTML = l.length ? l.map(function (b) {
+      var z = ZAHLUNG[b.zahlung] || ZAHLUNG.bar;
+      return '<button class="zeile' + (b.status === 'storniert' ? ' zeile--storniert' : '') + '" type="button" data-archiv-nr="' + esc(b.nr) + '">' +
+        '<span class="zeile__zeit">' + uhr(b.eingang) + '</span><span class="zeile__nr">' + kurz(b) + '</span>' +
+        '<span class="zeile__name">' + esc(b.name) + ' <small>· ' + (b.art === 'lieferung' ? 'Lieferung' : 'Abholung') + ' · ' + STAND[b.status] + '</small></span>' +
+        '<span class="zahlung zahlung--' + z[0] + '">' + z[1] + '</span><span class="zeile__betrag">' + euro(b.gesamt) + '</span></button>';
+    }).join('') : '<p class="leer"><strong>Keine Bestellungen an diesem Tag</strong></p>';
+  }
+  $('[data-tabelle]').addEventListener('click', function (e) {
+    var z = e.target.closest('[data-archiv-nr]');
+    var b = z && archivListe.find(function (x) { return x.nr === z.dataset.archivNr; });
+    if (b) belegZeigen(b);
+  });
+  tagFeld.addEventListener('change', archivLaden);
+  document.querySelectorAll('[data-tag-schritt]').forEach(function (k) {
+    k.addEventListener('click', function () {
+      var d = new Date(tagFeld.value + 'T12:00:00');
+      d.setDate(d.getDate() + +k.dataset.tagSchritt);
+      if (isoTag(d) > tagFeld.max) return;
+      tagFeld.value = isoTag(d);
+      archivLaden();
+    });
+  });
+  $('[data-heute]').addEventListener('click', function () { tagFeld.value = tagFeld.max = isoTag(new Date()); archivLaden(); });
+
+  // Monat als Tabelle für die Buchhaltung (Excel öffnet die Datei direkt)
+  $('[data-csv]').addEventListener('click', function () {
+    var monat = tagFeld.value.slice(0, 7);
+    api('GET', null, '?monat=' + monat).then(function (j) {
+      var zahl = function (n) { return (Math.round((n || 0) * 100) / 100).toFixed(2).replace('.', ','); };
+      var feld = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+      var zeilen = [['Datum', 'Uhrzeit', 'Nr', 'Art', 'Status', 'Zahlung', 'Name', 'Telefon', 'Adresse', 'Zwischensumme', 'Rabatt', 'Liefergebühr', 'Gesamt', 'Positionen']];
+      (j.bestellungen || []).forEach(function (b) {
+        var d = new Date(b.eingang);
+        zeilen.push([d.toLocaleDateString('de-DE'), uhr(b.eingang), b.nr, b.art === 'lieferung' ? 'Lieferung' : 'Abholung', STAND[b.status],
+          { online: 'Online', bar: 'Bar', karte: 'Karte' }[b.zahlung] || '', b.name, b.telefon,
+          b.art === 'lieferung' ? b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort : '',
+          zahl(b.zwischensumme), zahl(b.rabatt ? b.rabatt.betrag : 0), zahl(b.liefergebuehr), zahl(b.gesamt),
+          (b.positionen || []).map(function (p) { return p.menge + 'x ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : ''); }).join(', ')]);
+      });
+      var text = '\ufeff' + zeilen.map(function (z) { return z.map(feld).join(';'); }).join('\r\n');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+      a.download = 'Bestellungen-' + monat + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      melden((j.bestellungen || []).length + ' Bestellungen aus ' + monat + ' gespeichert.');
+    }).catch(function (err) { melden(err.message, true); });
+  });
+
+  // ---------- Beleg ansehen und nachdrucken ----------
+  var belegDlg = $('[data-beleg]');
+  var belegBestellung = null;
+  function belegZeigen(b) {
+    belegBestellung = b;
+    var box = $('[data-beleg-bild]');
+    box.innerHTML = '';
+    box.appendChild(Bon.zeichnen(b, 'kunde'));
+    belegDlg.showModal();
+  }
+  document.querySelectorAll('[data-beleg-druck]').forEach(function (k) {
+    k.addEventListener('click', function () {
+      var b = belegBestellung;
+      if (!b || druckt) return;
+      druckt = true;
+      Bon.drucken(b, cfg, [k.dataset.belegDruck]).then(function () { lampe('drucker', true); melden('Bon ' + kurz(b) + ' gedruckt.'); },
+        function (err) { lampe('drucker', false); melden(err.message, true); }).then(function () { druckt = false; });
+    });
+  });
+  $('[data-beleg-zu]').addEventListener('click', function () { belegDlg.close(); });
 
   // ---------- Uhr ----------
   function tick() { $('[data-uhr]').textContent = uhr(new Date().toISOString()); }

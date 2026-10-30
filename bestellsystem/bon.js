@@ -1,5 +1,6 @@
 // Rheinland Bestellsystem – Bon zeichnen und auf dem Epson-Bondrucker ausgeben.
 // Der Bon wird als Bild (576 Punkte = 72 mm, 80-mm-Papier) gezeichnet und per ePOS-Print an den Drucker im WLAN geschickt.
+// Zwei Fassungen: „laden“ für Küche und Fahrer (groß, mit allem) und „kunde“ als Bestellbeleg für den Kunden.
 // So klappen Umlaute, große Schrift und das Logo ohne Zeichensatz-Probleme.
 (function () {
   var BREITE = 576;
@@ -14,7 +15,8 @@
   logo.src = '../assets/img/logo.webp';
 
   // ---------- Zeichnen ----------
-  function zeichnen(b) {
+  function zeichnen(b, art) {
+    var kunde = art === 'kunde';
     var c = document.createElement('canvas');
     c.width = BREITE;
     c.height = 4000;
@@ -77,19 +79,29 @@
     zeile('Further Straße 46 · 41462 Neuss · 02131 3166137', 20, false, { mitte: true });
     y += 8;
 
-    balken(b.art === 'lieferung' ? 'LIEFERUNG' : 'ABHOLUNG', 44);
-    zeile('Bestellung ' + b.nr.slice(-4), 30, true, { rechts: uhr(b.eingang) + ' Uhr' });
-    zeile('Nr. ' + b.nr + ' · ' + datum(b.eingang), 20, false);
-    y += 4;
-    zeile(b.zeit === 'schnellstmöglich' ? 'SCHNELLSTMÖGLICH' : 'FÜR ' + b.zeit + ' UHR', 38, true, { mitte: true });
+    var zeitText = b.zeit === 'schnellstmöglich' ? 'SCHNELLSTMÖGLICH' : 'FÜR ' + b.zeit + ' UHR';
+    if (kunde) {
+      balken('BESTELLBELEG', 36);
+      zeile('Bestellung #' + b.nr.slice(-4), 30, true, { rechts: datum(b.eingang) });
+      zeile((b.art === 'lieferung' ? 'Lieferung' : 'Abholung') + ' · bestellt ' + uhr(b.eingang) + ' Uhr', 24, false);
+      zeile(b.zeit === 'schnellstmöglich' ? 'So schnell wie möglich' : 'Gewünscht für ' + b.zeit + ' Uhr', 24, false);
+    } else {
+      zeile('— RESTAURANT —', 22, true, { mitte: true });
+      balken(b.art === 'lieferung' ? 'LIEFERUNG' : 'ABHOLUNG', 44);
+      zeile('Bestellung ' + b.nr.slice(-4), 30, true, { rechts: uhr(b.eingang) + ' Uhr' });
+      zeile('Nr. ' + b.nr + ' · ' + datum(b.eingang), 20, false);
+      y += 4;
+      zeile(zeitText, 38, true, { mitte: true });
+    }
     linie(true);
 
     // Positionen
+    var gross = kunde ? 26 : 30, klein = kunde ? 22 : 24;
     (b.positionen || []).forEach(function (p) {
       var name = p.menge + '× ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : '');
-      zeile(name, 30, true, { rechts: euro(p.stueck * p.menge) });
-      (p.optionen || []).forEach(function (o) { zeile('+ ' + o, 24, false, { einzug: 34 }); });
-      if (p.notiz) zeile('» ' + p.notiz, 24, true, { einzug: 34 });
+      zeile(name, gross, true, { rechts: euro(p.stueck * p.menge) });
+      (p.optionen || []).forEach(function (o) { zeile('+ ' + o, klein, false, { einzug: 34 }); });
+      if (p.notiz) zeile('» ' + p.notiz, klein, true, { einzug: 34 });
       y += 6;
     });
     linie();
@@ -99,18 +111,29 @@
     if (b.art === 'lieferung') zeile('Liefergebühr', 24, false, { rechts: b.liefergebuehr ? euro(b.liefergebuehr) : 'gratis' });
     zeile('GESAMT', 36, true, { rechts: euro(b.gesamt) });
     y += 6;
-    balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
 
-    // Kunde
-    zeile(b.name, 32, true);
-    zeile('Tel. ' + b.telefon, 30, true);
-    if (b.art === 'lieferung') {
-      if (b.firma) zeile(b.firma, 28, false);
-      zeile(b.strasse + ' ' + b.hausnr, 32, true);
-      zeile(b.plz + ' ' + b.ort + (b.etage ? ' · ' + b.etage : ''), 28, false);
+    if (kunde) {
+      zeile(b.zahlung === 'online' ? 'Bezahlt: online' : b.zahlung === 'karte' ? 'Zahlung: mit Karte bei Übergabe' : 'Zahlung: bar bei Übergabe', 26, true);
+      y += 6;
+      zeile(b.name, 26, false);
+      if (b.art === 'lieferung') zeile(b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort, 24, false);
+      linie();
+      zeile('Danke für deine Bestellung!', 30, true, { mitte: true });
+      zeile('Guten Appetit · neusser-doner-pizza.de', 22, false, { mitte: true });
+      y += 6;
+      zeile('Bestellbeleg – kein Kassenbon', 18, false, { mitte: true });
+    } else {
+      balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
+      zeile(b.name, 32, true);
+      zeile('Tel. ' + b.telefon, 30, true);
+      if (b.art === 'lieferung') {
+        if (b.firma) zeile(b.firma, 28, false);
+        zeile(b.strasse + ' ' + b.hausnr, 32, true);
+        zeile(b.plz + ' ' + b.ort + (b.etage ? ' · ' + b.etage : ''), 28, false);
+      }
+      if (b.bemerkung) { y += 6; zeile('Bemerkung: ' + b.bemerkung, 26, true); }
+      if (b.notiz) zeile(b.notiz, 22, false);
     }
-    if (b.bemerkung) { y += 6; zeile('Bemerkung: ' + b.bemerkung, 26, true); }
-    if (b.notiz) zeile(b.notiz, 22, false);
     linie();
     zeile('Rheinland Bestellsystem · rheinlanddigitalwerk.de', 18, false, { mitte: true });
     y += 10;
@@ -156,15 +179,15 @@
     return btoa(s);
   }
 
-  function epos(c, kopien) {
-    var teile = '';
-    for (var von = 0; von < c.height; von += 400) {        // in Streifen, damit der Druckerpuffer reicht
-      var bis = Math.min(c.height, von + 400);
-      teile += '<image width="' + c.width + '" height="' + (bis - von) + '" color="color_1" mode="mono">' + raster(c, von, bis) + '</image>';
-    }
-    var bon = teile + '<feed line="3"/><cut type="feed"/>';
+  function epos(bilder) {
     var alles = '';
-    for (var i = 0; i < (kopien || 1); i++) alles += bon;
+    bilder.forEach(function (c) {
+      for (var von = 0; von < c.height; von += 400) {        // in Streifen, damit der Druckerpuffer reicht
+        var bis = Math.min(c.height, von + 400);
+        alles += '<image width="' + c.width + '" height="' + (bis - von) + '" color="color_1" mode="mono">' + raster(c, von, bis) + '</image>';
+      }
+      alles += '<feed line="3"/><cut type="feed"/>';
+    });
     return '<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body>' +
       '<epos-print xmlns="http://www.epson-pos.com/schemas/2011/03/epos-print">' + alles + '</epos-print></s:Body></s:Envelope>';
   }
@@ -204,7 +227,11 @@
 
   window.Bon = {
     zeichnen: zeichnen,
-    drucken: function (b, cfg) { return senden(epos(zeichnen(b), cfg.kopien), cfg); },
+    // arten: ['laden', 'kunde'] – Standard nach Einstellung (beide Bons oder nur Restaurant)
+    drucken: function (b, cfg, arten) {
+      arten = arten || (cfg.belege === 'laden' ? ['laden'] : ['laden', 'kunde']);
+      return senden(epos(arten.map(function (a) { return zeichnen(b, a); })), cfg);
+    },
     pruefen: function (cfg) {   // fragt nur den Status ab, druckt nichts
       return senden('<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body>' +
         '<epos-print xmlns="http://www.epson-pos.com/schemas/2011/03/epos-print"></epos-print></s:Body></s:Envelope>', cfg);
@@ -216,7 +243,7 @@
         positionen: [{ name: 'Testdruck', groesse: '', optionen: ['Umlaute: ä ö ü ß Ä Ö Ü', 'Döner · Größe Ø30cm'], notiz: '', menge: 1, stueck: 0 }],
         zwischensumme: 0, gesamt: 0, liefergebuehr: 0, rabatt: null, zahlung: 'test',
         name: 'Rheinland Bestellsystem', telefon: '–', bemerkung: 'Wenn du das lesen kannst, ist der Drucker richtig eingerichtet.'
-      }, cfg);
+      }, cfg, ['laden']);
     }
   };
 })();

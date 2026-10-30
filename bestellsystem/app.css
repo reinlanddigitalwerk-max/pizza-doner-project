@@ -144,6 +144,42 @@ h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
 .karte__fuss .knopf--haupt { flex: 2 1 100%; min-height: 56px; font-size: 19px; }
 .karte__stand { padding: 0 14px 12px; font-size: 13px; color: var(--leise); }
 
+/* ---------- Archiv ---------- */
+.archiv { padding: 12px 16px 40px; }
+.archiv__leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.archiv__datum { min-height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--linie); background: var(--flaeche); color: var(--text); font: 600 17px var(--schrift); }
+.archiv__csv { margin-left: auto; }
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.kachel { padding: 14px; border-radius: 14px; background: var(--flaeche); border: 1px solid var(--linie); }
+.kachel span { display: block; font-size: 13px; color: var(--leise); font-weight: 600; }
+.kachel strong { font-size: 22px; font-variant-numeric: tabular-nums; }
+.kachel--haupt { background: linear-gradient(135deg, rgba(63, 216, 230, .18), rgba(1, 36, 122, .35)); border-color: rgba(63, 216, 230, .35); }
+.tabelle { border: 1px solid var(--linie); border-radius: 14px; overflow: hidden; }
+.zeile { display: grid; grid-template-columns: 62px 70px 1fr auto auto; align-items: center; gap: 12px; width: 100%; padding: 12px 14px;
+  border: 0; border-bottom: 1px solid var(--linie); background: var(--flaeche); color: var(--text); font: 500 16px var(--schrift); text-align: left; cursor: pointer; }
+.zeile:last-child { border-bottom: 0; }
+.zeile:active { background: var(--flaeche-2); }
+.zeile__zeit { font-weight: 700; font-variant-numeric: tabular-nums; }
+.zeile__nr { color: var(--leise); font-weight: 700; }
+.zeile__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.zeile__name small { color: var(--leise); }
+.zeile__betrag { font-weight: 800; font-variant-numeric: tabular-nums; }
+.zeile--storniert { opacity: .5; }
+.zeile--storniert .zeile__betrag { text-decoration: line-through; }
+
+.beleg { width: min(460px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 16px; border: 1px solid var(--linie); border-radius: 20px; background: var(--flaeche); color: var(--text); }
+.beleg::backdrop { background: rgba(3, 8, 16, .75); }
+.beleg__bild { max-height: 62vh; overflow: auto; border-radius: 10px; background: #fff; }
+.beleg__bild canvas { display: block; width: 100%; height: auto; }
+.beleg__knoepfe { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.beleg__knoepfe .knopf { flex: 1 1 auto; }
+
+@media (max-width: 560px) {
+  .zeile { grid-template-columns: 54px 1fr auto; }
+  .zeile__nr, .zeile .zahlung { display: none; }
+  .archiv__csv { margin-left: 0; }
+}
+
 /* ---------- Einstellungen ---------- */
 .einstellungen { width: min(520px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 24px; border: 1px solid var(--linie); border-radius: 20px; background: var(--flaeche); color: var(--text); }
 .einstellungen::backdrop { background: rgba(3, 8, 16, .7); }

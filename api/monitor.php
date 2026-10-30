@@ -2,6 +2,7 @@
 // Rheinland Bestellsystem – Schnittstelle für das Tablet im Laden (/bestellsystem/).
 //   POST {"aktion":"anmelden","passwort":"…"}            → {"token": "…"}
 //   GET  (Kopf X-Token)                                   → {"bestellungen": [...], "jetzt": "…"}   (zählt als Herzschlag)
+//   GET  ?tag=JJJJ-MM-TT  oder  ?monat=JJJJ-MM            → {"bestellungen": [...]}   (Archiv)
 //   POST {"aktion":"status","nr":"…","status":"…"}       → {"ok": true}
 //   POST {"aktion":"gedruckt","nr":"…"}                  → {"ok": true}
 declare(strict_types=1);
@@ -26,6 +27,28 @@ if (($d['aktion'] ?? '') === 'anmelden') {
 
 monitor_pruefen();
 $o = ordner();
+
+if ($methode === 'GET' && (isset($_GET['tag']) || isset($_GET['monat']))) {
+    // Archiv: alle Bestellungen eines Tages (JJJJ-MM-TT) oder Monats (JJJJ-MM) – die Nummer beginnt mit dem Datum
+    $tag = (string) ($_GET['tag'] ?? '');
+    $monat = (string) ($_GET['monat'] ?? '');
+    if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $tag, $m)) {
+        $muster = 'W' . substr($m[1], 2) . $m[2] . $m[3] . '-*.json';
+    } elseif (preg_match('/^(\d{4})-(\d{2})$/', $monat, $m)) {
+        $muster = 'W' . substr($m[1], 2) . $m[2] . '??-*.json';
+    } else {
+        antwort(['fehler' => 'Ungültiges Datum.'], 400);
+    }
+    $liste = [];
+    foreach (glob($o . '/' . $muster) ?: [] as $f) {
+        $b = json_decode((string) file_get_contents($f), true);
+        if (!$b) continue;
+        unset($b['stripe_session'], $b['bezahlt']['session']);
+        $liste[] = $b;
+    }
+    usort($liste, fn ($a, $b) => strcmp($a['eingang'], $b['eingang']));
+    antwort(['bestellungen' => $liste]);
+}
 
 if ($methode === 'GET') {
     touch($o . '/.herzschlag');
