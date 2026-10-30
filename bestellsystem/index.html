@@ -56,7 +56,6 @@
       <button type="button" role="tab" data-reiter="neu" aria-selected="true">Neu <b data-zahl="neu">0</b></button>
       <button type="button" role="tab" data-reiter="arbeit">In Arbeit <b data-zahl="arbeit">0</b></button>
       <button type="button" role="tab" data-reiter="fertig">Fertig <b data-zahl="fertig">0</b></button>
-      <button type="button" role="tab" data-reiter="erledigt">Erledigt <b data-zahl="erledigt">0</b></button>
       <button type="button" role="tab" data-reiter="archiv">🗂 Archiv</button>
     </nav>
 
@@ -84,7 +83,9 @@
       <label class="haken"><input type="checkbox" name="autodruck"> <span>Neue Bestellungen automatisch drucken</span></label>
       <label class="feld feld--klein"><span>Bons pro Bestellung</span>
         <select name="belege"><option value="beide">2 Bons: Restaurant + Kunde</option><option value="laden">1 Bon: nur Restaurant</option></select></label>
-      <label class="haken"><input type="checkbox" name="autoannehmen"> <span>Nach dem Druck automatisch annehmen (Klingeln hört sofort auf)</span></label>
+      <label class="feld feld--klein"><span>Nach dem Druck</span>
+        <select name="nachDruck"><option value="archiv">Direkt ins Archiv</option><option value="annehmen">In Arbeit (dann Fertig / Unterwegs)</option>
+          <option value="">Unter „Neu“ lassen</option></select></label>
       <label class="haken"><input type="checkbox" name="ton"> <span>Klingeln bei neuen Bestellungen</span></label>
       <label class="haken"><input type="checkbox" name="https"> <span>Sichere Verbindung zum Drucker (https)</span></label>
       <div class="einstellungen__knoepfe">

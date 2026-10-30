@@ -6,7 +6,7 @@
   var ABFRAGE_MS = 4000;
   var $ = function (s) { return document.querySelector(s); };
 
-  var cfg = laden(EINST, { ip: '192.168.178.82', autodruck: true, belege: 'beide', autoannehmen: true, ton: true, https: true });
+  var cfg = laden(EINST, { ip: '192.168.178.82', autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
   var token = laden(TOKEN, '');
   var bestellungen = [];
   var bekannt = null;             // Nummern, die schon einmal da waren (erst nach der ersten Abfrage gefüllt)
@@ -252,20 +252,19 @@
     if (reiter === 'archiv') return;
     var zahl = { neu: 0, arbeit: 0, fertig: 0, erledigt: 0 };
     bestellungen.forEach(function (b) { zahl[GRUPPE[b.status]]++; });
+    delete zahl.erledigt;   // Erledigtes steht nur im Archiv
     Object.keys(zahl).forEach(function (k) { $('[data-zahl="' + k + '"]').textContent = zahl[k]; });
     $('[data-reiter="neu"]').classList.toggle('hat-neue', zahl.neu > 0);
 
     var liste = bestellungen.filter(function (b) { return GRUPPE[b.status] === reiter; });
-    // offene nach gewünschter Zeit, erledigte neueste zuerst
-    if (reiter !== 'erledigt') {
-      liste.sort(function (a, b) {
-        var za = a.zeit === 'schnellstmöglich' ? uhr(a.eingang) : a.zeit, zb = b.zeit === 'schnellstmöglich' ? uhr(b.eingang) : b.zeit;
-        return za < zb ? -1 : za > zb ? 1 : 0;
-      });
-    }
+    // nach gewünschter Zeit
+    liste.sort(function (a, b) {
+      var za = a.zeit === 'schnellstmöglich' ? uhr(a.eingang) : a.zeit, zb = b.zeit === 'schnellstmöglich' ? uhr(b.eingang) : b.zeit;
+      return za < zb ? -1 : za > zb ? 1 : 0;
+    });
     $('[data-liste]').innerHTML = liste.length ? liste.map(karte).join('') : '<p class="leer"><strong>' +
-      { neu: 'Keine neuen Bestellungen', arbeit: 'Nichts in Arbeit', fertig: 'Nichts fertig', erledigt: 'Heute noch nichts erledigt' }[reiter] +
-      '</strong>Neue Bestellungen erscheinen hier automatisch – mit Klingeln und Bon.</p>';
+      { neu: 'Alles gedruckt ✓', arbeit: 'Nichts in Arbeit', fertig: 'Nichts fertig' }[reiter] +
+      '</strong>Neue Bestellungen erscheinen hier – mit Klingeln und Bon. Gedruckte findest du im 🗂 Archiv.</p>';
   }
 
   $('[data-liste]').addEventListener('click', function (e) {
@@ -294,11 +293,13 @@
       lampe('drucker', true);
       delete druckFehler[b.nr];
       b.gedruckt = new Date().toISOString();
-      var annehmen = !vonHand && cfg.autoannehmen && b.status === 'neu';
-      if (annehmen) b.status = 'angenommen';
+      // Nach dem Druck: direkt ins Archiv (erledigt) oder in „In Arbeit“ – je nach Einstellung
+      var weiter = b.status === 'neu' ? { archiv: 'erledigt', annehmen: 'angenommen' }[cfg.nachDruck] : null;
+      if (weiter) b.status = weiter;
       zeichnen();
+      if (weiter) melden('Bon ' + kurz(b) + ' gedruckt' + (weiter === 'erledigt' ? ' – im Archiv.' : '.'));
       return api('POST', { aktion: 'gedruckt', nr: b.nr }).then(function () {
-        if (annehmen) return api('POST', { aktion: 'status', nr: b.nr, status: 'angenommen' });
+        if (weiter) return api('POST', { aktion: 'status', nr: b.nr, status: weiter });
       }).catch(function () { /* nächste Abfrage */ });
     }).catch(function (err) {
       lampe('drucker', false);
@@ -328,14 +329,14 @@
     form.ip.value = cfg.ip;
     form.autodruck.checked = cfg.autodruck;
     form.belege.value = cfg.belege;
-    form.autoannehmen.checked = cfg.autoannehmen;
+    form.nachDruck.value = cfg.nachDruck;
     form.ton.checked = cfg.ton;
     form.https.checked = cfg.https;
     $('[data-druck-meldung]').textContent = '';
     dlg.showModal();
   });
   function uebernehmen() {
-    cfg = { ip: form.ip.value.trim(), autodruck: form.autodruck.checked, belege: form.belege.value, autoannehmen: form.autoannehmen.checked,
+    cfg = { ip: form.ip.value.trim(), autodruck: form.autodruck.checked, belege: form.belege.value, nachDruck: form.nachDruck.value,
       ton: form.ton.checked, https: form.https.checked };
     merken(EINST, cfg);
     tonZeigen();
