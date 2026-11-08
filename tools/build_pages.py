@@ -670,6 +670,18 @@ for html_datei in sorted(ROOT.glob("*.html")):
         html_datei.write_text(neu, encoding="utf-8")
 
 
+# ---------- CSP: Prüfsumme des kleinen Skripts im <head> in .htaccess eintragen ----------
+import base64
+
+kopf_skripte = {base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode()
+                for f in ROOT.glob("*.html") for m in re.finditer(r"<script>(.*?)</script>", f.read_text(encoding="utf-8"), re.S)}
+htaccess = (ROOT / ".htaccess").read_text(encoding="utf-8")
+neu = re.sub(r"script-src 'self'( 'sha256-[^']+')*", "script-src 'self'" + "".join(f" 'sha256-{h}'" for h in sorted(kopf_skripte)), htaccess, count=1)
+if neu != htaccess:
+    (ROOT / ".htaccess").write_text(neu, encoding="utf-8")
+    print("aktualisiert: .htaccess (CSP-Prüfsumme)")
+
+
 # ---------- Service Worker (App installieren, Speisekarte offline) ----------
 
 VORAB = ["./", "index.html", "speisekarte.html", "kasse.html", "ueber-uns.html", "impressum.html", "datenschutz.html",

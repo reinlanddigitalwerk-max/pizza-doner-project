@@ -18,10 +18,26 @@ if (($d['aktion'] ?? '') === 'anmelden') {
     if ($pw === '') {
         antwort(['fehler' => 'Das Bestellsystem ist noch nicht eingerichtet (Passwort fehlt).'], 503);
     }
+    bremse('anmelden', 8, 900, false);
     if (!hash_equals($pw, trim((string) ($d['passwort'] ?? '')))) {
         sleep(2);   // Raten bremsen
+        bremse('anmelden', 8, 900);
+        sicherheit('anmelden-falsch');
+        // viele Fehlversuche in der letzten Stunde (egal von wo) → E-Mail an den Laden
+        $log = ordner() . '/.sicherheit.log';
+        clearstatcache();
+        $grenze = jetzt()->modify('-1 hour')->format('Y-m-d H:i:s');
+        $falsch = 0;
+        foreach (explode("\n", (string) file_get_contents($log, false, null, max(0, filesize($log) - 20000))) as $z) {
+            if (str_contains($z, "\tanmelden-falsch\t") && substr($z, 0, 19) >= $grenze) $falsch++;
+        }
+        if ($falsch >= 10) {
+            warnen('Anmeldung', "Am Bestellsystem (Tablet-Seite) gab es in der letzten Stunde $falsch falsche Passwort-Versuche.\n"
+                . "Wenn das nicht ihr wart: Passwort in GitHub (Secret MONITOR_PASSWORT) ändern und neu hochladen lassen.");
+        }
         antwort(['fehler' => 'Falsches Passwort.'], 401);
     }
+    sicherheit('anmelden-ok');
     antwort(['token' => monitor_token()]);
 }
 

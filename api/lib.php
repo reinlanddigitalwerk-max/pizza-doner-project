@@ -437,3 +437,58 @@ function monitor_pruefen(): void
         antwort(['fehler' => 'Bitte neu anmelden.'], 401);
     }
 }
+
+// ---------- Schutz vor Missbrauch ----------
+/** Gekürzte IP (letzter Block weg) – reicht zum Bremsen, ohne die volle Adresse zu speichern */
+function kurz_ip(): string
+{
+    $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+    return str_contains($ip, ':') ? implode(':', array_slice(explode(':', $ip), 0, 3)) . '::' : preg_replace('/\.\d+$/', '.0', $ip);
+}
+
+/**
+ * Höchstens $max Aufrufe je $sekunden pro (gekürzter) IP und Zweck, sonst Antwort 429.
+ * Zählt nur, wenn $zaehlen true ist (z. B. nur Fehlversuche beim Anmelden).
+ */
+function bremse(string $zweck, int $max, int $sekunden, bool $zaehlen = true): void
+{
+    $o = ordner() . '/.bremse';
+    if (!is_dir($o)) {
+        mkdir($o, 0750, true);
+    }
+    $f = $o . '/' . $zweck . '-' . substr(hash('sha256', kurz_ip() . '|' . monitor_schluessel()), 0, 16);
+    $jetzt = time();
+    $zeiten = array_filter(is_file($f) ? array_map('intval', file($f, FILE_IGNORE_NEW_LINES)) : [], fn ($t) => $t > $jetzt - $sekunden);
+    if (count($zeiten) >= $max) {
+        sicherheit('gebremst', $zweck);
+        antwort(['fehler' => 'Zu viele Versuche. Bitte in ein paar Minuten noch einmal oder anrufen: 02131 3166137.'], 429);
+    }
+    if ($zaehlen) {
+        $zeiten[] = $jetzt;
+        file_put_contents($f, implode("\n", $zeiten), LOCK_EX);
+    }
+}
+
+/** Sicherheits-Protokoll (nur auf dem Server, nicht im Web abrufbar; nie Passwörter oder Schlüssel) */
+function sicherheit(string $ereignis, string $info = ''): void
+{
+    $f = ordner() . '/.sicherheit.log';
+    if (is_file($f) && filesize($f) > 2_000_000) {
+        rename($f, $f . '.alt');
+    }
+    $zeile = jetzt()->format('Y-m-d H:i:s') . "\t" . $ereignis . "\t" . kurz_ip() . "\t" . mb_substr(preg_replace('/\s+/', ' ', $info), 0, 200) . "\n";
+    file_put_contents($f, $zeile, FILE_APPEND | LOCK_EX);
+}
+
+/** Warnung per E-Mail an den Laden – höchstens einmal pro Stunde und Anlass */
+function warnen(string $anlass, string $text): void
+{
+    $an = (string) (geheim()['shop_email'] ?? '');
+    $merker = ordner() . '/.warnung-' . preg_replace('/[^a-z0-9]/', '', $anlass);
+    if ($an === '' || (is_file($merker) && filemtime($merker) > time() - 3600)) {
+        return;
+    }
+    touch($merker);
+    mail($an, mb_encode_mimeheader('Sicherheitshinweis Bestellsystem: ' . $anlass, 'UTF-8'), $text,
+        "From: Neusser Döner & Pizza <bestellung@neusser-doner-pizza.de>\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8");
+}

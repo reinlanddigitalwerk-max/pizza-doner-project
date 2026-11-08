@@ -22,6 +22,7 @@ if ($origin !== null && $origin !== false && !in_array(strtolower($origin), ERLA
     antwort(['fehler' => 'Nicht erlaubt.'], 403);
 }
 
+bremse('bezahlen', 10, 600);
 $roh = (string) file_get_contents('php://input', false, null, 0, 100000);
 $d = json_decode($roh, true);
 if (!is_array($d)) {

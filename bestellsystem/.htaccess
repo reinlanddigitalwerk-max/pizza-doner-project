@@ -1,6 +1,8 @@
 # Rheinland Bestellsystem: nicht in Suchmaschinen, immer die neueste Fassung laden
 <IfModule mod_headers.c>
   Header set X-Robots-Tag "noindex, nofollow"
+  # Eigene CSP fürs Tablet: Drucker im WLAN (https://<IP>) muss erreichbar sein
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp.php"
   <FilesMatch "\.(html|js|css|webmanifest)$">
     Header set Cache-Control "no-cache"
   </FilesMatch>

@@ -69,6 +69,6 @@ jobs:
             mirror --reverse --delete --only-newer --parallel=4 --verbose=1 \
               --exclude-glob .git* --exclude-glob .git*/ --exclude .github/ \
               --exclude tools/ --exclude supabase/ --exclude data/quellen/ \
-              --exclude-glob druck/*.html --exclude-glob README.md --exclude api/bestellungen/ \
+              --exclude-glob druck/*.html --exclude-glob README.md --exclude-glob CLAUDE.md --exclude api/bestellungen/ \
               ./ $ORDNER/;
             bye"

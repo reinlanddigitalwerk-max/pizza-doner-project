@@ -11,6 +11,7 @@ $origin = parse_url((string) ($_SERVER['HTTP_ORIGIN'] ?? ''), PHP_URL_HOST);
 if ($origin !== null && $origin !== false && !in_array(strtolower($origin), ERLAUBTE_HOSTS, true)) {
     antwort(['fehler' => 'Nicht erlaubt.'], 403);
 }
+bremse('bestellen', 6, 600);
 $d = json_decode((string) file_get_contents('php://input', false, null, 0, 100000), true);
 if (!is_array($d)) {
     antwort(['fehler' => 'Ungültige Anfrage.'], 400);

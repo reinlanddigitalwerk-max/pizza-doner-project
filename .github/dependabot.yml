@@ -1,0 +1,8 @@
+# Meldet einmal pro Woche neue Versionen der GitHub-Actions im Upload-Ablauf (als Vorschlag, nichts wird automatisch übernommen).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    target-branch: claude/peaceful-einstein-qj0d00
