@@ -33,7 +33,7 @@ jobs:
         run: |
           if [ -n "$FTP_SERVER" ]; then echo "los=ja" >> "$GITHUB_OUTPUT"; else echo "FTP_SERVER fehlt – nichts hochgeladen."; fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: steps.pruefen.outputs.los == 'ja'
 
       - name: Schlüssel für den Server (api/geheim.php, nicht im Repository)
