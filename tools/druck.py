@@ -194,10 +194,9 @@ schreiben("flyer-a5.html", "Flyer A5 – Neusser Döner & Pizza", 148, 210, """
   <div class="box">
     <h2 class="display">Lieferung</h2>
     <table>
-      <tr><td>Lieferung</td><td>kostenlos</td></tr>
-      <tr><td>PLZ 41460 · 41462 · 41464</td><td>ab 15,00 €</td></tr>
-      <tr><td>PLZ 41468 · 41469 · 41472</td><td>ab 20,00 €</td></tr>
-      <tr><td>PLZ 41564 · 40667 · 40549</td><td>ab 25,00 €</td></tr>
+      <tr><td>PLZ 41460 · 41462 · 41464</td><td>1 € · gratis ab 15 €</td></tr>
+      <tr><td>PLZ 41468 · 41469 · 41472</td><td>2 € · gratis ab 20 €</td></tr>
+      <tr><td>PLZ 41564 · 40667 · 40549</td><td>3 € · gratis ab 25 €</td></tr>
       <tr><td>Abholung</td><td>in ca. {shop["lieferung"]["abholung_bereit_in_min"]} Minuten fertig</td></tr>
     </table>
   </div>

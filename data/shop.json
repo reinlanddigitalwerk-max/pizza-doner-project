@@ -80,18 +80,21 @@
     "zonen": [
       {
         "name": "PLZ 41460, 41462, 41464",
-        "liefergebuehr": 0.0,
-        "mindestbestellwert": 15.0
+        "liefergebuehr": 1.0,
+        "gratis_ab": 15.0,
+        "mindestbestellwert": 0
       },
       {
         "name": "PLZ 41468, 41469, 41472",
-        "liefergebuehr": 0.0,
-        "mindestbestellwert": 20.0
+        "liefergebuehr": 2.0,
+        "gratis_ab": 20.0,
+        "mindestbestellwert": 0
       },
       {
         "name": "PLZ 41564, 40667, 40549",
-        "liefergebuehr": 0.0,
-        "mindestbestellwert": 25.0
+        "liefergebuehr": 3.0,
+        "gratis_ab": 25.0,
+        "mindestbestellwert": 0
       }
     ],
     "bereit_in_min": 35,

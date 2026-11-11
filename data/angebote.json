@@ -144,8 +144,8 @@
       "id": "gratis-lieferung",
       "typ": "lieferung",
       "aktiv": true,
-      "titel": "Lieferung kostenlos",
-      "text": "Wir liefern ohne Liefergebühr. Mindestbestellwert je nach Gebiet 15 €, 20 € oder 25 €.",
+      "titel": "Gratis Lieferung",
+      "text": "Ab 15 € (Neuss-Mitte und Furth), 20 € (Grimlinghausen, Norf, Holzheim) oder 25 € (Kaarst, Meerbusch, Heerdt) liefern wir kostenlos – sonst 1 €, 2 € bzw. 3 €.",
       "bild": "assets/img/icons/pizza.webp"
     },
     {

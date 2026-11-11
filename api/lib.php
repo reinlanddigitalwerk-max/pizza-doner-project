@@ -219,7 +219,8 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
                      'menge' => $menge, 'stueck' => $stueck];
     }
     $zw = round($zw, 2);
-    $liefer = $zone ? (float) $zone['gebuehr'] : 0.0;
+    // Liefergebühr je Zone, ab „gratis_ab“ (Zwischensumme) kostenlos – gleich wie summen() in assets/js/warenkorb.js
+    $liefer = $zone && !(isset($zone['gratis_ab']) && $zw >= $zone['gratis_ab']) ? (float) $zone['gebuehr'] : 0.0;
     if ($zone && $zw < $zone['min']) $fehler('Mindestbestellwert ' . euro((float) $zone['min']) . ' nicht erreicht.');
     $r = rabatt($angebote, $zw, $n);
     $gesamt = round($zw - ($r['betrag'] ?? 0) + $liefer, 2);
