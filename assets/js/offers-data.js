@@ -18,25 +18,25 @@
 // Für Bestellungen über Speisebaron (bestellen.html) müssen sie dort extra als Gutschein angelegt werden.
 window.NEUSSER = {
   oeffnungszeiten: {
-    // 1 = Montag … 7 = Sonntag; null = Ruhetag (Stand: Bestellshop neusser-doener-pizza.de)
+    // 1 = Montag … 7 = Sonntag; null = Ruhetag (Stand: Speisekarte November 2026; Feiertage wie Samstag/Sonntag)
     1: null,
-    2: ['11:00', '22:00'],
-    3: ['11:00', '22:00'],
-    4: ['11:00', '22:00'],
-    5: ['11:00', '22:00'],
-    6: ['11:00', '22:00'],
-    7: ['12:00', '22:00']
+    2: ['11:30', '21:30'],
+    3: ['11:30', '21:30'],
+    4: ['11:30', '21:30'],
+    5: ['11:30', '21:30'],
+    6: ['12:00', '21:30'],
+    7: ['12:00', '21:30']
   },
 
-  // Lieferung nur in dieser Zeit
+  // Lieferung: laut neuer Karte zu den Öffnungszeiten (Abholung – Lieferung – vor Ort)
   lieferzeiten: {
     1: null,
-    2: ['14:30', '21:30'],
-    3: ['14:30', '21:30'],
-    4: ['14:30', '21:30'],
-    5: ['14:30', '21:30'],
-    6: ['14:30', '21:30'],
-    7: ['14:30', '21:30']
+    2: ['11:30', '21:30'],
+    3: ['11:30', '21:30'],
+    4: ['11:30', '21:30'],
+    5: ['11:30', '21:30'],
+    6: ['12:00', '21:30'],
+    7: ['12:00', '21:30']
   },
 
   // Tage, an denen geschlossen ist (Format JJJJ-MM-TT)
@@ -56,39 +56,70 @@ window.NEUSSER = {
       // TODO: Bedingungen vom Inhaber ergänzen, z. B. mindestwert: 20, tage: [2, 3, 4]
     },
     {
+      id: 'mittags-paket',
+      typ: 'menue',
+      aktiv: true,
+      titel: 'Mittags-Paket',
+      preis: 18.00,
+      tage: [2, 3, 4, 5, 6, 7],
+      von: '11:30',
+      bis: '14:30',
+      text: '1 Pizza mit 2 Zutaten nach Wahl, 1 Döner-Sandwich, 1 Pommes und ein Softdrink (0,33 l) – nur über unsere Website.',
+      bild: 'assets/img/menu/mittags-paket-l.webp'
+    },
+    {
+      id: 'team-paket',
+      typ: 'menue',
+      aktiv: true,
+      titel: 'Team-Paket',
+      preis: 32.00,
+      text: '2 Pizzen mit je 2 Zutaten, 2 Döner-Sandwiches und 1 gemischter Salat – für Büro, Familie und Freunde. Nur über unsere Website.',
+      bild: 'assets/img/menu/team-paket-l.webp'
+    },
+    {
+      id: 'mittwoch',
+      typ: 'menue',
+      aktiv: true,
+      titel: 'Mittwochsangebot',
+      preis: 7.00,
+      tage: [3],
+      text: 'Jede Pizza (30 cm) nur 7,00 € – Margherita nur 6,00 €.',
+      bild: 'assets/img/menu/pizza-neu-l.webp'
+    },
+    {
+      id: 'steak-lamm',
+      typ: 'menue',
+      aktiv: true,
+      titel: 'Döner Steak Lamm',
+      preis: 9.00,
+      tage: [4, 7],
+      text: 'Unser Lamm-Steak-Döner im Fladenbrot mit Salat und Sauce – nur sonntags und donnerstags.',
+      bild: 'assets/img/menu/doener-sandwich-l.webp'
+    },
+    {
       id: 'doener-menue',
       typ: 'menue',
       aktiv: true,
       titel: 'Döner-Menü',
-      preis: 12.00,
-      text: 'Döner-Sandwich mit Pommes frites und ein Softdrink (0,33 l) nach Wahl.',
+      preis: 11.50,
+      text: 'Döner-Sandwich mit Pommes und ein Softdrink (0,33 l) nach Wahl.',
       bild: 'assets/img/dishes/doener.webp'
-    },
-    {
-      id: 'lahmacun-menue',
-      typ: 'menue',
-      aktiv: true,
-      titel: 'Lahmacun-Menü',
-      preis: 13.00,
-      text: 'Lahmacun mit Drehspießfleisch, Pommes frites und ein Softdrink (0,33 l) nach Wahl.',
-      bild: 'assets/img/dishes/lahmacun.webp'
     },
     {
       id: 'burger-menue',
       typ: 'menue',
       aktiv: true,
       titel: 'Burger als Menü',
-      preisAb: 2.50,
-      text: 'Jeden Burger mit Pommes frites und Coca-Cola, Coke Zero, Fanta Orange oder Fanta Exotik – ab 2,50 € Aufpreis.',
-      bild: 'assets/img/kategorien/burger.webp'
+      preisAb: 3.50,
+      text: 'Jeden Burger mit Pommes und Softdrink (0,33 l) – für 3,50 € Aufpreis.',
+      bild: 'assets/img/menu/neusser-burger-l.webp'
     },
     {
       id: 'gratis-lieferung',
       typ: 'lieferung',
       aktiv: true,
-      titel: 'Gratis Lieferung',
-      mindestwert: 10,
-      text: 'Im Umkreis von 2 km liefern wir ohne Liefergebühr. Bis 5 km kostet die Lieferung 2 €.',
+      titel: 'Lieferung kostenlos',
+      text: 'Wir liefern ohne Liefergebühr. Mindestbestellwert je nach Gebiet 15 €, 20 € oder 25 €.',
       bild: 'assets/img/icons/pizza.webp'
     },
     {

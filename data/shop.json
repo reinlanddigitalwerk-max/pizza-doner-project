@@ -8,7 +8,7 @@
   },
   "telefon": "02131 3166137",
   "telefon_link": "+4921313166137",
-  "telefon_mobil": "0157 71066644",
+  "telefon_mobil": "0152 02004401",
   "ust_idnr": "DE455208316",
   "steuernummer": "122/5398/0299",
   "aufsichtsbehoerde": "Stadt Neuss",
@@ -20,54 +20,54 @@
   "oeffnungszeiten": {
     "Montag": null,
     "Dienstag": [
-      "11:00",
-      "22:00"
+      "11:30",
+      "21:30"
     ],
     "Mittwoch": [
-      "11:00",
-      "22:00"
+      "11:30",
+      "21:30"
     ],
     "Donnerstag": [
-      "11:00",
-      "22:00"
+      "11:30",
+      "21:30"
     ],
     "Freitag": [
-      "11:00",
-      "22:00"
+      "11:30",
+      "21:30"
     ],
     "Samstag": [
-      "11:00",
-      "22:00"
+      "12:00",
+      "21:30"
     ],
     "Sonntag": [
       "12:00",
-      "22:00"
+      "21:30"
     ]
   },
   "lieferzeiten": {
     "Montag": null,
     "Dienstag": [
-      "14:30",
+      "11:30",
       "21:30"
     ],
     "Mittwoch": [
-      "14:30",
+      "11:30",
       "21:30"
     ],
     "Donnerstag": [
-      "14:30",
+      "11:30",
       "21:30"
     ],
     "Freitag": [
-      "14:30",
+      "11:30",
       "21:30"
     ],
     "Samstag": [
-      "14:30",
+      "12:00",
       "21:30"
     ],
     "Sonntag": [
-      "14:30",
+      "12:00",
       "21:30"
     ]
   },
@@ -79,14 +79,19 @@
   "lieferung": {
     "zonen": [
       {
-        "name": "0 - 2 km",
+        "name": "PLZ 41460, 41462, 41464",
         "liefergebuehr": 0.0,
-        "mindestbestellwert": 10.0
+        "mindestbestellwert": 15.0
       },
       {
-        "name": "2 - 5 km",
-        "liefergebuehr": 2.0,
-        "mindestbestellwert": 10.0
+        "name": "PLZ 41468, 41469, 41472",
+        "liefergebuehr": 0.0,
+        "mindestbestellwert": 20.0
+      },
+      {
+        "name": "PLZ 41564, 40667, 40549",
+        "liefergebuehr": 0.0,
+        "mindestbestellwert": 25.0
       }
     ],
     "bereit_in_min": 35,

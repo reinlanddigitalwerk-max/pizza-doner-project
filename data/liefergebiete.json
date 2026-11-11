@@ -1,11 +1,68 @@
 {
-  "hinweis": "Liefergebiete für die Online-Bestellung auf dieser Website. Regel aus dem Bestellshop: bis 2 km kostenlos, 2–5 km 2 €, Mindestbestellwert 10 €. Die PLZ-Liste stammt von der alten Bestellseite; welche PLZ in welche Zone fällt, bitte vom Inhaber prüfen lassen.",
+  "hinweis": "Liefergebiete laut Speisekarte November 2026: Lieferung kostenlos, Mindestbestellwert 15 € / 20 € / 25 € je PLZ.",
   "zonen": [
-    {"plz": "41460", "ort": "Neuss", "gebiet": "Innenstadt", "gebuehr": 0, "min": 10},
-    {"plz": "41462", "ort": "Neuss", "gebiet": "Furth und Umgebung", "gebuehr": 0, "min": 10},
-    {"plz": "41464", "ort": "Neuss", "gebiet": "", "gebuehr": 2, "min": 10},
-    {"plz": "41468", "ort": "Neuss", "gebiet": "Gnadental", "gebuehr": 2, "min": 10},
-    {"plz": "40549", "ort": "Düsseldorf", "gebiet": "Heerdt", "gebuehr": 2, "min": 10},
-    {"plz": "41564", "ort": "Kaarst", "gebiet": "Holzbüttgen", "gebuehr": 2, "min": 10}
+    {
+      "plz": "41460",
+      "ort": "Neuss",
+      "gebiet": "Innenstadt",
+      "gebuehr": 0,
+      "min": 15
+    },
+    {
+      "plz": "41462",
+      "ort": "Neuss",
+      "gebiet": "Furth und Umgebung",
+      "gebuehr": 0,
+      "min": 15
+    },
+    {
+      "plz": "41464",
+      "ort": "Neuss",
+      "gebiet": "Weckhoven, Reuschenberg",
+      "gebuehr": 0,
+      "min": 15
+    },
+    {
+      "plz": "41468",
+      "ort": "Neuss",
+      "gebiet": "Grimlinghausen, Uedesheim",
+      "gebuehr": 0,
+      "min": 20
+    },
+    {
+      "plz": "41469",
+      "ort": "Neuss",
+      "gebiet": "Norf, Rosellen",
+      "gebuehr": 0,
+      "min": 20
+    },
+    {
+      "plz": "41472",
+      "ort": "Neuss",
+      "gebiet": "Holzheim",
+      "gebuehr": 0,
+      "min": 20
+    },
+    {
+      "plz": "41564",
+      "ort": "Kaarst",
+      "gebiet": "",
+      "gebuehr": 0,
+      "min": 25
+    },
+    {
+      "plz": "40667",
+      "ort": "Meerbusch",
+      "gebiet": "Büderich",
+      "gebuehr": 0,
+      "min": 25
+    },
+    {
+      "plz": "40549",
+      "ort": "Düsseldorf",
+      "gebiet": "Heerdt",
+      "gebuehr": 0,
+      "min": 25
+    }
   ]
 }

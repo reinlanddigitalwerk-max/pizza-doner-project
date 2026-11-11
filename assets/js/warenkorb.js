@@ -237,7 +237,7 @@ window.Warenkorb = (function () {
 
   return {
     get: function () { return s; },
-    summen: summen, hinzu: hinzu, menge: menge, modus: modus, plz: plz, leeren: leeren,
+    jetzt: jetzt, summen: summen, hinzu: hinzu, menge: menge, modus: modus, plz: plz, leeren: leeren,
     zone: zone, zeiten: zeiten, oeffnungText: oeffnungText, binden: binden,
     on: function (f) { hoerer.push(f); }, euro: euro, esc: esc
   };

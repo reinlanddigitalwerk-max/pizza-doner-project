@@ -148,7 +148,7 @@ function naechsteOeffnung() {
       var art = a.bild ? '<img class="slide__art' + (a.typ === 'rabatt' ? ' slide__art--pct' : '') +
         '" src="' + esc(a.bild) + '" alt="' + (a.typ === 'rabatt' ? a.prozent + ' %' : '') + '">' : '';
       if (a.typ === 'menue') titel += ' <em>' + (a.preisAb != null ? 'ab +' + euro(a.preisAb) : euro(a.preis)) + '</em>';
-      if (a.typ === 'lieferung') titel += ' <em>bis 2&nbsp;km</em>';
+      if (a.typ === 'lieferung') titel += ' <em>gratis</em>';
       if (a.typ === 'rabatt' && !a.bild) titel = '<em>' + a.prozent + ' %</em> ' + titel;
       var sub = [a.text].concat(bedingungen(a)).filter(Boolean).join(' · ');
       var s = el('div', 'slide' + (i === 0 ? ' is-active' : ''),

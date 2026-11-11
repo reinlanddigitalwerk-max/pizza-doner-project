@@ -112,7 +112,7 @@ def allergen_namen(item):
 
 
 def bild(item):
-    key = BILD_ALT.get(item.get("alt_nr", ""))
+    key = item.get("bild") or BILD_ALT.get(item.get("alt_nr", ""))
     if not key:
         for pat, k in BILD_NAME:
             if re.search(pat, item["name"]):
@@ -125,6 +125,35 @@ def bild(item):
 
 def item_key(item, cat):
     return slug(cat["kategorie"]) + "--" + slug(item["name"])
+
+
+def optionen(item, cat):
+    """Auswahlgruppen eines Gerichts: die der Kategorie (ohne die in „ohne_optionen“ genannten) plus eigene.
+    Gleiche Reihenfolge wie speisekarte() in api/lib.php – die Indizes der Auswahl hängen daran."""
+    weg = set(item.get("ohne_optionen", []))
+    return [g for g in cat.get("optionen", []) if g["titel"] not in weg] + list(item.get("optionen", []))
+
+
+TAGNAMEN = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+
+
+def verfuegbar_text(item):
+    """z. B. „Nur Do & So“ oder „Di–So 11:30–14:30“ – leer, wenn immer bestellbar."""
+    tage, zeit = item.get("tage"), item.get("zeit")
+    if not tage and not zeit:
+        return ""
+    t = ""
+    if tage:
+        if len(tage) > 2 and tage == list(range(tage[0], tage[-1] + 1)):
+            t = TAGNAMEN[tage[0] - 1] + "–" + TAGNAMEN[tage[-1] - 1]
+        else:
+            t = " & ".join(TAGNAMEN[d - 1] for d in tage)
+        t = ("Nur " if len(tage) < 3 else "") + t
+        if len(tage) == 1:
+            t = "Nur " + ["montags", "dienstags", "mittwochs", "donnerstags", "freitags", "samstags", "sonntags"][tage[0] - 1]
+    if zeit:
+        t = (t + " " if t else "Nur ") + f"{zeit[0]}–{zeit[1]} Uhr"
+    return t
 
 
 def beschreibung(item, cat):
@@ -148,8 +177,14 @@ def item_daten(item, cat):
         "bild": large or "",
         "allergene": ", ".join(al),
         "zusatz": ", ".join(zs),
-        "optionen": list(cat.get("optionen", [])) + list(item.get("optionen", [])),
+        "optionen": optionen(item, cat),
     }
+    if item.get("tage"):
+        d["tage"] = item["tage"]
+    if item.get("zeit"):
+        d["zeit"] = item["zeit"]
+    if verfuegbar_text(item):
+        d["wann"] = verfuegbar_text(item)
     if "preise" in item:
         d["preise"] = [[s, item["preise"][s]] for s in cat.get("groessen", item["preise"].keys()) if s in item["preise"]]
     else:
@@ -190,7 +225,7 @@ def zeile_html(item, cat):
     if not small and cat.get("bild"):
         small = cat["bild"]
     img = f'<img class="meal__img" src="{small}" alt="" width="192" height="192" loading="lazy">' if small else ""
-    groups = list(cat.get("optionen", [])) + list(item.get("optionen", []))
+    groups = optionen(item, cat)
     extras = any(c["aufpreis"] for g in groups for c in g["auswahl"])
     text = beschreibung(item, cat)
     search = " ".join([name, cat["kategorie"], item.get("nr", ""), text]
@@ -201,7 +236,9 @@ def zeile_html(item, cat):
         '<div class="meal__text">'
         f'<h3 class="meal__name">{esc(name)}{sup}'
         + (' <span class="diet diet--veg" title="vegetarisch">vegetarisch</span>' if ist_vegetarisch(item, cat) and cat["kategorie"] != "Imbiss & Saucen" else "")
-        + (' <span class="diet diet--hot" title="scharf">scharf</span>' if ist_scharf(item, cat) else "") + "</h3>"
+        + (' <span class="diet diet--hot" title="scharf">scharf</span>' if ist_scharf(item, cat) else "")
+        + (' <span class="diet diet--neu">neu</span>' if item.get("neu") else "") + "</h3>"
+        + (f'<p class="meal__wann">{esc(verfuegbar_text(item))}</p>' if verfuegbar_text(item) else "")
         + (f'<p class="meal__desc">{esc(text)}</p>' if text else "")
         + f'<p class="meal__price">{preis}{" <span>· Extras möglich</span>" if extras else ""}</p>'
         "</div>"
@@ -512,7 +549,7 @@ page(
         <ul class="order-facts">
           <li><strong>Abholung</strong> in ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
           <li><strong>Lieferung</strong> in ca. {shop["lieferung"]["bereit_in_min"]} Min., {shop["lieferzeiten"]["Dienstag"][0]}–{shop["lieferzeiten"]["Dienstag"][1]} Uhr</li>
-          <li><strong>bis 2&nbsp;km</strong> kostenlos · <strong>2–5&nbsp;km</strong> 2&nbsp;€ · Mindestbestellwert 10&nbsp;€</li>
+          <li><strong>Lieferung kostenlos</strong> · Mindestbestellwert 15&nbsp;€, 20&nbsp;€ oder 25&nbsp;€ je nach PLZ</li>
           <li><strong>Bezahlen</strong> bar oder mit PayPal</li>
         </ul>
       </div>

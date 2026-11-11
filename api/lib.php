@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 const BASIS = __DIR__ . '/..';
 const ERLAUBTE_HOSTS = ['neusser-doner-pizza.de', 'www.neusser-doner-pizza.de', 'localhost', '127.0.0.1'];
-const NICHTSSAGEND = '/^(ohne Wunsch|normal|normale |ohne extra|als Single)/i';   // wie in assets/js/menu.js
+const NICHTSSAGEND = '/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger)/i';   // wie in assets/js/menu.js
 
 function geheim(): array
 {
@@ -92,11 +92,16 @@ function speisekarte(): array
             if (($a['aktiv'] ?? true) === false) {
                 continue;
             }
+            // gleiche Reihenfolge wie optionen() in tools/build_pages.py
+            $weg = $a['ohne_optionen'] ?? [];
+            $gruppen = array_values(array_filter($kat['optionen'] ?? [], fn ($g) => !in_array($g['titel'], $weg, true)));
             $karte[slug($kat['kategorie']) . '--' . slug($a['name'])] = [
                 'name' => $a['name'],
                 'preis' => $a['preis'] ?? null,
                 'preise' => $a['preise'] ?? null,
-                'optionen' => array_merge($kat['optionen'] ?? [], $a['optionen'] ?? []),
+                'optionen' => array_merge($gruppen, $a['optionen'] ?? []),
+                'tage' => $a['tage'] ?? null,
+                'zeit' => $a['zeit'] ?? null,
             ];
         }
     }
@@ -177,6 +182,12 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
     foreach ($pos as $p) {
         $art_ = $karte[(string) ($p['id'] ?? '')] ?? null;
         if (!$art_) $fehler('Ein Gericht gibt es nicht mehr. Bitte den Warenkorb neu füllen.');
+        // nur an bestimmten Tagen / zu bestimmten Zeiten (z. B. Steak-Lamm-Döner, Mittags-Paket, Mittwochsangebot)
+        $um = $zeit === 'schnellstmöglich' ? $jetztMin : minuten($zeit);
+        if (($art_['tage'] && !in_array((int) $n->format('N'), $art_['tage'], true))
+            || ($art_['zeit'] && ($um < minuten($art_['zeit'][0]) || $um > minuten($art_['zeit'][1])))) {
+            $fehler($art_['name'] . ' gibt es zu dieser Zeit leider nicht. Bitte aus dem Warenkorb nehmen.');
+        }
         $menge = (int) ($p['menge'] ?? 0);
         if ($menge < 1 || $menge > 50) $fehler('Ungültige Menge.');
         $groesse = (string) ($p['groesse'] ?? '');

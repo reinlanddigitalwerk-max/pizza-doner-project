@@ -128,8 +128,8 @@ z = shop["oeffnungszeiten"]
 lz = shop["lieferzeiten"]
 
 # ---------- Flyer A5 ----------
-klassiker = [("Döner-Sandwich", "Döner-Sandwich"), ("Döner Teller", "Döner Teller"), ("Lahmacun", "Lahmacun"),
-           ("Pizza Margherita", "Pizza Margherita"), ("Falafel Sandwich", "Falafel Sandwich"), ("Döner Menü", "Döner Menü")]
+klassiker = [("Döner-Sandwich", "Döner-Sandwich"), ("Döner-Teller", "Döner-Teller"), ("Lahmacun", "Lahmacun mit Salat und Sauce"),
+           ("Pizza Margherita", "Pizza Margherita"), ("Falafel-Sandwich", "Falafel-Sandwich"), ("Döner-Menü", "Döner-Menü")]
 klassiker_html = "".join(f"<li><span>{html.escape(t)}</span><b>{preis(n)}</b></li>" for t, n in klassiker)
 schreiben("flyer-a5.html", "Flyer A5 – Neusser Döner & Pizza", 148, 210, """
   .vorne { background: radial-gradient(circle at 30% 45%, rgba(249,192,21,.28), transparent 45%), #4F7A2C; color: #FAF3E8; padding: 10mm 10mm 0; }
@@ -186,17 +186,18 @@ schreiben("flyer-a5.html", "Flyer A5 – Neusser Döner & Pizza", 148, 210, """
     <h2 class="display">Öffnungszeiten</h2>
     <table>
       <tr><td>Montag</td><td>Ruhetag</td></tr>
-      <tr><td>Dienstag – Samstag</td><td>{z["Dienstag"][0]} – {z["Dienstag"][1]} Uhr</td></tr>
-      <tr><td>Sonntag</td><td>{z["Sonntag"][0]} – {z["Sonntag"][1]} Uhr</td></tr>
-      <tr><td>Lieferung Di – So</td><td>{lz["Dienstag"][0]} – {lz["Dienstag"][1]} Uhr</td></tr>
+      <tr><td>Dienstag – Freitag</td><td>{z["Dienstag"][0]} – {z["Dienstag"][1]} Uhr</td></tr>
+      <tr><td>Sa, So &amp; Feiertage</td><td>{z["Samstag"][0]} – {z["Samstag"][1]} Uhr</td></tr>
+      <tr><td>Lieferung</td><td>zu den Öffnungszeiten</td></tr>
     </table>
   </div>
   <div class="box">
     <h2 class="display">Lieferung</h2>
     <table>
-      <tr><td>bis 2 km</td><td>kostenlos</td></tr>
-      <tr><td>2 – 5 km</td><td>2,00 €</td></tr>
-      <tr><td>Mindestbestellwert</td><td>10,00 €</td></tr>
+      <tr><td>Lieferung</td><td>kostenlos</td></tr>
+      <tr><td>PLZ 41460 · 41462 · 41464</td><td>ab 15,00 €</td></tr>
+      <tr><td>PLZ 41468 · 41469 · 41472</td><td>ab 20,00 €</td></tr>
+      <tr><td>PLZ 41564 · 40667 · 40549</td><td>ab 25,00 €</td></tr>
       <tr><td>Abholung</td><td>in ca. {shop["lieferung"]["abholung_bereit_in_min"]} Minuten fertig</td></tr>
     </table>
   </div>
@@ -207,7 +208,7 @@ schreiben("flyer-a5.html", "Flyer A5 – Neusser Döner & Pizza", 148, 210, """
   <ul class="tags"><li>Halal</li><li>Pizza aus dem Steinofen</li><li>Vegetarische Gerichte</li><li>Sitzplätze im Laden</li></ul>
   <div class="unten">
     <div class="qr">{QR}</div>
-    <p><b>{html.escape(shop["name"])}</b><br>{html.escape(ADR)}<br>Tel. {TEL}<br>Bar, PayPal, EC- und Kreditkarte</p>
+    <p><b>{html.escape(shop["name"])}</b><br>{html.escape(ADR)}<br>Tel. {TEL}<br>Online, bar oder mit Karte</p>
   </div>
   <p class="klein">Preise in Euro inkl. MwSt., Stand {STAND}. Abbildungen ähnlich. Alle Gerichte und Allergene: {KURZ}</p>
 </section>

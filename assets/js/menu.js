@@ -189,6 +189,15 @@
 
   function preisVon(d) { return d.preise ? d.preise[0][1] : d.preis; }
 
+  // Manche Gerichte gibt es nur an bestimmten Tagen oder bis zu einer Uhrzeit (z. B. Mittags-Paket).
+  // Vorbestellen am selben Tag geht – die genaue Uhrzeit prüft die Kasse bzw. der Server.
+  function heuteBestellbar(d) {
+    var n = W.jetzt();
+    if (d.tage && d.tage.indexOf(n.tag) === -1) return false;
+    if (d.zeit) { var p = d.zeit[1].split(':'); if (n.min > +p[0] * 60 + +p[1]) return false; }
+    return true;
+  }
+
   function oeffnen(id) {
     var d = DATEN[id];
     if (!d) return;
@@ -198,6 +207,8 @@
       '<div class="item__body">' +
       '<h2 id="item-dialog-title">' + esc(d.name) + '</h2>' +
       (d.text ? '<p class="item__desc">' + esc(d.text) + '</p>' : '') +
+      (d.wann ? '<p class="item__wann' + (heuteBestellbar(d) ? '' : ' item__wann--zu') + '">' + esc(d.wann) +
+        (heuteBestellbar(d) ? '' : ' – heute nicht mehr bestellbar') + '</p>' : '') +
       (d.basis ? '<p class="item__basis">Immer dabei: ' + esc(d.basis) + '</p>' : '') +
       ((d.allergene || d.zusatz) ? '<details class="item__info"><summary>Allergene &amp; Zusatzstoffe</summary>' +
         (d.allergene ? '<p><b>Allergene:</b> ' + esc(d.allergene) + '</p>' : '') +
@@ -222,7 +233,8 @@
       '<textarea name="notiz" rows="2" maxlength="120" placeholder="z. B. gut durch, wenig Sauce"></textarea></label>' +
       '</div><div class="item__foot">' +
       '<div class="qty qty--big"><button type="button" data-q="-1" aria-label="Eins weniger">−</button><span data-menge>1</span><button type="button" data-q="1" aria-label="Eins mehr">+</button></div>' +
-      '<button class="btn btn--primary item__add" value="ok">In den Warenkorb · <span data-preis></span></button></div></form>';
+      '<button class="btn btn--primary item__add" value="ok"' + (heuteBestellbar(d) ? '' : ' disabled') +
+      '>In den Warenkorb · <span data-preis></span></button></div></form>';
     dialog.innerHTML = html;
 
     var form = dialog.querySelector('form');
@@ -241,7 +253,7 @@
           extra += c.aufpreis;
           wahl.push([gi, +inp.value]);   // für die Preisprüfung auf dem Server
           // Nichtssagendes wie „ohne Wunsch“ oder „normal“ nicht auf den Bon schreiben
-          if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single)/i.test(c.name)) opts.push(c.name);
+          if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger)/i.test(c.name)) opts.push(c.name);
         });
       });
       return { groesse: groesse, stueck: Math.round((basis + extra) * 100) / 100, opts: opts, wahl: wahl };
