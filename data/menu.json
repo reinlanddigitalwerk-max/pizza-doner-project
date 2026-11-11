@@ -1378,7 +1378,8 @@
      "beschreibung": "im Fladenbrot mit Lamm-Steak, Salat und Sauce",
      "aktiv": true,
      "preis": 9.0,
-     "bild": "doener-sandwich",
+     "bild": "steak-lamm-doener",
+     "bild_klein": true,
      "neu": true,
      "tage": [
       4,

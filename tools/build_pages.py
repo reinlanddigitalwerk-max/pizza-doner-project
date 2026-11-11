@@ -179,6 +179,8 @@ def item_daten(item, cat):
         "zusatz": ", ".join(zs),
         "optionen": optionen(item, cat),
     }
+    if item.get("bild_klein"):
+        d["bildKlein"] = True    # kleines Bild (z. B. aus Canva): im Fenster nicht strecken
     if item.get("tage"):
         d["tage"] = item["tage"]
     if item.get("zeit"):

@@ -202,7 +202,7 @@
     var d = DATEN[id];
     if (!d) return;
     var html = '<form method="dialog" class="item">' +
-      (d.bild ? '<img class="item__img" src="' + esc(d.bild) + '" alt="">' : '') +
+      (d.bild ? '<img class="item__img' + (d.bildKlein ? ' item__img--klein' : '') + '" src="' + esc(d.bild) + '" alt="">' : '') +
       '<button class="item__close" value="zu" aria-label="Schließen">×</button>' +
       '<div class="item__body">' +
       '<h2 id="item-dialog-title">' + esc(d.name) + '</h2>' +
