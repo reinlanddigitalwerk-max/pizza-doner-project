@@ -705,9 +705,12 @@ def version(pfad):
 
 
 ASSET = re.compile(r'((?:src|href)=")(assets/(?:js|css)/[^"?]+)(?:\?v=[0-9a-f]+)?"')
+# Bilder auch in den eingebetteten Daten (Bestellfenster), überall im HTML
+BILD = re.compile(r'(assets/img/[A-Za-z0-9_./-]+\.(?:webp|png|jpg|svg))(?:\?v=[0-9a-f]+)?')
 for html_datei in sorted(ROOT.glob("*.html")):
     alt = html_datei.read_text(encoding="utf-8")
     neu = ASSET.sub(lambda m: f'{m.group(1)}{m.group(2)}?v={version(m.group(2))}"', alt)
+    neu = BILD.sub(lambda m: f'{m.group(1)}?v={version(m.group(1))}' if (ROOT / m.group(1)).exists() else m.group(0), neu)
     if neu != alt:
         html_datei.write_text(neu, encoding="utf-8")
 

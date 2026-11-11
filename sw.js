@@ -1,6 +1,6 @@
 // Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
 // Seiten: erst Netz, sonst gespeicherte Fassung. Bilder, CSS, JS: sofort aus dem Speicher, im Hintergrund erneuern.
-const STAND = 'neusser-25d5dd8a2b';
+const STAND = 'neusser-f09a5ba8cd';
 const VORAB = [
   "./",
   "index.html",
