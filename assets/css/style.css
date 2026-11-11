@@ -627,7 +627,7 @@ a { color: inherit; }
   place-items: center;
   height: 170px;
   padding: 18px;
-  background: radial-gradient(120% 100% at 50% 100%, var(--green-dark), var(--green));
+  background: transparent;   /* Bild freigestellt direkt auf der weißen Karte */
 }
 .offer-card--rabatt .offer-card__media { background: var(--island); }
 .offer-card__media img {
@@ -635,7 +635,7 @@ a { color: inherit; }
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .4));
+  filter: drop-shadow(0 10px 12px rgba(58, 28, 5, .22));
 }
 .badge {
   position: absolute;
