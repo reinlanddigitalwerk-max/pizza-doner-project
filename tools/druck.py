@@ -3,6 +3,7 @@
   druck/qr-speisekarte.svg   – QR-Code allein (für eigene Vorlagen)
   druck/qr-website.svg / .png       – QR-Code zur Startseite, schwarz (für fremde Flyer und Druckereien)
   druck/qr-website-logo.png         – QR-Code zur Startseite in Braun mit Logo in der Mitte
+  druck/qr-speisekarte.png / -logo.png – QR-Code direkt zur Speisekarte (schwarz bzw. braun mit Logo)
   druck/flyer-a5.html        – Flyer A5, Vorder- und Rückseite
   druck/tischkarte-a6.html   – Tischaufsteller A6
   druck/aufkleber-7cm.html   – Aufkleber 7 × 7 cm für Tüten und Kartons
@@ -122,6 +123,9 @@ def qr_png(text, datei, farbe="#000000", logo=None, px=2400):
 (OUT / "qr-website.svg").write_text(qr_svg(SEITE, farbe="#000"), encoding="utf-8")
 qr_png(SEITE, "qr-website.png")
 qr_png(SEITE, "qr-website-logo.png", farbe="#3A1C05", logo=ROOT / "assets/img/logo.webp")
+# QR direkt zur Speisekarte (für Flyer: scannen und sofort bestellen)
+qr_png(ZIEL, "qr-speisekarte.png")
+qr_png(ZIEL, "qr-speisekarte-logo.png", farbe="#3A1C05", logo=ROOT / "assets/img/logo.webp")
 
 IMG = "../assets/img"
 z = shop["oeffnungszeiten"]
