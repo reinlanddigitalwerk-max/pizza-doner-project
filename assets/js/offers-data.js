@@ -65,7 +65,7 @@ window.NEUSSER = {
       von: '11:30',
       bis: '14:30',
       text: '1 Pizza mit 2 Zutaten nach Wahl, 1 Döner-Sandwich, 1 Pommes und ein Softdrink (0,33 l) – nur über unsere Website.',
-      bild: 'assets/img/menu/mittags-paket-l.webp'
+      bild: 'assets/img/dishes/angebot-mittags-paket.webp'
     },
     {
       id: 'team-paket',
@@ -74,7 +74,7 @@ window.NEUSSER = {
       titel: 'Team-Paket',
       preis: 32.00,
       text: '2 Pizzen mit je 2 Zutaten, 2 Döner-Sandwiches und 1 gemischter Salat – für Büro, Familie und Freunde. Nur über unsere Website.',
-      bild: 'assets/img/menu/team-paket-l.webp'
+      bild: 'assets/img/dishes/angebot-team-paket.webp'
     },
     {
       id: 'mittwoch',
@@ -84,7 +84,7 @@ window.NEUSSER = {
       preis: 7.00,
       tage: [3],
       text: 'Jede Pizza (30 cm) nur 7,00 € – Margherita nur 6,00 €.',
-      bild: 'assets/img/menu/pizza-neu-l.webp'
+      bild: 'assets/img/dishes/angebot-mittwoch.webp'
     },
     {
       id: 'steak-lamm',
@@ -94,7 +94,7 @@ window.NEUSSER = {
       preis: 9.00,
       tage: [4, 7],
       text: 'Unser Lamm-Steak-Döner im Fladenbrot mit Salat und Sauce – nur sonntags und donnerstags.',
-      bild: 'assets/img/menu/doener-sandwich-l.webp'
+      bild: 'assets/img/dishes/angebot-doener.webp'
     },
     {
       id: 'doener-menue',
@@ -112,7 +112,7 @@ window.NEUSSER = {
       titel: 'Burger als Menü',
       preisAb: 3.50,
       text: 'Jeden Burger mit Pommes und Softdrink (0,33 l) – für 3,50 € Aufpreis.',
-      bild: 'assets/img/menu/neusser-burger-l.webp'
+      bild: 'assets/img/dishes/angebot-burger.webp'
     },
     {
       id: 'gratis-lieferung',
