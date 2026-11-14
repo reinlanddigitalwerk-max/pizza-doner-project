@@ -45,12 +45,19 @@
         <span class="lampe" data-lampe-server title="Verbindung zum Server">Server</span>
         <span class="lampe" data-lampe-drucker title="Bondrucker">Drucker</span>
         <time class="leiste__uhr" data-uhr></time>
+        <button class="knopf knopf--pause" type="button" data-pause-oeffnen>⏸ Pause</button>
         <button class="knopf knopf--rund" type="button" data-ton-schalter aria-label="Ton an/aus">🔔</button>
         <button class="knopf knopf--rund" type="button" data-einstellungen-oeffnen aria-label="Einstellungen">⚙</button>
       </div>
     </header>
 
     <p class="hinweis" data-hinweis hidden></p>
+
+    <!-- Pause: Website nimmt keine Bestellungen an -->
+    <div class="pausiert" data-pausiert hidden>
+      <div><strong>⏸ Online-Bestellungen pausiert</strong><span data-pause-text></span></div>
+      <button class="knopf knopf--gruen" type="button" data-pause-ende>▶ Wieder öffnen</button>
+    </div>
 
     <nav class="reiter" role="tablist">
       <button type="button" role="tab" data-reiter="neu" aria-selected="true">Neu <b data-zahl="neu">0</b></button>
@@ -100,6 +107,24 @@
         <button class="knopf" value="ok">Fertig</button>
       </div>
       <p class="marke">Rheinland Bestellsystem 1.0 · <a href="https://www.rheinlanddigitalwerk.de/" target="_blank" rel="noopener">rheinlanddigitalwerk.de</a></p>
+    </form>
+  </dialog>
+
+  <!-- Pause wählen -->
+  <dialog class="einstellungen pause-dlg" data-pause-dlg>
+    <form method="dialog">
+      <h2>Online-Bestellungen pausieren</h2>
+      <p class="klein">Die Website nimmt dann keine neuen Bestellungen an. Kunden sehen:<br>
+        <b>„Das Restaurant ist vorübergehend geschlossen. Bitte versuche es später noch einmal.“</b></p>
+      <div class="pause-dlg__wahl">
+        <button class="knopf knopf--zweit" type="button" data-pause-min="15">15 Min.</button>
+        <button class="knopf knopf--zweit" type="button" data-pause-min="30">30 Min.</button>
+        <button class="knopf knopf--zweit" type="button" data-pause-min="60">1 Stunde</button>
+        <button class="knopf knopf--zweit" type="button" data-pause-min="120">2 Stunden</button>
+        <button class="knopf knopf--orange pause-dlg__lang" type="button" data-pause-min="0">Bis ich wieder öffne</button>
+      </div>
+      <p class="klein">„Bis ich wieder öffne“ endet spätestens morgen früh von selbst.</p>
+      <div class="einstellungen__fuss"><span></span><button class="knopf knopf--leise" value="zu">Abbrechen</button></div>
     </form>
   </dialog>
 

@@ -33,13 +33,14 @@
   zahlungAnzeigen();
 
   // Online-Zahlung nur anbieten, wenn der Server dafür eingerichtet ist
-  fetch('api/checkout.php', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) {
+  // (die Abfrage macht warenkorb.js einmal für die Seite; sie meldet auch eine Pause vom Laden)
+  W.server().then(function (j) {
     if (j.aktiv) {
       box.querySelector('[data-online]').hidden = false;
       form.zahlung.value = 'online';
     }
     zahlungAnzeigen();
-  }).catch(function () { /* kein PHP (z. B. GitHub Pages) – dann eben bar oder Karte bei Übergabe */ });
+  });
 
   function aktualisieren() {
     var s = W.get();
@@ -98,6 +99,7 @@
     pflicht('zeit', !!form.zeit.value);
     if (!sm.anzahl) return 'Dein Warenkorb ist leer. <a href="speisekarte.html">Zur Speisekarte</a>';
     if (sm.grund === 'min') return 'Noch ' + euro(sm.fehlt) + ' bis zum Mindestbestellwert. <a href="speisekarte.html">Noch etwas aussuchen</a>';
+    if (sm.grund === 'pause') return W.esc(W.pauseText);
     if (sm.grund === 'zu') return 'Gerade nehmen wir keine Bestellungen an.';
     if (fehlt.length) return 'Bitte die rot markierten Felder ausfüllen.';
     if (!form.datenschutz.checked) return 'Bitte der Datenschutzerklärung zustimmen.';
@@ -199,7 +201,7 @@
       knopf.disabled = true;
       knopf.textContent = 'Bezahlseite wird geöffnet …';
       fetch('api/checkout.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
-        .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.url) throw new Error(j.fehler || 'Fehler'); return j; }); })
+        .then(function (r) { return r.json().then(function (j) { if (j.pause) W.neuFragen(); if (!r.ok || !j.url) throw new Error(j.fehler || 'Fehler'); return j; }); })
         .then(function (j) { window.location.href = j.url; })
         .catch(function (err) {
           knopf.disabled = false;
@@ -214,6 +216,7 @@
     fetch('api/bestellen.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
       .then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
+          if (j.pause) W.neuFragen();
           if (!r.ok || !j.nr) throw new Error(j.fehler || 'Die Bestellung konnte nicht gesendet werden.');
           return j;
         });

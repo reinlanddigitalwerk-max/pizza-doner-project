@@ -117,6 +117,7 @@ window.Warenkorb = (function () {
     if (!anzahl) grund = 'leer';
     else if (s.modus === 'lieferung' && !z) grund = 'plz';
     else if (fehlt > 0) grund = 'min';
+    else if (pause) grund = 'pause';
     else if (!offen) grund = 'zu';
     return {
       zw: zw, rabatt: r, liefer: liefer, bisGratis: bisGratis, gesamt: rund(zw - (r ? r.betrag : 0) + liefer),
@@ -207,11 +208,12 @@ window.Warenkorb = (function () {
     }
 
     if (opt.kasse) {
-      var label = { leer: 'Zur Kasse', plz: 'Erst Postleitzahl wählen', min: 'Mindestbestellwert nicht erreicht', zu: 'Gerade geschlossen' }[sm.grund] ||
+      var label = { leer: 'Zur Kasse', plz: 'Erst Postleitzahl wählen', min: 'Mindestbestellwert nicht erreicht', zu: 'Gerade geschlossen', pause: 'Vorübergehend geschlossen' }[sm.grund] ||
         'Zur Kasse · ' + euro(sm.gesamt);
       html += sm.bereit
         ? '<a class="btn btn--primary basket__go" href="kasse.html">' + label + '</a>'
         : '<button class="btn btn--primary basket__go" type="button" disabled>' + label + '</button>';
+      if (sm.grund === 'pause') html += '<p class="basket__hint basket__hint--center">' + esc(PAUSE_TEXT) + '</p>';
       if (sm.grund === 'zu') html += '<p class="basket__hint basket__hint--center">' + (s.modus === 'lieferung' ? 'Lieferung' : 'Abholung') + ' wieder ' + esc(oeffnungText(s.modus)) + '.</p>';
     }
     root.innerHTML = html;
@@ -241,8 +243,47 @@ window.Warenkorb = (function () {
     hoerer.forEach(function (f) { f(); });
   });
 
+  // ---------- Pause vom Laden (Tablet: „Bestellungen pausieren“) ----------
+  // Fragt den Server, ob der Laden Online-Bestellungen gerade angehalten hat. Der Server lehnt Bestellungen
+  // in der Pause sowieso ab – das hier zeigt es dem Kunden nur vorher an.
+  var PAUSE_TEXT = 'Das Restaurant ist vorübergehend geschlossen. Bitte versuche es später noch einmal.';
+  var pause = false;
+  var serverInfo = null;
+  var pauseUhr = null;
+  function serverFragen() {
+    serverInfo = fetch('api/checkout.php', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .catch(function () { return {}; });   // kein PHP (z. B. GitHub Pages) – dann keine Pause
+    serverInfo.then(function (j) {
+      var war = pause;
+      pause = !!j.pause;
+      pauseBanner();
+      if (war !== pause) hoerer.forEach(function (f) { f(); });
+      clearTimeout(pauseUhr);
+      if (pause) pauseUhr = setTimeout(serverFragen, 60000);   // in der Pause jede Minute nachsehen
+    });
+    return serverInfo;
+  }
+  function pauseBanner() {
+    var b = document.querySelector('[data-pause-banner]');
+    if (!pause) { if (b) b.hidden = true; return; }
+    if (!b) {
+      b = document.createElement('p');
+      b.className = 'pause-banner';
+      b.setAttribute('role', 'status');
+      b.setAttribute('data-pause-banner', '');
+      b.textContent = PAUSE_TEXT;
+      var main = document.querySelector('main') || document.body;
+      main.insertBefore(b, main.firstChild);
+    }
+    b.hidden = false;
+  }
+  serverFragen();
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') serverFragen(); });
+
   return {
     get: function () { return s; },
+    server: function () { return serverInfo; }, neuFragen: serverFragen, pauseText: PAUSE_TEXT,
     jetzt: jetzt, summen: summen, hinzu: hinzu, menge: menge, modus: modus, plz: plz, leeren: leeren,
     zone: zone, zeiten: zeiten, oeffnungText: oeffnungText, binden: binden,
     on: function (f) { hoerer.push(f); }, euro: euro, esc: esc

@@ -201,3 +201,14 @@ h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
   .leiste__titel span, .lampe { font-size: 0; gap: 0; padding: 6px; }
   .leiste__uhr { font-size: 18px; min-width: 0; }
 }
+
+/* ---------- Pause ---------- */
+.knopf--pause { background: rgba(228, 121, 30, .18); color: var(--orange-hell); border: 1px solid rgba(228, 121, 30, .45); min-height: 44px; padding: 0 14px; font-size: 15px; }
+.pausiert { display: flex; align-items: center; gap: 14px; margin: 12px 16px 0; padding: 14px 16px; border-radius: 14px;
+  background: rgba(228, 121, 30, .2); border: 2px solid var(--orange); animation: pausiert 2s ease-in-out infinite alternate; }
+.pausiert div { display: grid; gap: 4px; flex: 1; }
+.pausiert strong { font-size: 19px; color: #fff; }
+.pausiert span { color: var(--orange-hell); font-weight: 600; }
+@keyframes pausiert { to { background: rgba(228, 121, 30, .32); } }
+.pause-dlg__wahl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 10px; }
+.pause-dlg__lang { grid-column: 1 / -1; }

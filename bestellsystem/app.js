@@ -158,6 +158,7 @@
         if (reiter !== 'archiv') reiterWaehlen('neu');
         melden(neue.length === 1 ? 'Neue Bestellung ' + kurz(neue[0]) + '!' : neue.length + ' neue Bestellungen!');
       }
+      pauseZeigen(j.pause);
       zeichnen();
       automatischDrucken();
     }).catch(function (err) {
@@ -457,6 +458,32 @@
     });
   });
   $('[data-beleg-zu]').addEventListener('click', function () { belegDlg.close(); });
+
+  // ---------- Pause: Website nimmt keine Bestellungen an ----------
+  var pauseDlg = $('[data-pause-dlg]');
+  function pauseZeigen(p) {
+    var leiste = $('[data-pausiert]');
+    leiste.hidden = !p;
+    $('[data-pause-oeffnen]').hidden = !!p;
+    if (p) {
+      $('[data-pause-text]').textContent = p.offen ? 'bis du wieder öffnest' : 'bis ' + uhr(new Date(p.bis * 1000).toISOString()) + ' Uhr – danach automatisch wieder offen';
+    }
+  }
+  function pauseSetzen(minuten, knopf) {
+    if (knopf) knopf.disabled = true;
+    return api('POST', { aktion: 'pause', minuten: minuten }).then(function (j) {
+      pauseZeigen(j.pause);
+      melden(j.pause ? 'Online-Bestellungen pausiert.' : 'Wieder geöffnet – Bestellungen kommen wieder an.');
+    }).catch(function (err) { melden(err.message, true); })
+      .then(function () { if (knopf) knopf.disabled = false; });
+  }
+  $('[data-pause-oeffnen]').addEventListener('click', function () { pauseDlg.showModal(); });
+  pauseDlg.querySelectorAll('[data-pause-min]').forEach(function (k) {
+    k.addEventListener('click', function () {
+      pauseSetzen(+k.dataset.pauseMin, k).then(function () { if (pauseDlg.open) pauseDlg.close(); });
+    });
+  });
+  $('[data-pause-ende]').addEventListener('click', function (e) { pauseSetzen(null, e.currentTarget); });
 
   // ---------- Uhr ----------
   function tick() { $('[data-uhr]').textContent = uhr(new Date().toISOString()); }

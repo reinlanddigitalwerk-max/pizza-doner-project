@@ -426,6 +426,37 @@ function system_an(): bool
     return is_file($f) && filemtime($f) > time() - MONITOR_HERZSCHLAG;
 }
 
+// ---------- Pause: Online-Bestellungen vom Tablet aus kurz anhalten ----------
+const PAUSE_TEXT = 'Das Restaurant ist vorübergehend geschlossen. Bitte versuche es später noch einmal.';
+
+/**
+ * Läuft gerade eine Pause? Dann ['bis' => Unix-Zeit] (Ende der Pause), sonst null.
+ * „Bis ich wieder öffne“ endet spätestens am nächsten Morgen um 5 Uhr, damit eine vergessene Pause nicht den nächsten Tag kostet.
+ */
+function pause_status(): ?array
+{
+    $f = __DIR__ . '/bestellungen/.pause';
+    if (!is_file($f)) {
+        return null;
+    }
+    $p = json_decode((string) file_get_contents($f), true);
+    $bis = (int) ($p['bis'] ?? 0);
+    return $bis > time() ? ['bis' => $bis, 'offen' => !empty($p['offen'])] : null;
+}
+
+/** Pause setzen: $minuten > 0 für eine feste Zeit, 0 = bis wieder geöffnet wird, null = Pause beenden */
+function pause_setzen(?int $minuten): ?array
+{
+    $f = ordner() . '/.pause';
+    if ($minuten === null) {
+        if (is_file($f)) unlink($f);
+        return null;
+    }
+    $bis = $minuten > 0 ? time() + $minuten * 60 : jetzt()->modify('+1 day')->setTime(5, 0)->getTimestamp();
+    file_put_contents($f, json_encode(['seit' => jetzt()->format('c'), 'bis' => $bis, 'offen' => $minuten === 0]), LOCK_EX);
+    return pause_status();
+}
+
 function monitor_schluessel(): string
 {
     $pw = (string) (geheim()['monitor_passwort'] ?? '');

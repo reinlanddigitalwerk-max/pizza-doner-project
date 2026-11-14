@@ -1,6 +1,6 @@
 <?php
 // Startet die Online-Zahlung: prüft die Bestellung, rechnet selbst nach und öffnet eine Stripe-Checkout-Seite.
-//   GET  → {"aktiv": true|false}   (zeigt die Kasse „Jetzt online bezahlen“ an?)
+//   GET  → {"aktiv": true|false, "pause": true|false}   (Online-Zahlung anbieten? Bestellungen gerade angehalten?)
 //   POST → {"url": "https://checkout.stripe.com/…"}  oder  {"fehler": "…"}
 declare(strict_types=1);
 require __DIR__ . '/lib.php';
@@ -9,7 +9,8 @@ $aktiv = (string) (geheim()['stripe_secret'] ?? '') !== '';
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 if ($methode === 'GET') {
     // aktiv: Online-Zahlung möglich · system: Tablet im Laden ist gerade an (nur zur Kontrolle)
-    antwort(['aktiv' => $aktiv, 'system' => system_an()]);
+    // pause: Laden hat Online-Bestellungen am Tablet kurz angehalten
+    antwort(['aktiv' => $aktiv, 'system' => system_an(), 'pause' => (bool) pause_status()]);
 }
 if ($methode !== 'POST') {
     antwort(['fehler' => 'Nicht erlaubt.'], 405);
@@ -22,6 +23,9 @@ if ($origin !== null && $origin !== false && !in_array(strtolower($origin), ERLA
     antwort(['fehler' => 'Nicht erlaubt.'], 403);
 }
 
+if (pause_status()) {
+    antwort(['fehler' => PAUSE_TEXT, 'pause' => true], 503);
+}
 bremse('bezahlen', 10, 600);
 $roh = (string) file_get_contents('php://input', false, null, 0, 100000);
 $d = json_decode($roh, true);

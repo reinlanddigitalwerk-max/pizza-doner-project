@@ -5,6 +5,7 @@
 //   GET  ?tag=JJJJ-MM-TT  oder  ?monat=JJJJ-MM            → {"bestellungen": [...]}   (Archiv)
 //   POST {"aktion":"status","nr":"…","status":"…"}       → {"ok": true}
 //   POST {"aktion":"gedruckt","nr":"…"}                  → {"ok": true}
+//   POST {"aktion":"pause","minuten":15|30|45|60|0|null} → {"pause": {...}|null}   (0 = bis wieder geöffnet, null = öffnen)
 declare(strict_types=1);
 require __DIR__ . '/lib.php';
 
@@ -79,7 +80,17 @@ if ($methode === 'GET') {
         $liste[] = $b;
     }
     usort($liste, fn ($a, $b) => strcmp($b['eingang'], $a['eingang']));
-    antwort(['bestellungen' => $liste, 'jetzt' => jetzt()->format('c')]);
+    antwort(['bestellungen' => $liste, 'jetzt' => jetzt()->format('c'), 'pause' => pause_status()]);
+}
+
+if (($d['aktion'] ?? '') === 'pause') {
+    $min = $d['minuten'] ?? null;
+    if ($min !== null && !in_array($min, [0, 15, 30, 45, 60, 90, 120], true)) {
+        antwort(['fehler' => 'Ungültige Dauer.'], 422);
+    }
+    $p = pause_setzen($min);
+    sicherheit($p ? 'pause-an' : 'pause-aus', $min === null ? '' : (string) $min);
+    antwort(['pause' => $p]);
 }
 
 $nr = (string) ($d['nr'] ?? '');
