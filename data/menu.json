@@ -168,7 +168,7 @@
      "beschreibung": "Döner-Wrap, Pommes und Softdrink (0,33 l)",
      "aktiv": true,
      "preis": 12.0,
-     "bild": "doener-wrap-menue",
+     "bild": "wrap-menue",
      "allergene": "A,G,12,2",
      "optionen": [
       {
@@ -287,7 +287,7 @@
      "beschreibung": "Lahmacun (mit Fleisch), Pommes und Softdrink (0,33 l)",
      "aktiv": true,
      "preis": 13.0,
-     "bild": "lahmacun-salat",
+     "bild": "lahmacun-fleisch",
      "allergene": "G,12,2",
      "optionen": [
       {
@@ -1349,7 +1349,7 @@
      "beschreibung": "im Fladenbrot mit extra Fleisch, Salat, Sauce und Käse",
      "aktiv": true,
      "preis": 8.5,
-     "bild": "doener-sandwich",
+     "bild": "doener-sandwich-extra-fleisch",
      "allergene": "A,G,12,2"
     },
     {
@@ -1358,7 +1358,7 @@
      "beschreibung": "im Fladenbrot mit Gemüse, Salat und Sauce",
      "aktiv": true,
      "preis": 8.0,
-     "bild": "doener-sandwich",
+     "bild": "gemuese-doener",
      "neu": true,
      "allergene": "A,G,12,2"
     },
@@ -1368,7 +1368,7 @@
      "beschreibung": "im Fladenbrot mit Salat, Sauce und doppelt Käse",
      "aktiv": true,
      "preis": 11.0,
-     "bild": "doener-sandwich",
+     "bild": "dubbel-cheese-doener",
      "neu": true,
      "allergene": "A,G,12,2"
     },
@@ -1379,7 +1379,6 @@
      "aktiv": true,
      "preis": 9.0,
      "bild": "steak-lamm-doener",
-     "bild_klein": true,
      "neu": true,
      "tage": [
       4,
@@ -1404,7 +1403,7 @@
      "beschreibung": "Drehspießfleisch",
      "aktiv": true,
      "preis": 10.0,
-     "bild": "doener-fleisch",
+     "bild": "portion-fleisch",
      "allergene": "12",
      "ohne_optionen": [
       "Was möchtest du nicht?",
@@ -1442,7 +1441,7 @@
      "beschreibung": "in der Box mit Reis und Sauce",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "doener-reis",
+     "bild": "pomm-doener-reis",
      "allergene": "G,12,2"
     },
     {
@@ -1451,7 +1450,7 @@
      "beschreibung": "in der Box mit Salat und Sauce",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "doener-box",
+     "bild": "pomm-doener-salat",
      "allergene": "G,12,2"
     },
     {
@@ -1460,7 +1459,7 @@
      "beschreibung": "in der Box mit Pommes und Sauce",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "doener-box",
+     "bild": "pomm-doener-pommes",
      "allergene": "G,12,2"
     },
     {
@@ -1469,7 +1468,7 @@
      "beschreibung": "mit Tomatensauce und Goudakäse überbacken",
      "aktiv": true,
      "preis": 10.0,
-     "bild": "doener-ueberbacken",
+     "bild": "doener-ueberbacken-tomatensauce",
      "allergene": "G,12,2",
      "ohne_optionen": [
       "Was möchtest du nicht?",
@@ -1482,7 +1481,7 @@
      "beschreibung": "mit Sauce Hollandaise und Goudakäse überbacken",
      "aktiv": true,
      "preis": 10.0,
-     "bild": "doener-ueberbacken",
+     "bild": "doener-ueberbacken-hollandaise",
      "allergene": "G,12,2",
      "ohne_optionen": [
       "Was möchtest du nicht?",
@@ -1632,7 +1631,7 @@
       "Ø30cm": 10.0
      },
      "allergene": "G,2,11",
-     "bild": "pizza-chicken"
+     "bild": "neusser-pizza"
     },
     {
      "nr": "723",
@@ -1656,7 +1655,7 @@
       "Ø30cm": 8.0
      },
      "allergene": "G,2,13",
-     "bild": "pizza-schinken"
+     "bild": "pizza-prosciutto"
     },
     {
      "nr": "753",
@@ -1728,7 +1727,7 @@
       "Ø30cm": 9.5
      },
      "allergene": "G,2,15,13",
-     "bild": "pizza-salami"
+     "bild": "pizza-mista"
     },
     {
      "nr": "727",
@@ -1788,7 +1787,7 @@
       "Ø30cm": 9.5
      },
      "allergene": "G,2",
-     "bild": "pizza-sucuk"
+     "bild": "doener-pizza"
     },
     {
      "nr": "714",
@@ -1812,7 +1811,7 @@
       "Ø30cm": 9.0
      },
      "allergene": "G,2,3,11",
-     "bild": "pizza-chicken"
+     "bild": "pizza-deluxe"
     },
     {
      "nr": "737",
@@ -1824,7 +1823,7 @@
       "Ø30cm": 9.0
      },
      "allergene": "G,2",
-     "bild": "pizza-bbq-chicken"
+     "bild": "pizza-california"
     },
     {
      "nr": "712",
@@ -1846,7 +1845,7 @@
      "preise": {
       "Ø30cm": 9.9
      },
-     "bild": "calzone",
+     "bild": "pizza-calzone",
      "allergene": "G,2,D,13"
     }
    ]
@@ -1922,7 +1921,7 @@
      "beschreibung": "6 Stück mit Spinat und doppelt Käse",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "pizzabroetchen-dip",
+     "bild": "pizzabroetchen-spinat-doppelt-kaese",
      "allergene": "A,G,2"
     },
     {
@@ -1931,7 +1930,7 @@
      "beschreibung": "6 Stück mit Dönerfleisch",
      "aktiv": true,
      "preis": 7.5,
-     "bild": "pizzabroetchen-dip",
+     "bild": "pizzabroetchen-doenerfleisch",
      "allergene": "A,12"
     },
     {
@@ -1948,7 +1947,7 @@
      "beschreibung": "6 Stück mit Schinken und Ananas",
      "aktiv": true,
      "preis": 7.5,
-     "bild": "pizzabroetchen-schnecke"
+     "bild": "pizzabroetchen-schinken-ananas"
     },
     {
      "nr": "673",
@@ -1956,7 +1955,7 @@
      "beschreibung": "6 Stück mit Sucuk",
      "aktiv": true,
      "preis": 7.5,
-     "bild": "pizzabroetchen-schnecke"
+     "bild": "pizzabroetchen-sucuk"
     }
    ]
   },
@@ -2009,7 +2008,7 @@
      "beschreibung": "mit Spinat, Goudakäse und Fetakäse",
      "aktiv": true,
      "preis": 7.5,
-     "bild": "pide-neu",
+     "bild": "pide-spinat-kaese",
      "allergene": "A,2,G"
     },
     {
@@ -2018,7 +2017,7 @@
      "beschreibung": "mit Sucuk und Goudakäse",
      "aktiv": true,
      "preis": 8.0,
-     "bild": "pide-neu",
+     "bild": "pide-sucuk",
      "allergene": "A,12"
     },
     {
@@ -2027,7 +2026,7 @@
      "beschreibung": "mit Dönerfleisch und Goudakäse",
      "aktiv": true,
      "preis": 8.0,
-     "bild": "pide-neu",
+     "bild": "pide-doenerfleisch",
      "allergene": "A,12"
     }
    ]
@@ -2135,7 +2134,7 @@
      "beschreibung": "mit Salat und Sauce",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "lahmacun-salat",
+     "bild": "lahmacun-salat-sauce",
      "allergene": "G,2"
     },
     {
@@ -2144,7 +2143,7 @@
      "beschreibung": "mit Drehspießfleisch, Salat und Sauce",
      "aktiv": true,
      "preis": 9.0,
-     "bild": "lahmacun-salat",
+     "bild": "lahmacun-fleisch",
      "allergene": "G,12,2",
      "optionen": [
       {
@@ -2169,7 +2168,7 @@
      "beschreibung": "mit Falafel, Salat und Sauce",
      "aktiv": true,
      "preis": 8.0,
-     "bild": "lahmacun-salat",
+     "bild": "lahmacun-falafel",
      "allergene": "G,2"
     },
     {
@@ -2178,7 +2177,7 @@
      "beschreibung": "mit Gemüse, Salat und Sauce",
      "aktiv": true,
      "preis": 8.0,
-     "bild": "lahmacun-salat",
+     "bild": "lahmacun-gemuese",
      "allergene": "G,2"
     }
    ]
@@ -2389,7 +2388,7 @@
      "beschreibung": "im Fladenbrot mit Gemüse, Salat und Sauce",
      "aktiv": true,
      "preis": 7.0,
-     "bild": "salat-tasche",
+     "bild": "gemuese-tasche",
      "neu": true,
      "allergene": "A,2,G"
     }
@@ -2572,7 +2571,7 @@
      "beschreibung": "mit Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
      "aktiv": true,
      "preis": 6.5,
-     "bild": "salat-gemischt",
+     "bild": "gemischter-salat",
      "allergene": "G,2"
     },
     {
@@ -2581,7 +2580,7 @@
      "beschreibung": "mit Dönerfleisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni und Käse",
      "aktiv": true,
      "preis": 10.5,
-     "bild": "salat-doener",
+     "bild": "doener-salat",
      "allergene": "G,12,2"
     },
     {
@@ -2590,7 +2589,7 @@
      "beschreibung": "mit Thunfisch, Krautsalat, Kopfsalat, Tomaten, Gurken, Zwiebeln, Peperoni, Oliven und Goudakäse",
      "aktiv": true,
      "preis": 9.5,
-     "bild": "salat-thunfisch",
+     "bild": "thunfisch-salat",
      "allergene": "G,2,D,8"
     },
     {
@@ -2599,7 +2598,7 @@
      "beschreibung": "mit Gurken, Tomaten, Oliven, Peperoni und Käse",
      "aktiv": true,
      "preis": 9.0,
-     "bild": "salat-bauern",
+     "bild": "bauernsalat",
      "allergene": "G,2,8"
     }
    ]
@@ -2738,7 +2737,7 @@
      "beschreibung": "mit Crispy Chicken, Käse, Salat, Tomaten und Burgersauce",
      "aktiv": true,
      "preis": 9.0,
-     "bild": "chickenburger",
+     "bild": "crispy-cheeseburger",
      "allergene": "G,2"
     }
    ]
@@ -2752,7 +2751,7 @@
      "beschreibung": "mit Pommes und Salat",
      "aktiv": true,
      "preis": 10.0,
-     "bild": "schnitzel",
+     "bild": "schnitzel-wiener-art",
      "optionen": [
       {
        "titel": "Extra Sauce dazu",
