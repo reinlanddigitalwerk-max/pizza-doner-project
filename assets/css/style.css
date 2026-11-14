@@ -1252,9 +1252,9 @@ a { color: inherit; }
 .meal {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   min-height: 112px;
   padding: 14px 16px 14px 20px;
   border-radius: 16px;
@@ -1279,11 +1279,11 @@ a { color: inherit; }
 .meal__price { margin: 6px 0 0; font-weight: 800; font-size: var(--text-md); color: var(--brown); font-variant-numeric: tabular-nums; }
 .meal__price span { font-weight: 600; font-size: var(--text-xs); color: var(--green); }
 /* Gerichtsbilder: Kachel in Salbeigrün mit Naturrand (Farben wie ein Keramikteller) */
-.meal__img { width: 96px; height: 96px; border-radius: 16px; object-fit: cover; background: #849E84; border: 3px solid #D0BA9D; box-sizing: border-box; }
+.meal__img { order: 3; width: 96px; height: 96px; border-radius: 16px; object-fit: cover; background: #849E84; border: 3px solid #D0BA9D; box-sizing: border-box; }
+/* Plus-Knopf neben dem Bild statt darauf – Bild und Rahmen bleiben ganz sichtbar */
 .meal__add {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
+  order: 2;
+  align-self: end;
   display: grid;
   place-items: center;
   width: 38px;
@@ -1555,10 +1555,10 @@ a { color: inherit; }
   .shop-head__logo { width: 72px; height: 72px; padding: 6px; border-radius: 16px; }
   .shop-head__facts li { font-size: var(--text-xs); padding: 5px 10px; }
   .page-shop .cat-nav { top: var(--bar-h); }
-  .meal { min-height: 100px; padding: 12px 12px 12px 14px; gap: 12px; }
+  .meal { min-height: 100px; padding: 12px 12px 12px 14px; gap: 10px; }
   .meal__name { font-size: var(--text-md); }
   .meal__img { width: 84px; height: 84px; }
-  .meal__add { width: 34px; height: 34px; right: 8px; bottom: 8px; }
+  .meal__add { width: 34px; height: 34px; }
   .item-dialog { width: 100%; max-width: none; max-height: 92vh; margin: auto 0 0; border-radius: 24px 24px 0 0; }
   .item { max-height: 92vh; }
   .item__img { height: 180px; }

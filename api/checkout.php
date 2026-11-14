@@ -8,9 +8,9 @@ require __DIR__ . '/lib.php';
 $aktiv = (string) (geheim()['stripe_secret'] ?? '') !== '';
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 if ($methode === 'GET') {
-    // aktiv: Online-Zahlung möglich · system: Tablet im Laden ist gerade an (nur zur Kontrolle)
-    // pause: Laden hat Online-Bestellungen am Tablet kurz angehalten
-    antwort(['aktiv' => $aktiv, 'system' => system_an(), 'pause' => (bool) pause_status()]);
+    // aktiv: Online-Zahlung möglich · pause: Laden hat Online-Bestellungen am Tablet kurz angehalten
+    // (ob das Tablet gerade an ist, verraten wir nicht nach außen)
+    antwort(['aktiv' => $aktiv, 'pause' => (bool) pause_status()]);
 }
 if ($methode !== 'POST') {
     antwort(['fehler' => 'Nicht erlaubt.'], 405);

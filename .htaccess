@@ -18,10 +18,10 @@ AddDefaultCharset utf-8
   Header always set Strict-Transport-Security "max-age=31536000"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), usb=(), magnetometer=(), gyroscope=()"
-  # Content-Security-Policy erst nur beobachten (meldet Verstöße an api/csp.php, blockiert nichts).
-  # Nach ein paar Tagen ohne Meldungen auf „Content-Security-Policy“ umstellen. Der sha256-Wert wird von
-  # tools/build_pages.py für das kleine Skript im <head> eingetragen.
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'sha256-9ilG8ggfFfm182aegJhMLpDz0IOPprP/Fd7wrQUZhMk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://neusser-doener-pizza.de; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp.php"
+  # Content-Security-Policy: nur eigene Skripte laufen, fremd eingeschleuster Code wird blockiert
+  # (seit November 2026 scharf geschaltet, vorher beobachtet; Verstöße gehen weiter an api/csp.php).
+  # Der sha256-Wert wird von tools/build_pages.py für das kleine Skript im <head> eingetragen.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-9ilG8ggfFfm182aegJhMLpDz0IOPprP/Fd7wrQUZhMk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://neusser-doener-pizza.de; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp.php"
   # Service Worker und Manifest immer frisch, damit Änderungen sofort ankommen
   <FilesMatch "^(sw\.js|manifest\.webmanifest)$">
     Header set Cache-Control "no-cache"

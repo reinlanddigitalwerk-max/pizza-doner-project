@@ -9,7 +9,7 @@ $geheimnis = (string) (geheim()['webhook_secret'] ?? '');
 $roh = (string) file_get_contents('php://input');
 $kopf = (string) ($_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '');
 if ($geheimnis === '' || $kopf === '') {
-    antwort(['fehler' => 'nicht eingerichtet'], 400);
+    antwort(['fehler' => 'Ungültige Anfrage.'], 400);
 }
 
 // Signatur prüfen: t=Zeit, v1=HMAC-SHA256("t.payload")
@@ -26,7 +26,8 @@ foreach ($sig as $v) {
     $ok = $ok || hash_equals($soll, $v);
 }
 if (!$ok || abs(time() - $t) > 300) {
-    antwort(['fehler' => 'Signatur ungültig'], 400);
+    sicherheit('webhook-signatur');
+    antwort(['fehler' => 'Ungültige Anfrage.'], 400);
 }
 
 $e = json_decode($roh, true);
