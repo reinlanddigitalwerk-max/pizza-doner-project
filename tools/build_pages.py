@@ -294,6 +294,16 @@ TAGE_EN = {"Montag": "Monday", "Dienstag": "Tuesday", "Mittwoch": "Wednesday", "
            "Freitag": "Friday", "Samstag": "Saturday", "Sonntag": "Sunday"}
 
 
+# So suchen die Leute nach dem Laden – Google zeigt damit den richtigen Seitennamen
+NAMEN = ["Neusser Döner und Pizza", "Neusser Döner", "Neusser Doner Pizza", "Neusser Döner Neuss"]
+
+
+def website_ld():
+    """Seitenname für die Google-Suche (statt nur der Domain)."""
+    return json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": shop["name"],
+                       "alternateName": NAMEN, "url": DOMAIN}, ensure_ascii=False, separators=(",", ":"))
+
+
 def restaurant_ld():
     """Strukturierte Daten für Google (Restaurant mit Adresse, Zeiten, Speisekarte)."""
     zeiten = {}
@@ -304,6 +314,7 @@ def restaurant_ld():
         "@context": "https://schema.org",
         "@type": "Restaurant",
         "name": shop["name"],
+        "alternateName": NAMEN,
         "url": DOMAIN,
         "image": DOMAIN + "assets/img/og-bild.jpg",
         "logo": DOMAIN + "assets/img/icons/app-512.png",
@@ -315,6 +326,8 @@ def restaurant_ld():
         "priceRange": "€",
         "hasMenu": DOMAIN + "speisekarte.html",
         "acceptsReservations": False,
+        "sameAs": ["https://www.lieferando.de/speisekarte/neusser-doner-und-pizza-neuss",
+                   "https://www.ubereats.com/de/store/neusser-doner-&-pizza-new/zTLoOiYaVcqxsoo1ntrlXA"],
         "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": tage, "opens": z[0], "closes": z[1]}
                                       for z, tage in zeiten.items()],
         "potentialAction": {"@type": "OrderAction", "target": DOMAIN + "speisekarte.html",
@@ -336,6 +349,7 @@ def seo(filename, title, description):
           '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">',
           '<meta name="twitter:card" content="summary_large_image">']
     if filename == "index.html":
+        z.append(f'<script type="application/ld+json">{website_ld()}</script>')
         z.append(f'<script type="application/ld+json">{restaurant_ld()}</script>')
     return "\n".join("  " + x for x in z) + "\n"
 
