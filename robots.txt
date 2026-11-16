@@ -1,0 +1,7 @@
+# Wird von tools/build_pages.py erzeugt
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /bestellsystem/
+
+Sitemap: https://neusser-doner-pizza.de/sitemap.xml

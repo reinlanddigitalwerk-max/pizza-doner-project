@@ -286,6 +286,69 @@ def legend_html():
     )
 
 
+# ---------- Google: Canonical, Vorschau (WhatsApp/Facebook), Restaurant-Daten, Sitemap ----------
+DOMAIN = "https://neusser-doner-pizza.de/"
+SEO = re.compile(r"(<!-- SEO:START[^>]*-->).*?(  <!-- SEO:END -->)", re.S)
+NICHT_INDEXIEREN = {"kasse.html"}          # Kasse gehört nicht in die Google-Suche
+TAGE_EN = {"Montag": "Monday", "Dienstag": "Tuesday", "Mittwoch": "Wednesday", "Donnerstag": "Thursday",
+           "Freitag": "Friday", "Samstag": "Saturday", "Sonntag": "Sunday"}
+
+
+def restaurant_ld():
+    """Strukturierte Daten für Google (Restaurant mit Adresse, Zeiten, Speisekarte)."""
+    zeiten = {}
+    for tag, z in shop["oeffnungszeiten"].items():
+        if z:
+            zeiten.setdefault(tuple(z), []).append(TAGE_EN[tag])
+    d = {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": shop["name"],
+        "url": DOMAIN,
+        "image": DOMAIN + "assets/img/og-bild.jpg",
+        "logo": DOMAIN + "assets/img/icons/app-512.png",
+        "telephone": shop["telefon_link"],
+        "address": {"@type": "PostalAddress", "streetAddress": shop["adresse"]["strasse"],
+                    "postalCode": shop["adresse"]["plz"], "addressLocality": shop["adresse"]["ort"], "addressCountry": "DE"},
+        "geo": {"@type": "GeoCoordinates", "latitude": shop["koordinaten"]["lat"], "longitude": shop["koordinaten"]["lng"]},
+        "servesCuisine": ["Döner", "Pizza", "Türkisch", "Lahmacun", "Pide", "Burger"],
+        "priceRange": "€",
+        "hasMenu": DOMAIN + "speisekarte.html",
+        "acceptsReservations": False,
+        "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": tage, "opens": z[0], "closes": z[1]}
+                                      for z, tage in zeiten.items()],
+        "potentialAction": {"@type": "OrderAction", "target": DOMAIN + "speisekarte.html",
+                            "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModeOwnFleet",
+                                               "http://purl.org/goodrelations/v1#DeliveryModePickUp"]},
+    }
+    return json.dumps(d, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
+def seo(filename, title, description):
+    url = DOMAIN if filename == "index.html" else DOMAIN + filename
+    z = [f'<link rel="canonical" href="{url}">']
+    if filename in NICHT_INDEXIEREN:
+        z.append('<meta name="robots" content="noindex, follow">')
+    z += ['<meta property="og:type" content="website">', '<meta property="og:locale" content="de_DE">',
+          f'<meta property="og:site_name" content="{esc(shop["name"])}">', f'<meta property="og:title" content="{esc(title)}">',
+          f'<meta property="og:description" content="{esc(description)}">', f'<meta property="og:url" content="{url}">',
+          f'<meta property="og:image" content="{DOMAIN}assets/img/og-bild.jpg">',
+          '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">',
+          '<meta name="twitter:card" content="summary_large_image">']
+    if filename == "index.html":
+        z.append(f'<script type="application/ld+json">{restaurant_ld()}</script>')
+    return "\n".join("  " + x for x in z) + "\n"
+
+
+def seo_einsetzen(text, filename, title, description):
+    return SEO.sub(lambda m: m.group(1) + "\n" + seo(filename, title, description) + m.group(2), text, count=1)
+
+
+_t = html.unescape(re.search(r"<title>(.*?)</title>", index, re.S).group(1))
+_d = html.unescape(re.search(r'<meta name="description" content="([^"]*)">', index).group(1))
+index = seo_einsetzen(index, "index.html", _t, _d)
+(ROOT / "index.html").write_text(index, encoding="utf-8")
+
 # ---------- Rahmen aus index.html ----------
 HEAD = index[: index.index("<body>")]
 TOPBAR = index[index.index("  <!-- Logo-Leiste -->"): index.index("  <!-- Angebote:")]
@@ -302,6 +365,7 @@ def topbar(filename):
 def page(filename, title, description, body, scripts="", body_class=""):
     head = re.sub(r"<title>.*?</title>", f"<title>{esc(title)}</title>", HEAD, flags=re.S)
     head = re.sub(r'<meta name="description" content="[^"]*">', f'<meta name="description" content="{esc(description)}">', head)
+    head = seo_einsetzen(head, filename, title, description)
     out = f"""{head}<body class="{body_class}">
 
 {topbar(filename)}
@@ -777,3 +841,20 @@ self.addEventListener('fetch', (e) => {{
 """, encoding="utf-8")
 print("geschrieben: sw.js (Stand", stand + ")")
 
+
+# ---------- robots.txt und sitemap.xml für Google ----------
+import datetime
+
+heute = datetime.date.today().isoformat()
+seiten = [f.name for f in sorted(ROOT.glob("*.html")) if f.name not in NICHT_INDEXIEREN]
+seiten.sort(key=lambda n: (n != "index.html", n != "speisekarte.html", n))
+wichtig = {"index.html": "1.0", "speisekarte.html": "0.9"}
+(ROOT / "sitemap.xml").write_text(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + "".join(f"  <url><loc>{DOMAIN if n == 'index.html' else DOMAIN + n}</loc><lastmod>{heute}</lastmod>"
+              f"<priority>{wichtig.get(n, '0.5')}</priority></url>\n" for n in seiten)
+    + "</urlset>\n", encoding="utf-8")
+(ROOT / "robots.txt").write_text(
+    "# Wird von tools/build_pages.py erzeugt\nUser-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /bestellsystem/\n"
+    "\nSitemap: " + DOMAIN + "sitemap.xml\n", encoding="utf-8")
+print("geschrieben: sitemap.xml, robots.txt")
