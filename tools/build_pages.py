@@ -846,7 +846,7 @@ print("geschrieben: sw.js (Stand", stand + ")")
 import datetime
 
 heute = datetime.date.today().isoformat()
-seiten = [f.name for f in sorted(ROOT.glob("*.html")) if f.name not in NICHT_INDEXIEREN]
+seiten = [f.name for f in sorted(ROOT.glob("*.html")) if f.name not in NICHT_INDEXIEREN and not f.name.startswith("google")]  # google….html = Bestätigung Search Console
 seiten.sort(key=lambda n: (n != "index.html", n != "speisekarte.html", n))
 wichtig = {"index.html": "1.0", "speisekarte.html": "0.9"}
 (ROOT / "sitemap.xml").write_text(
