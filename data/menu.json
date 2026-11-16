@@ -2728,7 +2728,7 @@
      "beschreibung": "mit Crispy Chicken, Tomaten, Salat und Burgersauce",
      "aktiv": true,
      "preis": 8.5,
-     "bild": "chickenburger",
+     "bild": "crispy-chickenburger",
      "allergene": "G,2"
     },
     {
@@ -2943,7 +2943,7 @@
      "beschreibung": "6 Chicken-Nuggets",
      "aktiv": true,
      "preis": 5.0,
-     "bild": "chicken-nuggets",
+     "bild": "nuggets",
      "optionen": [
       {
        "titel": "Extra Sauce dazu",

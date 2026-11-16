@@ -266,18 +266,18 @@
   "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
  },
  "jaegerschnitzel": {
-  "titel": "Wiener Schnitzel mit Preiselbeeren",
-  "urheber": "Brücke-Osteuropa",
-  "lizenz": "cc0",
-  "quelle": "https://commons.wikimedia.org/w/index.php?curid=12599118",
-  "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
+  "titel": "jaegerschnitzel",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
  },
  "paprikaschnitzel": {
-  "titel": "File:Original Wiener Schnitzel in Wien mit Erdäpfel-Vogerlsalat und Preiselbeeren 1.JPG",
-  "urheber": "Brücke-Osteuropa",
-  "lizenz": "cc0",
-  "quelle": "https://commons.wikimedia.org/w/index.php?curid=18430737",
-  "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
+  "titel": "paprikaschnitzel",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
  },
  "hamburger": {
   "titel": "hamburger",
@@ -294,11 +294,11 @@
   "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
  },
  "chili-cheeseburger": {
-  "titel": "Cheeseburger and fries 4",
-  "urheber": "Kurtkaiser",
-  "lizenz": "cc0",
-  "quelle": "https://commons.wikimedia.org/w/index.php?curid=125077269",
-  "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
+  "titel": "chili-cheeseburger",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
  },
  "chickenburger": {
   "titel": "A wooden table holds two plates with sesame seed burgers—one with chicken, the other with lettuce and tomato—plus crispy chips, cheesy fries with chili flakes, orange dipping sauce, and a pizza.",
@@ -329,11 +329,11 @@
   "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
  },
  "currywurst": {
-  "titel": "Currywurst-2024",
-  "urheber": "Richard Mischau, Britta Mischau",
-  "lizenz": "cc0",
-  "quelle": "https://commons.wikimedia.org/w/index.php?curid=150728305",
-  "bearbeitung": "freigestellt bzw. rund zugeschnitten, auf eigenem gerenderten Keramikteller (tools/blender/teller_render.py), November 2026"
+  "titel": "currywurst",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
  },
  "currywurst-pommes": {
   "titel": "CurryWurst am KIT",
@@ -862,6 +862,20 @@
  },
  "wrap-menue": {
   "titel": "wrap-menue",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
+ },
+ "crispy-chickenburger": {
+  "titel": "crispy-chickenburger",
+  "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
+  "lizenz": "canva-ki",
+  "quelle": "Canva Pro, erzeugt November 2026",
+  "bearbeitung": "freigestellt und auf Salbei-Kachel gesetzt (Rheinland, November 2026)"
+ },
+ "nuggets": {
+  "titel": "nuggets",
   "urheber": "KI-Bild aus Canva Pro (Magic Media) im Konto des Inhabers",
   "lizenz": "canva-ki",
   "quelle": "Canva Pro, erzeugt November 2026",
