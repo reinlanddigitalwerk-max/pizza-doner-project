@@ -6,7 +6,10 @@
   var ABFRAGE_MS = 4000;
   var $ = function (s) { return document.querySelector(s); };
 
-  var cfg = laden(EINST, { ip: '192.168.178.82', autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
+  var DRUCKER_IP = '192.168.2.61';  // laut Netzwerk-Ausdruck des Bondruckers im Laden
+  var cfg = laden(EINST, { ip: DRUCKER_IP, autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
+  // alte Standard-Adresse auf dem Tablet gespeichert → einmalig auf die neue umstellen
+  if (cfg.ip === '192.168.178.82') { cfg.ip = DRUCKER_IP; merken(EINST, cfg); }
   var token = laden(TOKEN, '');
   var bestellungen = [];
   var bekannt = null;             // Nummern, die schon einmal da waren (erst nach der ersten Abfrage gefüllt)
