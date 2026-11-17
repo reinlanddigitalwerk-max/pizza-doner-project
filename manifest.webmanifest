@@ -13,6 +13,10 @@
     { "src": "assets/img/icons/app-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "assets/img/icons/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
+  "screenshots": [
+    { "src": "assets/img/app/screen-start.webp", "sizes": "780x1688", "type": "image/webp", "form_factor": "narrow", "label": "Startseite mit Angeboten" },
+    { "src": "assets/img/app/screen-speisekarte.webp", "sizes": "780x1688", "type": "image/webp", "form_factor": "narrow", "label": "Speisekarte – direkt bestellen" }
+  ],
   "shortcuts": [
     { "name": "Speisekarte", "short_name": "Speisekarte", "url": "./speisekarte.html", "icons": [{ "src": "assets/img/icons/app-192.png", "sizes": "192x192" }] },
     { "name": "Angebote", "url": "./index.html#angebote-liste" }

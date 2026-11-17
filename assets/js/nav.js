@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // App installieren: Service Worker anmelden; die Knöpfe in Menü und Footer starten die Installation.
-// Chrome, Edge, Samsung Internet und Opera zeigen sofort den Installieren-Dialog. Safari und Firefox
-// erlauben das keiner Website – dort erklärt ein kurzer Hinweis, passend zum Browser, die zwei Handgriffe.
+// Bietet der Browser die Installation an (Chrome, Edge, Samsung, Opera), reicht ein Tipp. Sonst (iPhone, Firefox,
+// oder Chrome hat noch nicht angeboten) erklärt ein kurzer Hinweis, passend zum Browser, die Handgriffe.
 (function () {
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('sw.js').catch(function () { /* z. B. in der Vorschau nicht erlaubt */ });
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var installiert = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   if (installiert) return;
 
-  var knoepfe = document.querySelectorAll('[data-install]');      // Menü und Footer
+  var knoepfe = Array.prototype.slice.call(document.querySelectorAll('[data-install]'));      // Menü und Footer
   var hilfe = document.querySelector('.app-hinweis');
   var ua = navigator.userAgent;
   var ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -92,6 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (/Android/i.test(ua) && /Firefox/i.test(ua)) {
       return { text: schritte(['Oben rechts auf das Menü <b>⋮</b> tippen', '<b>„Installieren“</b> wählen', 'Bestätigen – fertig']) };
     }
+    if (/Android/i.test(ua) && /EdgA/i.test(ua)) {
+      return { text: schritte(['Unten auf das Menü <b>≡</b> tippen', '<b>„Zum Telefon hinzufügen“</b> wählen', 'Auf <b>Installieren</b> tippen']) };
+    }
+    if (/Android/i.test(ua) && !/SamsungBrowser|Firefox|OPR|EdgA/i.test(ua)) {
+      return { text: schritte(['Oben rechts auf das Menü <b>⋮</b> tippen', '<b>„App installieren“</b> oder <b>„Zum Startbildschirm hinzufügen“</b> wählen', 'Auf <b>Installieren</b> tippen – fertig']) };
+    }
     if (/SamsungBrowser/i.test(ua)) {
       return { text: schritte(['Unten auf das Menü <b>≡</b> tippen', '<b>„Seite hinzufügen zu“</b> → <b>„Startbildschirm“</b>', 'Auf <b>Hinzufügen</b> tippen']) };
     }
@@ -104,20 +110,57 @@ document.addEventListener('DOMContentLoaded', function () {
     return { text: schritte(['Rechts in der Adressleiste auf das Installieren-Symbol ' + PLUS + ' klicken – oder im Menü <b>⋮</b> <b>„App installieren“</b> wählen', 'Mit <b>Installieren</b> bestätigen']) };
   }
 
-  function zeigen(an) { knoepfe.forEach(function (k) { k.hidden = !an; }); }
-  if (ios) zeigen(true);
+  function zeigen(an) {
+    knoepfe.forEach(function (k) { k.hidden = !an; });
+    if (leiste) leiste.hidden = !an || leisteWeg();
+  }
+
+  // Kleine Leiste unter dem Kopf (nur Handy/Tablet), damit Kunden den Knopf sofort sehen. Mit × für 30 Tage weg.
+  var MERK = 'app-leiste-weg';
+  function leisteWeg() {
+    try { return Date.now() - Number(localStorage.getItem(MERK) || 0) < 30 * 864e5; } catch (e) { return false; }
+  }
+  var leiste = null;
+  var kopf = document.querySelector('header.topbar');
+  if (kopf && !/kasse\.html$/.test(location.pathname) && window.matchMedia('(max-width: 1020px)').matches) {
+    leiste = document.createElement('div');
+    leiste.className = 'app-leiste';
+    leiste.hidden = true;
+    var bild = document.createElement('img');
+    bild.src = 'assets/img/icons/app-192.png'; bild.alt = ''; bild.width = 36; bild.height = 36;
+    var txt = document.createElement('p');
+    var stark = document.createElement('strong'); stark.textContent = 'Unsere App aufs Handy';
+    var klein = document.createElement('span'); klein.textContent = 'Schneller bestellen – ohne App Store';
+    txt.appendChild(stark); txt.appendChild(klein);
+    var los = document.createElement('button');
+    los.type = 'button'; los.className = 'app-leiste__los'; los.textContent = 'Installieren';
+    var zu = document.createElement('button');
+    zu.type = 'button'; zu.className = 'app-leiste__zu'; zu.setAttribute('aria-label', 'Hinweis schließen'); zu.textContent = '×';
+    zu.addEventListener('click', function () {
+      try { localStorage.setItem(MERK, String(Date.now())); } catch (e) { /* egal */ }
+      leiste.hidden = true;
+    });
+    leiste.appendChild(bild); leiste.appendChild(txt); leiste.appendChild(los); leiste.appendChild(zu);
+    kopf.insertAdjacentElement('afterend', leiste);
+    knoepfe = Array.prototype.slice.call(knoepfe).concat([los]);
+  }
+
+  // Knöpfe immer zeigen (außer die App ist schon installiert): mit Angebot des Browsers ein Tipp,
+  // sonst erklärt der Hinweis die Handgriffe für genau diesen Browser.
+  zeigen(true);
 
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     angebot = e;
-    zeigen(true);
   });
-  window.addEventListener('appinstalled', function () { zeigen(false); });
+  window.addEventListener('appinstalled', function () { angebot = null; zeigen(false); });
 
   function installieren() {
     if (angebot) {
-      angebot.prompt();
-      angebot.userChoice.then(function () { angebot = null; zeigen(false); });
+      var a0 = angebot;
+      angebot = null;
+      a0.prompt();
+      a0.userChoice.then(function (w) { if (w && w.outcome === 'accepted') zeigen(false); }).catch(function () {});
       return;
     }
     if (!hilfe) return;
