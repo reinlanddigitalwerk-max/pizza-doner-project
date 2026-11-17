@@ -22,4 +22,5 @@ antwort([
     'art' => $s['metadata']['art'] ?? '',
     'zeit' => $s['metadata']['zeit'] ?? '',
     'betrag' => ($s['amount_total'] ?? 0) / 100,
+    'mwst' => $b['mwst'] ?? [],
 ]);

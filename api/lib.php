@@ -102,10 +102,43 @@ function speisekarte(): array
                 'optionen' => array_merge($gruppen, $a['optionen'] ?? []),
                 'tage' => $a['tage'] ?? null,
                 'zeit' => $a['zeit'] ?? null,
+                'anteil19' => (int) ($kat['mwst'] ?? 7) === 19 ? 1.0 : anteil19($a['mwst_aufteilung'] ?? null),
             ];
         }
     }
     return $karte;
+}
+
+/**
+ * Umsatzsteuer: Speisen 7 % (§ 12 Abs. 2 Nr. 1 und Nr. 15 UStG), Getränke 19 % (§ 12 Abs. 1 UStG).
+ * Menüs mit Getränk: Aufteilung nach Einzelverkaufspreisen („mwst_aufteilung“ in data/menu.json).
+ * Liefergebühr und Rabatt werden im selben Verhältnis aufgeteilt wie die Waren.
+ */
+const MWST_SAETZE = [7, 19];
+
+/** Anteil eines Preises, der auf Getränke (19 %) entfällt – 0 bei reinen Speisen */
+function anteil19(?array $auf): float
+{
+    if (!$auf) return 0.0;
+    $g = (float) ($auf['getraenk'] ?? 0);
+    $s = (float) ($auf['speisen'] ?? 0);
+    return $g > 0 && $g + $s > 0 ? $g / ($g + $s) : 0.0;
+}
+
+/** Gesamtbetrag (brutto) auf die Steuersätze verteilen: [['satz'=>7,'brutto'=>…,'netto'=>…,'steuer'=>…], …] */
+function mwst_aufteilen(float $gesamt, float $zwischensumme, float $brutto19): array
+{
+    $f19 = $zwischensumme > 0 ? min(1.0, max(0.0, $brutto19 / $zwischensumme)) : 0.0;
+    $b19 = round($gesamt * $f19, 2);
+    $teile = [7 => round($gesamt - $b19, 2), 19 => $b19];
+    $aus = [];
+    foreach (MWST_SAETZE as $satz) {
+        $brutto = $teile[$satz];
+        if ($brutto <= 0) continue;
+        $steuer = round($brutto * $satz / (100 + $satz), 2);
+        $aus[] = ['satz' => $satz, 'brutto' => $brutto, 'netto' => round($brutto - $steuer, 2), 'steuer' => $steuer];
+    }
+    return $aus;
 }
 
 function rabatt(array $angebote, float $zw, DateTimeImmutable $n): ?array
@@ -179,6 +212,7 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
     if (!is_array($pos) || count($pos) < 1 || count($pos) > 60) $fehler('Der Warenkorb ist leer.');
     $zeilen = [];
     $zw = 0.0;
+    $b19 = 0.0;
     foreach ($pos as $p) {
         $art_ = $karte[(string) ($p['id'] ?? '')] ?? null;
         if (!$art_) $fehler('Ein Gericht gibt es nicht mehr. Bitte den Warenkorb neu füllen.');
@@ -200,6 +234,7 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
         }
         $namen = [];
         $proGruppe = [];
+        $g19 = $stueck * $art_['anteil19'];
         $wahl = $p['wahl'] ?? null;
         if (!is_array($wahl)) $fehler('Bitte ' . $art_['name'] . ' neu in den Warenkorb legen.');
         foreach ($wahl as $w) {
@@ -210,13 +245,16 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
             $proGruppe[$gi] = ($proGruppe[$gi] ?? 0) + 1;
             if (empty($g['mehrfach']) && $proGruppe[$gi] > 1) $fehler('Bitte ' . $art_['name'] . ' neu in den Warenkorb legen.');
             $stueck += (float) $c['aufpreis'];
+            $g19 += (float) $c['aufpreis'] * ($art_['anteil19'] >= 1.0 ? 1.0 : anteil19($c['mwst_aufteilung'] ?? null));
             if (!preg_match(NICHTSSAGEND, $c['name'])) $namen[] = $c['name'];
         }
         $stueck = round($stueck, 2);
         $notiz = mb_substr(trim((string) ($p['notiz'] ?? '')), 0, 120);
         $zw += $stueck * $menge;
+        $b19 += $g19 * $menge;
         $zeilen[] = ['name' => $art_['name'], 'groesse' => $groesse, 'optionen' => $namen, 'notiz' => $notiz,
-                     'menge' => $menge, 'stueck' => $stueck];
+                     'menge' => $menge, 'stueck' => $stueck,
+                     'mwst' => $g19 <= 0 ? 7 : ($g19 >= $stueck - 0.001 ? 19 : 'gemischt')];
     }
     $zw = round($zw, 2);
     // Liefergebühr je Zone, ab „gratis_ab“ (Zwischensumme) kostenlos – gleich wie summen() in assets/js/warenkorb.js
@@ -234,6 +272,7 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
         'etage' => mb_substr(trim((string) ($d['etage'] ?? '')), 0, 20),
         'zeit' => $zeit, 'bemerkung' => mb_substr(trim((string) ($d['bemerkung'] ?? '')), 0, 450),
         'positionen' => $zeilen, 'zwischensumme' => $zw, 'rabatt' => $r, 'liefergebuehr' => $liefer, 'gesamt' => $gesamt,
+        'mwst' => mwst_aufteilen($gesamt, $zw, $b19),
     ];
 }
 
@@ -321,6 +360,9 @@ function bestellung_text(array $b, array $s = []): string
         }
     } else {
         $z[] = 'GESAMT: ' . euro($b['gesamt']) . ' – ' . (($b['zahlung'] ?? '') === 'karte' ? 'mit Karte bei Übergabe' : 'bar bei Übergabe');
+    }
+    foreach ($b['mwst'] ?? [] as $m) {
+        $z[] = 'darin ' . $m['satz'] . ' % MwSt.: ' . euro($m['steuer']) . ' (netto ' . euro($m['netto']) . ', brutto ' . euro($m['brutto']) . ')';
     }
     $z[] = '';
     $z[] = $b['name'] . ', Tel. ' . $b['telefon'] . ($b['email'] !== '' ? ', ' . $b['email'] : '');

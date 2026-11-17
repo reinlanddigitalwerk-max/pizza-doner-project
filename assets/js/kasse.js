@@ -9,6 +9,13 @@
 
   var form = box.querySelector('form');
   var euro = W.euro;
+  // „Darin enthalten: 7 % MwSt. …“ – Zahlen kommen vom Server und werden nur als Zahl ausgegeben
+  function mwstText(j) {
+    var m = Array.isArray(j.mwst) ? j.mwst : [];
+    return m.length ? '<br><small>Darin enthalten: ' + m.map(function (x) {
+      return Number(x.satz) + ' % MwSt. ' + euro(Number(x.steuer));
+    }).join(', ') + '.</small>' : '';
+  }
   var MERK = 'neusser-kunde-v1';
 
   W.binden(box.querySelector('[data-warenkorb]'), { bearbeiten: false, modus: false, kasse: false });
@@ -179,7 +186,7 @@
             (j.art === 'lieferung' ? 'Wir liefern ' : 'Abholbereit ') + (j.zeit === 'schnellstmöglich'
               ? 'in ca. ' + (j.art === 'lieferung' ? SHOP.lieferungMin : SHOP.abholungMin) + ' Minuten.'
               : 'um ' + W.esc(j.zeit) + ' Uhr.') +
-            ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
+            ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.' + mwstText(j));
         })
         .catch(function () {
           fertig('Zahlung wird noch geprüft', 'Wir konnten die Zahlung noch nicht bestätigen. Wenn Geld abgebucht wurde, ist die Bestellung bei uns – ' +
@@ -227,7 +234,8 @@
         (d.art === 'lieferung' ? 'Wir liefern ' : 'Abholbereit ') + (d.zeit === 'schnellstmöglich'
           ? 'in ca. ' + (d.art === 'lieferung' ? SHOP.lieferungMin : SHOP.abholungMin) + ' Minuten.'
           : 'um ' + d.zeit + ' Uhr.') +
-        ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.');
+        ' Bei Fragen: <a href="tel:' + SHOP.telefonLink + '">' + SHOP.telefon + '</a>.' +
+        mwstText(j));
     }).catch(function (err) {
       knopf.disabled = false;
       zahlungAnzeigen();

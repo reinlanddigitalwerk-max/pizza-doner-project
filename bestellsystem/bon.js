@@ -110,6 +110,9 @@
     if (b.rabatt) zeile(b.rabatt.titel, 24, false, { rechts: '−' + euro(b.rabatt.betrag) });
     if (b.art === 'lieferung') zeile('Liefergebühr', 24, false, { rechts: b.liefergebuehr ? euro(b.liefergebuehr) : 'gratis' });
     zeile('GESAMT', 36, true, { rechts: euro(b.gesamt) });
+    (b.mwst || []).forEach(function (m) {
+      zeile('darin ' + m.satz + ' % MwSt. (netto ' + euro(m.netto) + ')', 20, false, { rechts: euro(m.steuer) });
+    });
     y += 6;
 
     if (kunde) {

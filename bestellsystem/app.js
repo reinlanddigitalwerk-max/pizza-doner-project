@@ -417,15 +417,23 @@
     var monat = tagFeld.value.slice(0, 7);
     api('GET', null, '?monat=' + monat).then(function (j) {
       var zahl = function (n) { return (Math.round((n || 0) * 100) / 100).toFixed(2).replace('.', ','); };
+      // ältere Bestellungen (vor der MwSt.-Aufteilung) bleiben in diesen Spalten leer
+      var mwstSpalten = function (b, satz) {
+        if (!b.mwst) return ['', '', ''];
+        var m = b.mwst.filter(function (x) { return x.satz === satz; })[0] || { brutto: 0, netto: 0, steuer: 0 };
+        return [zahl(m.brutto), zahl(m.netto), zahl(m.steuer)];
+      };
       var feld = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-      var zeilen = [['Datum', 'Uhrzeit', 'Nr', 'Art', 'Status', 'Zahlung', 'Name', 'Telefon', 'Adresse', 'Zwischensumme', 'Rabatt', 'Liefergebühr', 'Gesamt', 'Positionen']];
+      var zeilen = [['Datum', 'Uhrzeit', 'Nr', 'Art', 'Status', 'Zahlung', 'Name', 'Telefon', 'Adresse', 'Zwischensumme', 'Rabatt', 'Liefergebühr', 'Gesamt',
+        'Brutto 7 %', 'Netto 7 %', 'MwSt 7 %', 'Brutto 19 %', 'Netto 19 %', 'MwSt 19 %', 'Positionen']];
       (j.bestellungen || []).forEach(function (b) {
         var d = new Date(b.eingang);
         zeilen.push([d.toLocaleDateString('de-DE'), uhr(b.eingang), b.nr, b.art === 'lieferung' ? 'Lieferung' : 'Abholung', STAND[b.status],
           { online: 'Online', bar: 'Bar', karte: 'Karte' }[b.zahlung] || '', b.name, b.telefon,
           b.art === 'lieferung' ? b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort : '',
-          zahl(b.zwischensumme), zahl(b.rabatt ? b.rabatt.betrag : 0), zahl(b.liefergebuehr), zahl(b.gesamt),
-          (b.positionen || []).map(function (p) { return p.menge + 'x ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : ''); }).join(', ')]);
+          zahl(b.zwischensumme), zahl(b.rabatt ? b.rabatt.betrag : 0), zahl(b.liefergebuehr), zahl(b.gesamt)]
+          .concat(mwstSpalten(b, 7), mwstSpalten(b, 19), [
+          (b.positionen || []).map(function (p) { return p.menge + 'x ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : ''); }).join(', ')]));
       });
       var text = '\ufeff' + zeilen.map(function (z) { return z.map(feld).join(';'); }).join('\r\n');
       var a = document.createElement('a');

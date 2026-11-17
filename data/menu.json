@@ -160,7 +160,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 11.0,
+      "getraenk": 2.0,
+      "einzelpreise": "Döner-Sandwich 7,00 + Pommes 4,00 | Softdrink 0,33 l 2,00"
+     }
     },
     {
      "nr": "M2",
@@ -279,7 +284,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 12.0,
+      "getraenk": 2.0,
+      "einzelpreise": "Döner Wrap 8,00 + Pommes 4,00 | Softdrink 0,33 l 2,00"
+     }
     },
     {
      "nr": "M3",
@@ -398,7 +408,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 11.0,
+      "getraenk": 2.0,
+      "einzelpreise": "Lahmacun mit Salat und Sauce 7,00 + Pommes 4,00 | Softdrink 0,33 l 2,00"
+     }
     },
     {
      "nr": "M4",
@@ -503,7 +518,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 11.0,
+      "getraenk": 2.0,
+      "einzelpreise": "Falafel-Sandwich 7,00 + Pommes 4,00 | Softdrink 0,33 l 2,00"
+     }
     },
     {
      "nr": "M5",
@@ -531,7 +551,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 9.0,
+      "getraenk": 1.5,
+      "einzelpreise": "6er Nuggets 5,00 + Pommes 4,00 | Durstlöscher 1,50"
+     }
     },
     {
      "nr": "P1",
@@ -759,7 +784,12 @@
         }
        ]
       }
-     ]
+     ],
+     "mwst_aufteilung": {
+      "speisen": 20.5,
+      "getraenk": 2.0,
+      "einzelpreise": "Pizza Ø30cm mit 2 Zutaten 9,50 + Döner-Sandwich 7,00 + Pommes 4,00 | Softdrink 0,33 l 2,00"
+     }
     },
     {
      "nr": "P2",
@@ -2617,7 +2647,12 @@
       },
       {
        "name": "als Menü",
-       "aufpreis": 3.5
+       "aufpreis": 3.5,
+       "mwst_aufteilung": {
+        "speisen": 4.0,
+        "getraenk": 2.0,
+        "einzelpreise": "Pommes 4,00 | Softdrink 0,33 l 2,00"
+       }
       }
      ]
     },
@@ -3155,6 +3190,7 @@
   },
   {
    "kategorie": "Getränke",
+   "mwst": 19,
    "beschreibung": "Gekühlt",
    "artikel": [
     {

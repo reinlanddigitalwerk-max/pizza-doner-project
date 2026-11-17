@@ -35,4 +35,4 @@ $b['eingang'] = $n->format('c');
 $b['zahlung'] = $zahlung;
 $b = speichern($b);
 melden($b);
-antwort(['nr' => $b['nr'], 'gesamt' => $b['gesamt']]);
+antwort(['nr' => $b['nr'], 'gesamt' => $b['gesamt'], 'mwst' => $b['mwst']]);
