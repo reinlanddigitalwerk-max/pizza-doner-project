@@ -7,6 +7,9 @@
   var RAND = 6;
   var SCHRIFT = 'Roboto, "Segoe UI", Arial, sans-serif';
 
+  // Steuerkennzeichen wie auf dem Kassenbon; Angaben aus data/shop.json
+  var KENNZ = { 7: 'A', 19: 'B', gemischt: 'A/B' };
+  var STEUER = 'St.-Nr. 122/5398/0299 · USt-IdNr. DE455208316';
   function euro(n) { return (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' €'; }
   function uhr(iso) { var d = new Date(iso); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   function datum(iso) { var d = new Date(iso); return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear(); }
@@ -48,6 +51,15 @@
         if (i === 0 && opt.rechts) { x.textAlign = 'right'; x.fillText(opt.rechts, BREITE - RAND, y); x.textAlign = 'left'; }
         y += Math.round(px * 1.25);
       });
+    }
+    function tabelle(werte, px, fett) {   // 1. Spalte links, die übrigen rechtsbündig
+      schrift(px, fett);
+      var b4 = (BREITE - 2 * RAND) * 0.24;
+      x.fillText(werte[0], RAND, y);
+      x.textAlign = 'right';
+      for (var i = 1; i < werte.length; i++) x.fillText(werte[i], BREITE - RAND - (werte.length - 1 - i) * b4, y);
+      x.textAlign = 'left';
+      y += Math.round(px * 1.3);
     }
     function balken(text, px) {          // weiße Schrift auf schwarzem Balken
       schrift(px, true);
@@ -99,7 +111,8 @@
     var gross = kunde ? 26 : 30, klein = kunde ? 22 : 24;
     (b.positionen || []).forEach(function (p) {
       var name = p.menge + '× ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : '');
-      zeile(name, gross, true, { rechts: euro(p.stueck * p.menge) });
+      var kz = b.mwst ? ' ' + (KENNZ[p.mwst] || 'A') : '';
+      zeile(name, gross, true, { rechts: euro(p.stueck * p.menge) + kz });
       (p.optionen || []).forEach(function (o) { zeile('+ ' + o, klein, false, { einzug: 34 }); });
       if (p.notiz) zeile('» ' + p.notiz, klein, true, { einzug: 34 });
       y += 6;
@@ -110,9 +123,21 @@
     if (b.rabatt) zeile(b.rabatt.titel, 24, false, { rechts: '−' + euro(b.rabatt.betrag) });
     if (b.art === 'lieferung') zeile('Liefergebühr', 24, false, { rechts: b.liefergebuehr ? euro(b.liefergebuehr) : 'gratis' });
     zeile('GESAMT', 36, true, { rechts: euro(b.gesamt) });
-    (b.mwst || []).forEach(function (m) {
-      zeile('darin ' + m.satz + ' % MwSt. (netto ' + euro(m.netto) + ')', 20, false, { rechts: euro(m.steuer) });
-    });
+    if (kunde && b.mwst && b.mwst.length) {
+      y += 4;
+      tabelle(['Satz', 'Netto', 'MwSt.', 'Brutto'], 20, true);
+      var summe = 0;
+      b.mwst.forEach(function (m) {
+        summe += m.steuer;
+        tabelle([(m.satz === 19 ? 'B ' : 'A ') + m.satz + ' %', euro(m.netto), euro(m.steuer), euro(m.brutto)], 22, false);
+      });
+      zeile('Summe MwSt.', 22, true, { rechts: euro(summe) });
+      zeile('A = 7 % (Speisen) · B = 19 % (Getränke)', 18, false);
+    } else {
+      (b.mwst || []).forEach(function (m) {
+        zeile('darin ' + m.satz + ' % MwSt. (netto ' + euro(m.netto) + ')', 20, false, { rechts: euro(m.steuer) });
+      });
+    }
     y += 6;
 
     if (kunde) {
@@ -124,6 +149,7 @@
       zeile('Danke für deine Bestellung!', 30, true, { mitte: true });
       zeile('Guten Appetit · neusser-doner-pizza.de', 22, false, { mitte: true });
       y += 6;
+      zeile(STEUER, 18, false, { mitte: true });
       zeile('Bestellbeleg – kein Kassenbon', 18, false, { mitte: true });
     } else {
       balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
