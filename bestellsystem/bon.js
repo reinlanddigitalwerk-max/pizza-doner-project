@@ -141,7 +141,7 @@
     y += 6;
 
     if (kunde) {
-      zeile(b.zahlung === 'online' ? 'Bezahlt: online' : b.zahlung === 'karte' ? 'Zahlung: mit Karte bei Übergabe' : 'Zahlung: bar bei Übergabe', 26, true);
+      zeile(b.testzahlung ? 'TESTZAHLUNG – nicht bezahlt' : b.zahlung === 'online' ? 'Bezahlt: online' : b.zahlung === 'karte' ? 'Zahlung: mit Karte bei Übergabe' : 'Zahlung: bar bei Übergabe', 26, true);
       y += 6;
       zeile(b.name, 26, false);
       if (b.telefon) zeile('Tel. ' + b.telefon, 24, false);
@@ -157,7 +157,7 @@
       zeile(STEUER, 18, false, { mitte: true });
       zeile('Bestellbeleg – kein Kassenbon', 18, false, { mitte: true });
     } else {
-      balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
+      balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.testzahlung ? 'TESTZAHLUNG – NICHT BEZAHLT' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
       zeile(b.name, 32, true);
       if (b.telefon) zeile('Tel. ' + b.telefon, 30, true);
       if (b.art === 'lieferung') {

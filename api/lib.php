@@ -343,7 +343,11 @@ function bestellung_text(array $b, array $s = []): string
     $online = ($b['zahlung'] ?? 'online') === 'online';
     $z = [];
     $z[] = 'NEUE BESTELLUNG Nr. ' . $b['nr'] . ' – ' . strtoupper($b['art']) . ' – '
-        . ($online ? 'BEREITS BEZAHLT' : (($b['zahlung'] ?? '') === 'karte' ? 'KARTE BEI ÜBERGABE' : 'BAR KASSIEREN'));
+        . (!empty($b['testzahlung']) ? 'TESTZAHLUNG – NICHT WIRKLICH BEZAHLT'
+            : ($online ? 'BEREITS BEZAHLT' : (($b['zahlung'] ?? '') === 'karte' ? 'KARTE BEI ÜBERGABE' : 'BAR KASSIEREN')));
+    if (!empty($b['testzahlung'])) {
+        $z[] = '!!! Stripe ist im Testmodus – es wurde kein Geld abgebucht. Nicht zubereiten, außer der Kunde zahlt anders. !!!';
+    }
     $z[] = 'Zeit: ' . $b['zeit'];
     $z[] = '';
     foreach ($b['positionen'] as $p) {
@@ -411,7 +415,10 @@ function verarbeiten(array $s): ?array
         }
         $b['zahlung'] = 'online';
         $b['bezahlt'] = ['session' => $s['id'] ?? '', 'payment_intent' => $s['payment_intent'] ?? '',
-                         'betrag' => ($s['amount_total'] ?? 0) / 100, 'zeit' => jetzt()->format('c')];
+                         'betrag' => ($s['amount_total'] ?? 0) / 100, 'zeit' => jetzt()->format('c'),
+                         'live' => !empty($s['livemode'])];
+        // Stripe-Testmodus meldet auch „bezahlt“, ohne dass Geld fließt → deutlich markieren, nicht automatisch drucken
+        if (empty($s['livemode'])) $b['testzahlung'] = true;
         $b = speichern($b);
         if (is_file($offen)) {
             unlink($offen);

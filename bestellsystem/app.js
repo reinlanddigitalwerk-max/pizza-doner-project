@@ -244,7 +244,7 @@
         (p.notiz ? '<div class="posten__notiz">» ' + esc(p.notiz) + '</div>' : '') + '</li>';
     }).join('');
     var adresse = b.art === 'lieferung' ? b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort : '';
-    var zahlung = b.zahlung === 'online' ? ['online', 'Bezahlt ✓'] : b.zahlung === 'karte' ? ['karte', 'Karte bei Übergabe'] : ['bar', 'Bar kassieren'];
+    var zahlung = b.testzahlung ? ['karte', '⚠ Testzahlung – nicht bezahlt'] : b.zahlung === 'online' ? ['online', 'Bezahlt ✓'] : b.zahlung === 'karte' ? ['karte', 'Karte bei Übergabe'] : ['bar', 'Bar kassieren'];
     return '<article class="karte' + (b.status === 'neu' ? ' karte--neu' : '') + '" data-nr="' + esc(b.nr) + '">' +
       '<header class="karte__kopf"><span class="art art--' + b.art + '">' + (b.art === 'lieferung' ? 'LIEFERUNG' : 'ABHOLUNG') + '</span>' +
       '<span class="karte__nr">' + kurz(b) + '</span>' +
@@ -342,7 +342,7 @@
   function automatischDrucken() {
     if (!cfg.autodruck || druckt) return;
     var offen = bestellungen.filter(function (b) {
-      return !b.gedruckt && !gedrucktHier[b.nr] && b.status !== 'storniert' && b.status !== 'erledigt' &&
+      return !b.gedruckt && !gedrucktHier[b.nr] && !b.testzahlung && b.status !== 'storniert' && b.status !== 'erledigt' &&
         !(fremd[b.nr] > Date.now()) && (!druckFehler[b.nr] || Date.now() - druckFehler[b.nr] > 20000);
     }).sort(function (a, b) { return a.eingang < b.eingang ? -1 : 1; });
     if (!offen.length) return;
