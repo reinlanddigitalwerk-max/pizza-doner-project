@@ -1785,3 +1785,9 @@ a { color: inherit; }
 
 /* Pause vom Laden (Tablet „Bestellungen pausieren“) */
 .pause-banner { margin: 12px auto; max-width: 1100px; width: calc(100% - 32px); padding: 14px 16px; border-radius: 12px; background: #FBE9E5; color: #8E2414; font-weight: 700; text-align: center; box-sizing: border-box; }
+
+/* Anmerkung je Gericht im Warenkorb */
+.line__note { display: block; width: 100%; margin-top: 6px; padding: 7px 10px; border: 1px solid #E6D9C6; border-radius: 10px;
+  background: #FFFDF9; color: var(--brown); font: inherit; font-size: 16px; }   /* 16px: sonst zoomt das iPhone beim Antippen */
+.line__note:focus { outline: 2px solid var(--yellow); outline-offset: 1px; border-color: transparent; }
+.line__note::placeholder { color: #A8957E; }

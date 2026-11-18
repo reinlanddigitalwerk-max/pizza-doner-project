@@ -145,6 +145,13 @@ window.Warenkorb = (function () {
   }
   function modus(m) { s.modus = m === 'abholung' ? 'abholung' : 'lieferung'; speichern(); }
   function plz(v) { s.plz = v; speichern(); }
+  function notiz(i, text) {
+    if (!s.pos[i]) return;
+    text = String(text || '').replace(/\s+/g, ' ').trim().slice(0, 120);
+    if ((s.pos[i].notiz || '') === text) return;
+    s.pos[i].notiz = text;
+    speichern();
+  }
   function leeren() { s.pos = []; speichern(); }
 
   // ---------- Zeichnen ----------
@@ -187,7 +194,10 @@ window.Warenkorb = (function () {
             : '<span class="line__qty">' + p.menge + '×</span>') +
           '<div class="line__text"><strong>' + esc(p.name) + '</strong>' +
           (det ? '<small>' + esc(det) + '</small>' : '') +
-          (p.notiz ? '<small>„' + esc(p.notiz) + '“</small>' : '') + '</div>' +
+          (opt.bearbeiten
+            ? '<input class="line__note" type="text" maxlength="120" data-notiz="' + i + '" value="' + esc(p.notiz || '') + '"' +
+              ' placeholder="Anmerkung (optional)" aria-label="Anmerkung zu ' + esc(p.name) + '">'
+            : (p.notiz ? '<small>„' + esc(p.notiz) + '“</small>' : '')) + '</div>' +
           '<span class="line__price">' + euro(p.preis * p.menge) + '</span></li>';
       }).join('') + '</ul>';
 
@@ -232,6 +242,11 @@ window.Warenkorb = (function () {
     });
     root.addEventListener('change', function (e) {
       if (e.target.matches('[data-plz]')) plz(e.target.value);
+      else if (e.target.matches('[data-notiz]')) notiz(+e.target.dataset.notiz, e.target.value);
+    });
+    // Enter in der Anmerkung übernimmt nur die Anmerkung (schickt keine Bestellung ab)
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.matches('[data-notiz]')) { e.preventDefault(); e.target.blur(); }
     });
     var los = function () { zeichne(root, opt); };
     hoerer.push(los);
