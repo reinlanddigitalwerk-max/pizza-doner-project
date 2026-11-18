@@ -126,7 +126,7 @@ if (($d['aktion'] ?? '') === 'handbon') {
         if ($name === '' || $menge < 1 || $menge > 50 || $stueck < 0 || $stueck > 999) $kaputt();
         $zw += $stueck * $menge;
         $b19 += $stueck * $menge * $a19;
-        $zeilen[] = ['name' => $name, 'groesse' => $text($p['groesse'] ?? '', 20), 'optionen' => [], 'notiz' => '',
+        $zeilen[] = ['name' => $name, 'beschreibung' => $text($p['beschreibung'] ?? '', 200), 'groesse' => $text($p['groesse'] ?? '', 20), 'optionen' => [], 'notiz' => '',
                      'menge' => $menge, 'stueck' => $stueck, 'anteil19' => round($a19, 4),
                      'mwst' => $a19 <= 0 ? 7 : ($a19 >= 1 ? 19 : 'gemischt')];
     }

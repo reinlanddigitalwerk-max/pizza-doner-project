@@ -113,6 +113,7 @@
       var name = p.menge + '× ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : '');
       var kz = b.mwst ? ' ' + (KENNZ[p.mwst] || 'A') : '';
       zeile(name, gross, true, { rechts: euro(p.stueck * p.menge) + kz });
+      if (p.beschreibung) zeile(p.beschreibung, klein, false, { einzug: 34 });   // genau wie auf der Speisekarte
       (p.optionen || []).forEach(function (o) { zeile('+ ' + o, klein, false, { einzug: 34 }); });
       if (p.notiz) zeile('» ' + p.notiz, klein, true, { einzug: 34 });
       y += 6;

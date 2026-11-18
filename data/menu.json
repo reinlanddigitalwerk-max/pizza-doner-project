@@ -81,52 +81,6 @@
         {
          "name": "Scharfe Sauce",
          "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
-         "aufpreis": 0.0
-        }
-       ]
-      },
-      {
-       "titel": "Was möchtest du nicht?",
-       "mehrfach": true,
-       "auswahl": [
-        {
-         "name": "ohne Wunsch",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Zwiebeln",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Gurken",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Tomaten",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Peperoni",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Rotkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Weißkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Eisbergsalat",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Käse",
-         "aufpreis": 0.0
         }
        ]
       },
@@ -204,52 +158,6 @@
         },
         {
          "name": "Scharfe Sauce",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
-         "aufpreis": 0.0
-        }
-       ]
-      },
-      {
-       "titel": "Was möchtest du nicht?",
-       "mehrfach": true,
-       "auswahl": [
-        {
-         "name": "ohne Wunsch",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Zwiebeln",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Gurken",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Tomaten",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Peperoni",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Rotkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Weißkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Eisbergsalat",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Käse",
          "aufpreis": 0.0
         }
        ]
@@ -329,52 +237,6 @@
         {
          "name": "Scharfe Sauce",
          "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
-         "aufpreis": 0.0
-        }
-       ]
-      },
-      {
-       "titel": "Was möchtest du nicht?",
-       "mehrfach": true,
-       "auswahl": [
-        {
-         "name": "ohne Wunsch",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Zwiebeln",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Gurken",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Tomaten",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Peperoni",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Rotkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Weißkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Eisbergsalat",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Käse",
-         "aufpreis": 0.0
         }
        ]
       },
@@ -439,52 +301,6 @@
         {
          "name": "Scharfe Sauce",
          "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
-         "aufpreis": 0.0
-        }
-       ]
-      },
-      {
-       "titel": "Was möchtest du nicht?",
-       "mehrfach": true,
-       "auswahl": [
-        {
-         "name": "ohne Wunsch",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Zwiebeln",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Gurken",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Tomaten",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Peperoni",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Rotkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Weißkraut",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Eisbergsalat",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Käse",
-         "aufpreis": 0.0
         }
        ]
       },
@@ -543,10 +359,6 @@
         },
         {
          "name": "Mayonnaise",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
          "aufpreis": 0.0
         }
        ]
@@ -746,10 +558,6 @@
         },
         {
          "name": "Scharfe Sauce",
-         "aufpreis": 0.0
-        },
-        {
-         "name": "ohne Sauce",
          "aufpreis": 0.0
         }
        ]
@@ -1261,52 +1069,6 @@
       {
        "name": "Scharfe Sauce",
        "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Sauce",
-       "aufpreis": 0.0
-      }
-     ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Peperoni",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Rotkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Weißkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Eisbergsalat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Käse",
-       "aufpreis": 0.0
       }
      ]
     },
@@ -1328,10 +1090,6 @@
      "titel": "Extra Sauce dazu",
      "mehrfach": true,
      "auswahl": [
-      {
-       "name": "ohne extra Sauce",
-       "aufpreis": 0.0
-      },
       {
        "name": "Ketchup",
        "aufpreis": 0.7
@@ -1436,7 +1194,6 @@
      "bild": "portion-fleisch",
      "allergene": "12",
      "ohne_optionen": [
-      "Was möchtest du nicht?",
       "Wähle deine Sauce"
      ]
     },
@@ -1501,7 +1258,6 @@
      "bild": "doener-ueberbacken-tomatensauce",
      "allergene": "G,12,2",
      "ohne_optionen": [
-      "Was möchtest du nicht?",
       "Wähle deine Sauce"
      ]
     },
@@ -1514,7 +1270,6 @@
      "bild": "doener-ueberbacken-hollandaise",
      "allergene": "G,12,2",
      "ohne_optionen": [
-      "Was möchtest du nicht?",
       "Wähle deine Sauce"
      ]
     }
@@ -1895,10 +1650,6 @@
       {
        "name": "mit Kräuterbutter",
        "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Dip",
-       "aufpreis": 0.0
       }
      ]
     },
@@ -1998,7 +1749,7 @@
      "mehrfach": false,
      "auswahl": [
       {
-       "name": "ohne Ei",
+       "name": "Nein",
        "aufpreis": 0.0
       },
       {
@@ -2080,52 +1831,6 @@
       {
        "name": "Scharfe Sauce",
        "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Sauce",
-       "aufpreis": 0.0
-      }
-     ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Peperoni",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Rotkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Weißkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Eisbergsalat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Käse",
-       "aufpreis": 0.0
       }
      ]
     },
@@ -2154,8 +1859,7 @@
      "bild": "lahmacun-neu",
      "allergene": "A",
      "ohne_optionen": [
-      "Wähle deine Sauce",
-      "Was möchtest du nicht?"
+      "Wähle deine Sauce"
      ]
     },
     {
@@ -2230,52 +1934,6 @@
       {
        "name": "Scharfe Sauce",
        "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Sauce",
-       "aufpreis": 0.0
-      }
-     ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Peperoni",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Rotkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Weißkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Eisbergsalat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Käse",
-       "aufpreis": 0.0
       }
      ]
     },
@@ -2342,52 +2000,6 @@
       },
       {
        "name": "Scharfe Sauce",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Sauce",
-       "aufpreis": 0.0
-      }
-     ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Peperoni",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Rotkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Weißkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Eisbergsalat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Käse",
        "aufpreis": 0.0
       }
      ]
@@ -2544,52 +2156,6 @@
       {
        "name": "Cocktail-Dressing",
        "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Dressing",
-       "aufpreis": 0.0
-      }
-     ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Peperoni",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Rotkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Weißkraut",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Eisbergsalat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Käse",
-       "aufpreis": 0.0
       }
      ]
     }
@@ -2689,36 +2255,6 @@
        "aufpreis": 0.0
       }
      ]
-    },
-    {
-     "titel": "Was möchtest du nicht?",
-     "mehrfach": true,
-     "auswahl": [
-      {
-       "name": "ohne Wunsch",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Tomaten",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Salat",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Gurken",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Zwiebeln",
-       "aufpreis": 0.0
-      },
-      {
-       "name": "ohne Jalapeños",
-       "aufpreis": 0.0
-      }
-     ]
     }
    ],
    "artikel": [
@@ -2793,10 +2329,6 @@
        "mehrfach": true,
        "auswahl": [
         {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
-        {
          "name": "Ketchup",
          "aufpreis": 0.7
         },
@@ -2840,10 +2372,6 @@
        "titel": "Extra Sauce dazu",
        "mehrfach": true,
        "auswahl": [
-        {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
         {
          "name": "Ketchup",
          "aufpreis": 0.7
@@ -2889,10 +2417,6 @@
        "mehrfach": true,
        "auswahl": [
         {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
-        {
          "name": "Ketchup",
          "aufpreis": 0.7
         },
@@ -2937,10 +2461,6 @@
        "mehrfach": true,
        "auswahl": [
         {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
-        {
          "name": "Ketchup",
          "aufpreis": 0.7
         },
@@ -2984,10 +2504,6 @@
        "titel": "Extra Sauce dazu",
        "mehrfach": true,
        "auswahl": [
-        {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
         {
          "name": "Ketchup",
          "aufpreis": 0.7
@@ -3041,10 +2557,6 @@
        "mehrfach": true,
        "auswahl": [
         {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
-        {
          "name": "Ketchup",
          "aufpreis": 0.7
         },
@@ -3088,10 +2600,6 @@
        "titel": "Extra Sauce dazu",
        "mehrfach": true,
        "auswahl": [
-        {
-         "name": "ohne extra Sauce",
-         "aufpreis": 0.0
-        },
         {
          "name": "Ketchup",
          "aufpreis": 0.7

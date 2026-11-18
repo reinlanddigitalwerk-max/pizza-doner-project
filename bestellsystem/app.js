@@ -664,7 +664,7 @@
           o.value = String(neuArtikel.length);
           o.textContent = a.name + (a.preis != null ? ' – ' + euro(a.preis) : '');
           gruppe.appendChild(o);
-          neuArtikel.push({ name: a.name, preis: a.preis, preise: a.preise || null,
+          neuArtikel.push({ name: a.name, beschreibung: a.beschreibung || '', preis: a.preis, preise: a.preise || null,
             anteil19: +k.mwst === 19 ? 1 : anteil19(a.mwst_aufteilung) });
         });
         if (gruppe.children.length) sel.appendChild(gruppe);
@@ -718,7 +718,7 @@
       plz: f.art.value === 'lieferung' ? plz : '', ort: f.art.value === 'lieferung' ? ort.replace(/^\d{5}\s*/, '') : '',
       bemerkung: f.bemerkung.value.trim(),
       positionen: neuZeilen.map(function (z) {
-        return { name: z.name, groesse: z.groesse || '', optionen: [], notiz: '', menge: z.menge, stueck: z.stueck,
+        return { name: z.name, beschreibung: z.beschreibung || '', groesse: z.groesse || '', optionen: [], notiz: '', menge: z.menge, stueck: z.stueck,
           mwst: z.anteil19 >= 1 ? 19 : z.anteil19 > 0 ? 'gemischt' : 7 };
       }),
       zwischensumme: s.zw, rabatt: null, liefergebuehr: s.liefer, gesamt: s.gesamt, mwst: s.mwst
@@ -756,7 +756,7 @@
     var groesse = a.preise ? $('[data-neubon-groesse]').value : '';
     var preis = a.preise ? +a.preise[groesse] : +a.preis;
     var menge = Math.min(50, Math.max(1, parseInt(neuForm.menge.value, 10) || 1));
-    neuZeilen.push({ name: a.name, groesse: groesse, menge: menge, stueck: Math.round(preis * 100) / 100, anteil19: a.anteil19 });
+    neuZeilen.push({ name: a.name, beschreibung: a.beschreibung, groesse: groesse, menge: menge, stueck: Math.round(preis * 100) / 100, anteil19: a.anteil19 });
     neuForm.menge.value = 1;
     neuMeldung('');
     neuZeigen();
@@ -795,7 +795,7 @@
       art: f.art.value, zahlung: f.zahlung.value, name: f.name.value.trim(), telefon: f.telefon.value.trim(),
       strasse: f.strasse.value.trim(), plz: (ort.match(/^\d{5}/) || [''])[0], ort: ort.replace(/^\d{5}\s*/, ''),
       bemerkung: f.bemerkung.value.trim(), liefergebuehr: zahlLesen(f.liefer.value) || 0,
-      positionen: neuZeilen.map(function (z) { return { name: z.name, groesse: z.groesse || '', menge: z.menge, stueck: z.stueck, anteil19: z.anteil19 }; })
+      positionen: neuZeilen.map(function (z) { return { name: z.name, beschreibung: z.beschreibung || '', groesse: z.groesse || '', menge: z.menge, stueck: z.stueck, anteil19: z.anteil19 }; })
     };
   }
   function neuSpeichern() {

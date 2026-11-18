@@ -253,7 +253,7 @@
           extra += c.aufpreis;
           wahl.push([gi, +inp.value]);   // für die Preisprüfung auf dem Server
           // Nichtssagendes wie „ohne Wunsch“ oder „normal“ nicht auf den Bon schreiben
-          if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger)/i.test(c.name)) opts.push(c.name);
+          if (!/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger|ohne Ei|kein Getränk|Nein$)/i.test(c.name)) opts.push(c.name);
         });
       });
       return { groesse: groesse, stueck: Math.round((basis + extra) * 100) / 100, opts: opts, wahl: wahl };

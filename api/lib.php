@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 const BASIS = __DIR__ . '/..';
 const ERLAUBTE_HOSTS = ['neusser-doner-pizza.de', 'www.neusser-doner-pizza.de', 'localhost', '127.0.0.1'];
-const NICHTSSAGEND = '/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger)/i';   // wie in assets/js/menu.js
+const NICHTSSAGEND = '/^(ohne Wunsch|normal|normale |ohne extra|als Single|nur Burger|ohne Ei|kein Getränk|Nein$)/i';   // wie in assets/js/menu.js
 
 function geheim(): array
 {
@@ -97,6 +97,7 @@ function speisekarte(): array
             $gruppen = array_values(array_filter($kat['optionen'] ?? [], fn ($g) => !in_array($g['titel'], $weg, true)));
             $karte[slug($kat['kategorie']) . '--' . slug($a['name'])] = [
                 'name' => $a['name'],
+                'beschreibung' => (string) ($a['beschreibung'] ?? ''),
                 'preis' => $a['preis'] ?? null,
                 'preise' => $a['preise'] ?? null,
                 'optionen' => array_merge($gruppen, $a['optionen'] ?? []),
@@ -252,7 +253,7 @@ function bestellung_pruefen(array $d, ?DateTimeImmutable $n = null): array
         $notiz = mb_substr(trim((string) ($p['notiz'] ?? '')), 0, 120);
         $zw += $stueck * $menge;
         $b19 += $g19 * $menge;
-        $zeilen[] = ['name' => $art_['name'], 'groesse' => $groesse, 'optionen' => $namen, 'notiz' => $notiz,
+        $zeilen[] = ['name' => $art_['name'], 'beschreibung' => $art_['beschreibung'], 'groesse' => $groesse, 'optionen' => $namen, 'notiz' => $notiz,
                      'menge' => $menge, 'stueck' => $stueck,
                      'mwst' => $g19 <= 0 ? 7 : ($g19 >= $stueck - 0.001 ? 19 : 'gemischt')];
     }

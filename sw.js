@@ -1,6 +1,6 @@
 // Wird von tools/build_pages.py erzeugt – nicht von Hand ändern.
 // Seiten: erst Netz, sonst gespeicherte Fassung. Bilder, CSS, JS: sofort aus dem Speicher, im Hintergrund erneuern.
-const STAND = 'neusser-9f500171b8';
+const STAND = 'neusser-5e68c73e67';
 const VORAB = [
   "./",
   "index.html",
@@ -13,11 +13,11 @@ const VORAB = [
   "assets/css/style.css?v=d179d549",
   "assets/js/kasse.js?v=21609806",
   "assets/js/main.js?v=27def6e9",
-  "assets/js/menu.js?v=1d4bfd49",
+  "assets/js/menu.js?v=46799e46",
   "assets/js/nav.js?v=800c105c",
   "assets/js/offers-data.js?v=b0c54be4",
   "assets/js/shop-daten.js?v=12025d1c",
-  "assets/js/warenkorb.js?v=935477f5",
+  "assets/js/warenkorb.js?v=ba42f0f2",
   "assets/img/logo.webp",
   "assets/img/muster-imbiss.svg",
   "assets/img/dishes/angebot-burger.webp",
