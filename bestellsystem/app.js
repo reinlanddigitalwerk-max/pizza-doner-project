@@ -153,6 +153,13 @@
     api('GET').then(function (j) {
       lampe('server', true);
       bestellungen = j.bestellungen || [];
+      // schon hier gedruckt, aber der Server weiß es noch nicht (Abfrage kam vor der Meldung zurück) → nicht nochmal drucken
+      bestellungen.forEach(function (b) {
+        if (!b.gedruckt && gedrucktHier[b.nr]) {
+          b.gedruckt = gedrucktHier[b.nr];
+          if (!nachgemeldet[b.nr]) { nachgemeldet[b.nr] = true; api('POST', { aktion: 'gedruckt', nr: b.nr }).catch(function () { nachgemeldet[b.nr] = false; }); }
+        }
+      });
       var neue = bestellungen.filter(function (b) { return bekannt && !bekannt[b.nr]; });
       bekannt = bekannt || {};
       bestellungen.forEach(function (b) {
@@ -293,6 +300,16 @@
   });
 
   // ---------- Drucken ----------
+  // Was dieses Tablet schon gedruckt hat (3 Tage), damit eine Bestellung nie zweimal automatisch gedruckt wird
+  var GEDRUCKT = 'rdw-gedruckt';
+  var gedrucktHier = laden(GEDRUCKT, {});
+  var nachgemeldet = {};
+  function gedrucktMerken(nr, zeit) {
+    gedrucktHier[nr] = zeit;
+    var grenze = Date.now() - 3 * 86400000;
+    Object.keys(gedrucktHier).forEach(function (k) { if (Date.parse(gedrucktHier[k]) < grenze) delete gedrucktHier[k]; });
+    merken(GEDRUCKT, gedrucktHier);
+  }
   function druckeBon(b, vonHand) {
     if (druckt) { if (vonHand) melden('Drucker ist beschäftigt – gleich noch einmal.'); return Promise.resolve(); }
     druckt = true;
@@ -300,6 +317,7 @@
       lampe('drucker', true);
       delete druckFehler[b.nr];
       b.gedruckt = new Date().toISOString();
+      gedrucktMerken(b.nr, b.gedruckt);
       // Nach dem Druck: direkt ins Archiv (erledigt) oder in „In Arbeit“ – je nach Einstellung
       var weiter = b.status === 'neu' ? { archiv: 'erledigt', annehmen: 'angenommen' }[cfg.nachDruck] : null;
       if (weiter) b.status = weiter;
@@ -318,7 +336,8 @@
   function automatischDrucken() {
     if (!cfg.autodruck || druckt) return;
     var offen = bestellungen.filter(function (b) {
-      return !b.gedruckt && b.status !== 'storniert' && b.status !== 'erledigt' && (!druckFehler[b.nr] || Date.now() - druckFehler[b.nr] > 20000);
+      return !b.gedruckt && !gedrucktHier[b.nr] && b.status !== 'storniert' && b.status !== 'erledigt' &&
+        (!druckFehler[b.nr] || Date.now() - druckFehler[b.nr] > 20000);
     }).sort(function (a, b) { return a.eingang < b.eingang ? -1 : 1; });
     if (offen.length) druckeBon(offen[0]).then(automatischDrucken);
   }
