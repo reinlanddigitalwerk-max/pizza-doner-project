@@ -5,6 +5,7 @@
 //   GET  ?tag=JJJJ-MM-TT  oder  ?monat=JJJJ-MM            → {"bestellungen": [...]}   (Archiv)
 //   POST {"aktion":"status","nr":"…","status":"…"}       → {"ok": true}
 //   POST {"aktion":"gedruckt","nr":"…"}                  → {"ok": true}
+//   POST {"aktion":"beanspruchen","nr":"…","geraet":"…"} → {"ok": true|false}  (vor dem automatischen Druck: nur ein Gerät druckt)
 //   POST {"aktion":"pause","minuten":15|30|45|60|0|null} → {"pause": {...}|null}   (0 = bis wieder geöffnet, null = öffnen)
 //   POST {"aktion":"handbon","bon":{…}}                  → {"bon": {...}}   (Bon von Hand, eigene Liste im Archiv)
 declare(strict_types=1);
@@ -171,6 +172,21 @@ switch ($d['aktion'] ?? '') {
         break;
     case 'gedruckt':
         $b['gedruckt'] = jetzt()->format('c');
+        break;
+    case 'beanspruchen':
+        // Schon gedruckt oder gerade von einem anderen Gerät beansprucht (3 Minuten) → dieses Gerät druckt nicht
+        $geraet = (string) ($d['geraet'] ?? '');
+        if (!preg_match('/^[a-z0-9]{8,32}$/', $geraet)) {
+            antwort(['fehler' => 'Ungültiges Gerät.'], 422);
+        }
+        $a = $b['druck_anspruch'] ?? null;
+        if (!empty($b['gedruckt'])) {
+            antwort(['ok' => false, 'grund' => 'gedruckt']);
+        }
+        if (is_array($a) && ($a['geraet'] ?? '') !== $geraet && strtotime((string) ($a['zeit'] ?? '')) > time() - 180) {
+            antwort(['ok' => false, 'grund' => 'anderes-geraet']);
+        }
+        $b['druck_anspruch'] = ['geraet' => $geraet, 'zeit' => jetzt()->format('c')];
         break;
     default:
         antwort(['fehler' => 'Unbekannte Aktion.'], 400);

@@ -235,3 +235,4 @@ h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
 .tabelle--hand:empty { display: none; }
 .archiv__titel { margin: 22px 0 8px; font-size: 18px; }
 .archiv__titel small { color: var(--leise); font-weight: 600; margin-left: 8px; }
+[data-update][hidden] { display: none !important; }

@@ -588,7 +588,6 @@ page(
               <legend>Bezahlung *</legend>
               <label class="pay__opt pay__opt--online" data-online hidden><input type="radio" name="zahlung" value="online"> <span>Jetzt online bezahlen <small>Karte, Apple Pay, Google Pay</small></span></label>
               <label class="pay__opt"><input type="radio" name="zahlung" value="bar" checked> <span>Bar bei Übergabe</span></label>
-              <label class="pay__opt"><input type="radio" name="zahlung" value="karte"> <span>EC- oder Kreditkarte bei Übergabe</span></label>
             </fieldset>
             <label class="field field--wide"><span>Bemerkung (optional)</span><textarea name="bemerkung" rows="3" maxlength="500" placeholder="z. B. Klingel defekt, bitte anrufen"></textarea></label>
           </div>

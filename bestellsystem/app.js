@@ -333,13 +333,29 @@
     }).then(function () { druckt = false; });
   }
 
+  // Vor dem automatischen Druck fragt jede geöffnete Seite den Server, ob sie drucken darf.
+  // So kommt auch bei zwei offenen Geräten/Tabs oder einer verspäteten Abfrage nur ein Bon heraus.
+  // Kennung je geöffneter Seite (auch zwei Tabs auf demselben Tablet sind zwei „Geräte“)
+  var GERAET = Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(8)), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+  var fremd = {};                 // nr → bis wann ein anderes Gerät druckt
+
   function automatischDrucken() {
     if (!cfg.autodruck || druckt) return;
     var offen = bestellungen.filter(function (b) {
       return !b.gedruckt && !gedrucktHier[b.nr] && b.status !== 'storniert' && b.status !== 'erledigt' &&
-        (!druckFehler[b.nr] || Date.now() - druckFehler[b.nr] > 20000);
+        !(fremd[b.nr] > Date.now()) && (!druckFehler[b.nr] || Date.now() - druckFehler[b.nr] > 20000);
     }).sort(function (a, b) { return a.eingang < b.eingang ? -1 : 1; });
-    if (offen.length) druckeBon(offen[0]).then(automatischDrucken);
+    if (!offen.length) return;
+    var b = offen[0];
+    druckt = true;
+    api('POST', { aktion: 'beanspruchen', nr: b.nr, geraet: GERAET }).then(function (j) {
+      druckt = false;
+      if (!j.ok) { fremd[b.nr] = Date.now() + 180000; automatischDrucken(); return; }
+      return druckeBon(b).then(automatischDrucken);
+    }, function () {
+      druckt = false;
+      druckFehler[b.nr] = Date.now();
+    });
   }
 
   function druckerPruefen() {
@@ -813,6 +829,21 @@
       }).then(function () { druckt = false; });
     });
   });
+
+  // ---------- Neue Version auf dem Server? Dann Knopf zum Aktualisieren zeigen (kein automatisches Neuladen,
+  // sonst stünde das Tablet auf „Start“ und würde nicht klingeln) ----------
+  var stand = null;
+  function versionHolen() {
+    return Promise.all(['app.js', 'bon.js', 'index.html'].map(function (f) {
+      return fetch(f, { method: 'HEAD', cache: 'no-store' }).then(function (r) { return r.headers.get('etag') || r.headers.get('last-modified') || ''; });
+    })).then(function (a) { return a.join('|'); });
+  }
+  versionHolen().then(function (v) { stand = v; }).catch(function () {});
+  setInterval(function () {
+    if (!stand) return;
+    versionHolen().then(function (v) { if (v && v !== stand) $('[data-update]').hidden = false; }).catch(function () {});
+  }, 5 * 60000);
+  $('[data-update]').addEventListener('click', function () { location.reload(); });
 
   // ---------- Uhr ----------
   function tick() { $('[data-uhr]').textContent = uhr(new Date().toISOString()); }

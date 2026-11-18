@@ -20,8 +20,8 @@ if (!is_array($d)) {
     antwort(['fehler' => 'Ungültige Anfrage.'], 400);
 }
 $zahlung = $d['zahlung'] ?? '';
-if (!in_array($zahlung, ['bar', 'karte'], true)) {
-    antwort(['fehler' => 'Bitte bar oder Karte bei Übergabe wählen.'], 422);
+if ($zahlung !== 'bar') {   // Karte bei Übergabe gibt es nicht mehr – online oder bar
+    antwort(['fehler' => 'Bitte online bezahlen oder bar bei Übergabe wählen.'], 422);
 }
 
 $n = jetzt();

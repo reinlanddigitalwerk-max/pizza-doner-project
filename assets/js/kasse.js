@@ -1,6 +1,6 @@
 // Kasse: Formular wie auf der alten Bestellseite, Zusammenfassung rechts.
 // „Jetzt online bezahlen“ (nur wenn api/checkout.php eingerichtet ist): weiter zu Stripe, danach zurück mit ?bezahlt=…
-// Bar oder Karte bei Übergabe: direkt an das Rheinland Bestellsystem im Laden (api/bestellen.php).
+// Bar bei Übergabe: direkt an das Rheinland Bestellsystem im Laden (api/bestellen.php).
 (function () {
   var W = window.Warenkorb;
   var SHOP = window.SHOP;
