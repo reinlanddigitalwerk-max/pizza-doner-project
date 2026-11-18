@@ -496,6 +496,189 @@
   });
   $('[data-pause-ende]').addEventListener('click', function (e) { pauseSetzen(null, e.currentTarget); });
 
+
+  // ---------- Neuer Bon von Hand (Telefon / Gast im Laden): nur drucken, nicht speichern ----------
+  // Steuer wie auf dem Server (api/lib.php): Speisen 7 %, Getränke 19 %, Menüs nach Einzelpreisen aufgeteilt.
+  var neuDlg = $('[data-neubon]');
+  var neuForm = $('[data-neubon-form]');
+  var neuArtikel = [];            // aus data/menu.json: { name, kat, preis, preise, anteil19 }
+  var neuZeilen = [];             // { name, groesse, menge, stueck, anteil19 }
+  function zahlLesen(v) { var n = parseFloat(String(v || '').replace(',', '.')); return isFinite(n) ? Math.round(n * 100) / 100 : NaN; }
+  function anteil19(auf) {
+    if (!auf) return 0;
+    var g = +auf.getraenk || 0, sp = +auf.speisen || 0;
+    return g > 0 && g + sp > 0 ? g / (g + sp) : 0;
+  }
+  function mwstAufteilen(gesamt, zw, b19) {
+    var f19 = zw > 0 ? Math.min(1, Math.max(0, b19 / zw)) : 0;
+    var r = function (n) { return Math.round(n * 100) / 100; };
+    var teil19 = r(gesamt * f19), teile = { 7: r(gesamt - teil19), 19: teil19 }, aus = [];
+    [7, 19].forEach(function (satz) {
+      var brutto = teile[satz];
+      if (brutto <= 0) return;
+      var steuer = r(brutto * satz / (100 + satz));
+      aus.push({ satz: satz, brutto: brutto, netto: r(brutto - steuer), steuer: steuer });
+    });
+    return aus;
+  }
+  function neuSpeisekarte() {
+    if (neuArtikel.length) return Promise.resolve();
+    return fetch('../data/menu.json', { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('Speisekarte nicht geladen.');
+      return r.json();
+    }).then(function (m) {
+      var sel = $('[data-neubon-artikel]');
+      sel.innerHTML = '';
+      (m.kategorien || []).forEach(function (k) {
+        var gruppe = document.createElement('optgroup');
+        gruppe.label = k.kategorie;
+        (k.artikel || []).forEach(function (a) {
+          if (a.aktiv === false || (a.preis == null && !a.preise)) return;
+          var o = document.createElement('option');
+          o.value = String(neuArtikel.length);
+          o.textContent = a.name + (a.preis != null ? ' – ' + euro(a.preis) : '');
+          gruppe.appendChild(o);
+          neuArtikel.push({ name: a.name, preis: a.preis, preise: a.preise || null,
+            anteil19: +k.mwst === 19 ? 1 : anteil19(a.mwst_aufteilung) });
+        });
+        if (gruppe.children.length) sel.appendChild(gruppe);
+      });
+      neuGroessen();
+    });
+  }
+  function neuGroessen() {
+    var a = neuArtikel[+$('[data-neubon-artikel]').value];
+    var g = $('[data-neubon-groesse]');
+    g.innerHTML = '';
+    g.hidden = !(a && a.preise);
+    if (a && a.preise) Object.keys(a.preise).forEach(function (k) {
+      var o = document.createElement('option');
+      o.value = k;
+      o.textContent = k + ' – ' + euro(a.preise[k]);
+      g.appendChild(o);
+    });
+  }
+  function neuSummen() {
+    var zw = 0, b19 = 0;
+    neuZeilen.forEach(function (z) { zw += z.stueck * z.menge; b19 += z.stueck * z.menge * z.anteil19; });
+    zw = Math.round(zw * 100) / 100;
+    var liefer = neuForm.art.value === 'lieferung' ? (zahlLesen(neuForm.liefer.value) || 0) : 0;
+    var gesamt = Math.round((zw + liefer) * 100) / 100;
+    return { zw: zw, liefer: liefer, gesamt: gesamt, mwst: mwstAufteilen(gesamt, zw, b19) };
+  }
+  function neuZeigen() {
+    var liste = $('[data-neubon-liste]');
+    liste.innerHTML = neuZeilen.map(function (z, i) {
+      var satz = z.anteil19 >= 1 ? 'B 19 %' : z.anteil19 > 0 ? 'A/B' : 'A 7 %';
+      return '<div class="neubon__zeile"><b>' + z.menge + '×</b><span>' + esc(z.name) + (z.groesse ? ' (' + esc(z.groesse) + ')' : '') +
+        '<small>' + satz + '</small></span>' +
+        '<input inputmode="decimal" value="' + z.stueck.toFixed(2).replace('.', ',') + '" data-neubon-preis="' + i + '" aria-label="Preis pro Stück">' +
+        '<button class="knopf knopf--gefahr" type="button" data-neubon-weg="' + i + '" aria-label="Entfernen">✕</button></div>';
+    }).join('');
+    var s = neuSummen();
+    $('[data-neubon-summe]').textContent = neuZeilen.length
+      ? 'Gesamt ' + euro(s.gesamt) + ' · ' + s.mwst.map(function (m) { return m.satz + ' % MwSt. ' + euro(m.steuer); }).join(' · ')
+      : 'Noch keine Posten.';
+  }
+  function neuBestellung() {
+    if (!neuZeilen.length) throw new Error('Bitte erst ein Gericht hinzufügen.');
+    var s = neuSummen(), jetzt = new Date();
+    var f = neuForm, ort = f.ort.value.trim(), plz = (ort.match(/^\d{5}/) || [''])[0];
+    return {
+      nr: 'HAND-' + ('0' + jetzt.getHours()).slice(-2) + ('0' + jetzt.getMinutes()).slice(-2),
+      art: f.art.value, eingang: jetzt.toISOString(), zeit: 'schnellstmöglich', zahlung: f.zahlung.value,
+      name: f.name.value.trim(), telefon: f.telefon.value.trim(), email: '', firma: '', etage: '',
+      strasse: f.art.value === 'lieferung' ? f.strasse.value.trim() : '', hausnr: '',
+      plz: f.art.value === 'lieferung' ? plz : '', ort: f.art.value === 'lieferung' ? ort.replace(/^\d{5}\s*/, '') : '',
+      bemerkung: f.bemerkung.value.trim(),
+      positionen: neuZeilen.map(function (z) {
+        return { name: z.name, groesse: z.groesse || '', optionen: [], notiz: '', menge: z.menge, stueck: z.stueck,
+          mwst: z.anteil19 >= 1 ? 19 : z.anteil19 > 0 ? 'gemischt' : 7 };
+      }),
+      zwischensumme: s.zw, rabatt: null, liefergebuehr: s.liefer, gesamt: s.gesamt, mwst: s.mwst
+    };
+  }
+  function neuMeldung(text, fehler) {
+    var m = $('[data-neubon-meldung]');
+    m.textContent = text;
+    m.style.color = fehler ? 'var(--rot)' : '';
+  }
+
+  $('[data-neubon-oeffnen]').addEventListener('click', function () {
+    neuMeldung('');
+    neuDlg.showModal();
+    neuSpeisekarte().then(neuZeigen).catch(function (err) { neuMeldung(err.message, true); });
+  });
+  $('[data-neubon-zu]').addEventListener('click', function () { neuDlg.close(); });
+  $('[data-neubon-leeren]').addEventListener('click', function () {
+    neuZeilen = [];
+    ['name', 'telefon', 'strasse', 'bemerkung', 'freiName', 'freiPreis'].forEach(function (n) { neuForm[n].value = ''; });
+    neuForm.liefer.value = '0,00';
+    neuMeldung('');
+    neuZeigen();
+  });
+  neuForm.addEventListener('submit', function (e) { e.preventDefault(); });
+  neuForm.art.addEventListener('change', function () {
+    $('[data-nur-lieferung]').hidden = neuForm.art.value !== 'lieferung';
+    neuZeigen();
+  });
+  neuForm.liefer.addEventListener('input', neuZeigen);
+  $('[data-neubon-artikel]').addEventListener('change', neuGroessen);
+  $('[data-neubon-dazu]').addEventListener('click', function () {
+    var a = neuArtikel[+$('[data-neubon-artikel]').value];
+    if (!a) return;
+    var groesse = a.preise ? $('[data-neubon-groesse]').value : '';
+    var preis = a.preise ? +a.preise[groesse] : +a.preis;
+    var menge = Math.min(50, Math.max(1, parseInt(neuForm.menge.value, 10) || 1));
+    neuZeilen.push({ name: a.name, groesse: groesse, menge: menge, stueck: Math.round(preis * 100) / 100, anteil19: a.anteil19 });
+    neuForm.menge.value = 1;
+    neuMeldung('');
+    neuZeigen();
+  });
+  $('[data-neubon-frei]').addEventListener('click', function () {
+    var name = neuForm.freiName.value.trim(), preis = zahlLesen(neuForm.freiPreis.value);
+    if (!name || !(preis >= 0) || preis > 999) { neuMeldung('Bitte Bezeichnung und Preis eingeben.', true); return; }
+    neuZeilen.push({ name: name, groesse: '', menge: 1, stueck: preis, anteil19: neuForm.freiSatz.value === '19' ? 1 : 0 });
+    neuForm.freiName.value = neuForm.freiPreis.value = '';
+    neuMeldung('');
+    neuZeigen();
+  });
+  $('[data-neubon-liste]').addEventListener('click', function (e) {
+    var k = e.target.closest('[data-neubon-weg]');
+    if (!k) return;
+    neuZeilen.splice(+k.dataset.neubonWeg, 1);
+    neuZeigen();
+  });
+  $('[data-neubon-liste]').addEventListener('change', function (e) {
+    var f = e.target.closest('[data-neubon-preis]');
+    if (!f) return;
+    var p = zahlLesen(f.value);
+    if (p >= 0 && p <= 999) neuZeilen[+f.dataset.neubonPreis].stueck = p;
+    neuZeigen();
+  });
+  $('[data-neubon-ansehen]').addEventListener('click', function () {
+    try { var b = neuBestellung(); } catch (err) { neuMeldung(err.message, true); return; }
+    neuDlg.close();
+    belegZeigen(b);
+  });
+  document.querySelectorAll('[data-neubon-druck]').forEach(function (k) {
+    k.addEventListener('click', function () {
+      try { var b = neuBestellung(); } catch (err) { neuMeldung(err.message, true); return; }
+      if (druckt) { neuMeldung('Drucker ist gerade beschäftigt – gleich noch einmal.', true); return; }
+      var arten = k.dataset.neubonDruck === 'beide' ? ['laden', 'kunde'] : [k.dataset.neubonDruck];
+      druckt = true;
+      neuMeldung('Wird gedruckt …');
+      Bon.drucken(b, cfg, arten).then(function () {
+        lampe('drucker', true);
+        neuMeldung('Gedruckt.');
+        melden('Bon ' + kurz(b) + ' gedruckt.');
+      }, function (err) {
+        lampe('drucker', false);
+        neuMeldung(err.message, true);
+      }).then(function () { druckt = false; });
+    });
+  });
+
   // ---------- Uhr ----------
   function tick() { $('[data-uhr]').textContent = uhr(new Date().toISOString()); }
   tick();

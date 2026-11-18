@@ -212,3 +212,22 @@ h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
 @keyframes pausiert { to { background: rgba(228, 121, 30, .32); } }
 .pause-dlg__wahl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 10px; }
 .pause-dlg__lang { grid-column: 1 / -1; }
+
+/* Neuer Bon von Hand */
+.knopf--neubon { background: rgba(43, 201, 216, .16); color: var(--cyan); border: 1px solid rgba(43, 201, 216, .45); min-height: 44px; padding: 0 14px; font-size: 15px; }
+.neubon { width: min(720px, calc(100% - 24px)); overflow: auto; }
+.neubon__reihe { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 12px; }
+.neubon__reihe[hidden] { display: none; }
+.feld--schmal input { max-width: 140px; }
+.neubon__wahl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; padding: 12px; border: 1px solid var(--linie); border-radius: 14px; }
+.neubon__wahl legend { padding: 0 6px; font-size: 14px; color: var(--leise); font-weight: 600; }
+.neubon__wahl select, .neubon__wahl input { min-height: 44px; padding: 0 10px; border: 1px solid var(--linie); border-radius: 10px; background: var(--flaeche-2); color: var(--text); font: inherit; }
+.neubon__wahl [data-neubon-artikel] { flex: 1 1 240px; min-width: 0; }
+.neubon__wahl input[name=menge] { width: 72px; }
+.neubon__wahl input[name=freiName] { flex: 1 1 180px; min-width: 0; }
+.neubon__wahl input[name=freiPreis] { width: 110px; }
+.neubon__liste { display: grid; gap: 6px; margin: 4px 0 14px; }
+.neubon__zeile { display: grid; grid-template-columns: auto 1fr auto auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--flaeche-2); }
+.neubon__zeile input { width: 96px; min-height: 40px; padding: 0 8px; border: 1px solid var(--linie); border-radius: 8px; background: var(--flaeche); color: var(--text); font: inherit; text-align: right; }
+.neubon__zeile small { display: block; color: var(--leise); }
+.neubon__summe { font-size: 20px; font-weight: 700; margin: 0 0 4px; }

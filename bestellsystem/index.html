@@ -45,6 +45,7 @@
         <span class="lampe" data-lampe-server title="Verbindung zum Server">Server</span>
         <span class="lampe" data-lampe-drucker title="Bondrucker">Drucker</span>
         <time class="leiste__uhr" data-uhr></time>
+        <button class="knopf knopf--neubon" type="button" data-neubon-oeffnen>＋ Neuer Bon</button>
         <button class="knopf knopf--pause" type="button" data-pause-oeffnen>⏸ Pause</button>
         <button class="knopf knopf--rund" type="button" data-ton-schalter aria-label="Ton an/aus">🔔</button>
         <button class="knopf knopf--rund" type="button" data-einstellungen-oeffnen aria-label="Einstellungen">⚙</button>
@@ -125,6 +126,59 @@
       </div>
       <p class="klein">„Bis ich wieder öffne“ endet spätestens morgen früh von selbst.</p>
       <div class="einstellungen__fuss"><span></span><button class="knopf knopf--leise" value="zu">Abbrechen</button></div>
+    </form>
+  </dialog>
+
+  <!-- Neuer Bon von Hand: z. B. Telefonbestellung oder Gast im Laden – nur drucken, wird nicht gespeichert -->
+  <dialog class="einstellungen neubon" data-neubon>
+    <form data-neubon-form>
+      <h2>Neuer Bon</h2>
+      <div class="neubon__reihe">
+        <label class="feld"><span>Art</span>
+          <select name="art"><option value="abholung">Abholung</option><option value="lieferung">Lieferung</option><option value="vorort">Im Laden</option></select></label>
+        <label class="feld"><span>Zahlung</span>
+          <select name="zahlung"><option value="bar">Bar</option><option value="karte">Karte</option></select></label>
+      </div>
+      <div class="neubon__reihe">
+        <label class="feld"><span>Name (optional)</span><input name="name" maxlength="80" autocomplete="off"></label>
+        <label class="feld"><span>Telefon (optional)</span><input name="telefon" maxlength="25" inputmode="tel" autocomplete="off"></label>
+      </div>
+      <div class="neubon__reihe" data-nur-lieferung hidden>
+        <label class="feld"><span>Straße und Nr.</span><input name="strasse" maxlength="90" autocomplete="off"></label>
+        <label class="feld"><span>PLZ und Ort</span><input name="ort" maxlength="60" value="41462 Neuss" autocomplete="off"></label>
+        <label class="feld feld--schmal"><span>Liefergebühr €</span><input name="liefer" inputmode="decimal" value="0,00"></label>
+      </div>
+
+      <fieldset class="neubon__wahl">
+        <legend>Gericht aus der Speisekarte</legend>
+        <select name="artikel" data-neubon-artikel aria-label="Gericht"></select>
+        <select name="groesse" data-neubon-groesse aria-label="Größe" hidden></select>
+        <input name="menge" type="number" min="1" max="50" value="1" aria-label="Menge">
+        <button class="knopf" type="button" data-neubon-dazu>Hinzufügen</button>
+      </fieldset>
+      <fieldset class="neubon__wahl">
+        <legend>Oder freier Posten</legend>
+        <input name="freiName" maxlength="60" placeholder="z. B. Extra Käse" aria-label="Bezeichnung">
+        <input name="freiPreis" inputmode="decimal" placeholder="Preis €" aria-label="Preis">
+        <select name="freiSatz" aria-label="Steuersatz"><option value="7">7 % Speise</option><option value="19">19 % Getränk</option></select>
+        <button class="knopf knopf--zweit" type="button" data-neubon-frei>Hinzufügen</button>
+      </fieldset>
+
+      <div class="neubon__liste" data-neubon-liste></div>
+      <label class="feld"><span>Bemerkung (optional)</span><input name="bemerkung" maxlength="200" autocomplete="off"></label>
+      <p class="neubon__summe" data-neubon-summe></p>
+      <p class="klein" data-neubon-meldung aria-live="polite"></p>
+      <div class="einstellungen__knoepfe">
+        <button class="knopf" type="button" data-neubon-druck="beide">🖨 Beide Bons</button>
+        <button class="knopf knopf--zweit" type="button" data-neubon-druck="kunde">🖨 Nur Kunden-Bon</button>
+        <button class="knopf knopf--zweit" type="button" data-neubon-druck="laden">🖨 Nur Restaurant-Bon</button>
+        <button class="knopf knopf--zweit" type="button" data-neubon-ansehen>👁 Ansehen</button>
+      </div>
+      <div class="einstellungen__fuss">
+        <button class="knopf knopf--leise" type="button" data-neubon-leeren>Leeren</button>
+        <button class="knopf knopf--leise" type="button" data-neubon-zu>Schließen</button>
+      </div>
+      <p class="klein">Wird nur gedruckt, nicht gespeichert. Bestellbeleg – kein Kassenbon: bitte wie gewohnt in die Kasse eingeben.</p>
     </form>
   </dialog>
 

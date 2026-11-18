@@ -95,11 +95,11 @@
     if (kunde) {
       balken('BESTELLBELEG', 36);
       zeile('Bestellung #' + b.nr.slice(-4), 30, true, { rechts: datum(b.eingang) });
-      zeile((b.art === 'lieferung' ? 'Lieferung' : 'Abholung') + ' · bestellt ' + uhr(b.eingang) + ' Uhr', 24, false);
+      zeile((b.art === 'lieferung' ? 'Lieferung' : b.art === 'vorort' ? 'Im Laden' : 'Abholung') + ' · bestellt ' + uhr(b.eingang) + ' Uhr', 24, false);
       zeile(b.zeit === 'schnellstmöglich' ? 'So schnell wie möglich' : 'Gewünscht für ' + b.zeit + ' Uhr', 24, false);
     } else {
       zeile('— RESTAURANT —', 22, true, { mitte: true });
-      balken(b.art === 'lieferung' ? 'LIEFERUNG' : 'ABHOLUNG', 44);
+      balken(b.art === 'lieferung' ? 'LIEFERUNG' : b.art === 'vorort' ? 'IM LADEN' : 'ABHOLUNG', 44);
       zeile('Bestellung ' + b.nr.slice(-4), 30, true, { rechts: uhr(b.eingang) + ' Uhr' });
       zeile('Nr. ' + b.nr + ' · ' + datum(b.eingang), 20, false);
       y += 4;
@@ -145,7 +145,7 @@
       y += 6;
       zeile(b.name, 26, false);
       if (b.telefon) zeile('Tel. ' + b.telefon, 24, false);
-      if (b.art === 'lieferung') zeile(b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort, 24, false);
+      if (b.art === 'lieferung') zeile((b.strasse + ' ' + b.hausnr).trim() + ', ' + (b.plz + ' ' + b.ort).trim(), 24, false);
       linie();
       zeile('Danke für deine Bestellung!', 30, true, { mitte: true });
       zeile('Guten Appetit · neusser-doner-pizza.de', 22, false, { mitte: true });
@@ -155,11 +155,11 @@
     } else {
       balken(b.zahlung === 'test' ? 'TESTDRUCK – NICHT ZUBEREITEN' : b.zahlung === 'online' ? 'BEZAHLT (ONLINE)' : b.zahlung === 'karte' ? 'KARTE – ' + euro(b.gesamt) : 'BAR KASSIEREN – ' + euro(b.gesamt), 32);
       zeile(b.name, 32, true);
-      zeile('Tel. ' + b.telefon, 30, true);
+      if (b.telefon) zeile('Tel. ' + b.telefon, 30, true);
       if (b.art === 'lieferung') {
         if (b.firma) zeile(b.firma, 28, false);
-        zeile(b.strasse + ' ' + b.hausnr, 32, true);
-        zeile(b.plz + ' ' + b.ort + (b.etage ? ' · ' + b.etage : ''), 28, false);
+        zeile((b.strasse + ' ' + b.hausnr).trim(), 32, true);
+        zeile((b.plz + ' ' + b.ort).trim() + (b.etage ? ' · ' + b.etage : ''), 28, false);
       }
       if (b.bemerkung) { y += 6; zeile('Bemerkung: ' + b.bemerkung, 26, true); }
       if (b.notiz) zeile(b.notiz, 22, false);
