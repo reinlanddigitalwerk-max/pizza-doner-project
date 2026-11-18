@@ -7,7 +7,7 @@
   var $ = function (s) { return document.querySelector(s); };
 
   var DRUCKER_IP = '192.168.2.61';  // laut Netzwerk-Ausdruck des Bondruckers im Laden
-  var cfg = laden(EINST, { ip: DRUCKER_IP, autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
+  var cfg = laden(EINST, { verbindung: 'wlan', ip: DRUCKER_IP, autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
   // alte Standard-Adresse auf dem Tablet gespeichert → einmalig auf die neue umstellen
   if (cfg.ip === '192.168.178.82') { cfg.ip = DRUCKER_IP; merken(EINST, cfg); }
   var token = laden(TOKEN, '');
@@ -94,6 +94,7 @@
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && !wachhalter) wachHalten(); });
 
   $('[data-starten]').addEventListener('click', function () {
+    setTimeout(tageSichern, 1000);
     tonBereit();
     wachHalten();
     if (document.documentElement.requestFullscreen && !window.matchMedia('(display-mode: standalone)').matches) {
@@ -321,7 +322,7 @@
   }
 
   function druckerPruefen() {
-    if (!cfg.ip) { lampe('drucker', false); return; }
+    if (cfg.verbindung !== 'bluetooth' && !cfg.ip) { lampe('drucker', false); return; }
     Bon.pruefen(cfg).then(function () { lampe('drucker', true); }, function () { lampe('drucker', false); });
   }
   setInterval(function () { if (token && !druckt) druckerPruefen(); }, 60000);
@@ -330,6 +331,8 @@
   var dlg = $('[data-einstellungen]');
   var form = dlg.querySelector('form');
   $('[data-einstellungen-oeffnen]').addEventListener('click', function () {
+    form.verbindung.value = cfg.verbindung || 'wlan';
+    verbindungZeigen();
     form.ip.value = cfg.ip;
     form.autodruck.checked = cfg.autodruck;
     form.belege.value = cfg.belege;
@@ -340,11 +343,27 @@
     dlg.showModal();
   });
   function uebernehmen() {
-    cfg = { ip: form.ip.value.trim(), autodruck: form.autodruck.checked, belege: form.belege.value, nachDruck: form.nachDruck.value,
+    cfg = { verbindung: form.verbindung.value === 'bluetooth' ? 'bluetooth' : 'wlan', ip: form.ip.value.trim(),
+      autodruck: form.autodruck.checked, belege: form.belege.value, nachDruck: form.nachDruck.value,
       ton: form.ton.checked, https: form.https.checked };
+    verbindungZeigen();
     merken(EINST, cfg);
     tonZeigen();
   }
+  function verbindungZeigen() {
+    var bt = form.verbindung.value === 'bluetooth';
+    dlg.querySelectorAll('[data-nur-wlan]').forEach(function (e) { e.hidden = bt; });
+    dlg.querySelectorAll('[data-nur-bt]').forEach(function (e) { e.hidden = !bt; });
+  }
+  $('[data-bt-waehlen]').addEventListener('click', function () {
+    var m = $('[data-druck-meldung]');
+    Bon.bluetoothWaehlen().then(function () {
+      m.textContent = '✓ Bluetooth-Drucker gewählt. Jetzt „Testdruck“ antippen.';
+      druckerPruefen();
+    }, function (err) {
+      m.textContent = err && err.name === 'NotFoundError' ? 'Kein Drucker gewählt. Ist er in den Android-Einstellungen gekoppelt?' : '✗ ' + (err && err.message || err);
+    });
+  });
   form.addEventListener('change', uebernehmen);
   dlg.addEventListener('close', function () { uebernehmen(); druckerPruefen(); automatischDrucken(); });
   $('[data-freischalten]').addEventListener('click', function () {
@@ -362,6 +381,7 @@
 
   // ---------- Archiv ----------
   var archivListe = [];
+  var handListe = [];             // Bons von Hand (Telefon / Gast im Laden) – eigene Liste
   function isoTag(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
   var tagFeld = $('[data-tag]');
   tagFeld.value = isoTag(new Date());
@@ -374,6 +394,7 @@
     api('GET', null, '?tag=' + tag).then(function (j) {
       if (tagFeld.value !== tag) return;
       archivListe = j.bestellungen || [];
+      handListe = j.handbons || [];
       archivZeichnen();
     }).catch(function (err) { $('[data-tabelle]').innerHTML = '<p class="leer">' + esc(err.message) + '</p>'; });
   }
@@ -397,7 +418,23 @@
         '<span class="zeile__name">' + esc(b.name) + ' <small>· ' + (b.art === 'lieferung' ? 'Lieferung' : 'Abholung') + ' · ' + STAND[b.status] + '</small></span>' +
         '<span class="zahlung zahlung--' + z[0] + '">' + z[1] + '</span><span class="zeile__betrag">' + euro(b.gesamt) + '</span></button>';
     }).join('') : '<p class="leer"><strong>Keine Bestellungen an diesem Tag</strong></p>';
+    var ARTEN = { lieferung: 'Lieferung', abholung: 'Abholung', vorort: 'Im Laden' };
+    $('[data-hand]').innerHTML = handListe.length
+      ? '<h3 class="archiv__titel">✍ Bons von Hand <small>' + handListe.length + ' · ' + euro(summe(handListe)) + '</small></h3>' +
+        handListe.map(function (b) {
+          var z = ZAHLUNG[b.zahlung] || ZAHLUNG.bar;
+          return '<button class="zeile" type="button" data-hand-nr="' + esc(b.nr) + '">' +
+            '<span class="zeile__zeit">' + uhr(b.eingang) + '</span><span class="zeile__nr">' + kurz(b) + '</span>' +
+            '<span class="zeile__name">' + esc(b.name || '–') + ' <small>· ' + (ARTEN[b.art] || '') + ' · ' + b.positionen.length + ' Posten</small></span>' +
+            '<span class="zahlung zahlung--' + z[0] + '">' + z[1] + '</span><span class="zeile__betrag">' + euro(b.gesamt) + '</span></button>';
+        }).join('')
+      : '';
   }
+  $('[data-hand]').addEventListener('click', function (e) {
+    var z = e.target.closest('[data-hand-nr]');
+    var b = z && handListe.find(function (x) { return x.nr === z.dataset.handNr; });
+    if (b) belegZeigen(b);
+  });
   $('[data-tabelle]').addEventListener('click', function (e) {
     var z = e.target.closest('[data-archiv-nr]');
     var b = z && archivListe.find(function (x) { return x.nr === z.dataset.archivNr; });
@@ -415,38 +452,90 @@
   });
   $('[data-heute]').addEventListener('click', function () { tagFeld.value = tagFeld.max = isoTag(new Date()); archivLaden(); });
 
-  // Monat als Tabelle für die Buchhaltung (Excel öffnet die Datei direkt)
-  $('[data-csv]').addEventListener('click', function () {
-    var monat = tagFeld.value.slice(0, 7);
-    api('GET', null, '?monat=' + monat).then(function (j) {
-      var zahl = function (n) { return (Math.round((n || 0) * 100) / 100).toFixed(2).replace('.', ','); };
-      // ältere Bestellungen (vor der MwSt.-Aufteilung) bleiben in diesen Spalten leer
-      var mwstSpalten = function (b, satz) {
-        if (!b.mwst) return ['', '', ''];
-        var m = b.mwst.filter(function (x) { return x.satz === satz; })[0] || { brutto: 0, netto: 0, steuer: 0 };
-        return [zahl(m.brutto), zahl(m.netto), zahl(m.steuer)];
-      };
-      var feld = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
-      var zeilen = [['Datum', 'Uhrzeit', 'Nr', 'Art', 'Status', 'Zahlung', 'Name', 'Telefon', 'Adresse', 'Zwischensumme', 'Rabatt', 'Liefergebühr', 'Gesamt',
-        'Brutto 7 %', 'Netto 7 %', 'MwSt 7 %', 'Brutto 19 %', 'Netto 19 %', 'MwSt 19 %', 'Positionen']];
-      (j.bestellungen || []).forEach(function (b) {
-        var d = new Date(b.eingang);
-        zeilen.push([d.toLocaleDateString('de-DE'), uhr(b.eingang), b.nr, b.art === 'lieferung' ? 'Lieferung' : 'Abholung', STAND[b.status],
+  // ---------- Tabellen für die Buchhaltung (Excel öffnet die Dateien direkt) ----------
+  function csvText(bestellungen, handbons) {
+    var zahl = function (n) { return (Math.round((n || 0) * 100) / 100).toFixed(2).replace('.', ','); };
+    // ältere Bestellungen (vor der MwSt.-Aufteilung) bleiben in diesen Spalten leer
+    var mwstSpalten = function (b, satz) {
+      if (!b.mwst) return ['', '', ''];
+      var m = b.mwst.filter(function (x) { return x.satz === satz; })[0] || { brutto: 0, netto: 0, steuer: 0 };
+      return [zahl(m.brutto), zahl(m.netto), zahl(m.steuer)];
+    };
+    // Kundentext darf in Excel keine Formel werden (= + - @ am Anfang)
+    var feld = function (v) {
+      v = String(v == null ? '' : v);
+      if (/^[=+\-@\t\r]/.test(v)) v = "'" + v;
+      return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+    };
+    var ARTEN = { lieferung: 'Lieferung', abholung: 'Abholung', vorort: 'Im Laden' };
+    var zeilen = [['Datum', 'Uhrzeit', 'Nr', 'Quelle', 'Art', 'Status', 'Zahlung', 'Name', 'Telefon', 'Adresse', 'Zwischensumme', 'Rabatt', 'Liefergebühr', 'Gesamt',
+      'Brutto 7 %', 'Netto 7 %', 'MwSt 7 %', 'Brutto 19 %', 'Netto 19 %', 'MwSt 19 %', 'Positionen']];
+    (bestellungen || []).map(function (b) { return [b, 'Website']; })
+      .concat((handbons || []).map(function (b) { return [b, 'Von Hand']; }))
+      .sort(function (x, y) { return x[0].eingang < y[0].eingang ? -1 : 1; })
+      .forEach(function (e) {
+        var b = e[0], d = new Date(b.eingang);
+        zeilen.push([d.toLocaleDateString('de-DE'), uhr(b.eingang), b.nr, e[1], ARTEN[b.art] || '', b.hand ? 'Von Hand' : STAND[b.status],
           { online: 'Online', bar: 'Bar', karte: 'Karte' }[b.zahlung] || '', b.name, b.telefon,
-          b.art === 'lieferung' ? b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort : '',
+          b.art === 'lieferung' ? (b.strasse + ' ' + b.hausnr).trim() + ', ' + (b.plz + ' ' + b.ort).trim() : '',
           zahl(b.zwischensumme), zahl(b.rabatt ? b.rabatt.betrag : 0), zahl(b.liefergebuehr), zahl(b.gesamt)]
           .concat(mwstSpalten(b, 7), mwstSpalten(b, 19), [
           (b.positionen || []).map(function (p) { return p.menge + 'x ' + p.name + (p.groesse ? ' (' + p.groesse + ')' : ''); }).join(', ')]));
       });
-      var text = '\ufeff' + zeilen.map(function (z) { return z.map(feld).join(';'); }).join('\r\n');
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
-      a.download = 'Bestellungen-' + monat + '.csv';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      melden((j.bestellungen || []).length + ' Bestellungen aus ' + monat + ' gespeichert.');
+    return '﻿' + zeilen.map(function (z) { return z.map(feld).join(';'); }).join('\r\n');
+  }
+  function dateiSpeichern(text, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 10000);
+  }
+  $('[data-csv]').addEventListener('click', function () {
+    var monat = tagFeld.value.slice(0, 7);
+    api('GET', null, '?monat=' + monat).then(function (j) {
+      dateiSpeichern(csvText(j.bestellungen, j.handbons), 'Bestellungen-' + monat + '.csv');
+      melden((j.bestellungen || []).length + ' Bestellungen und ' + (j.handbons || []).length + ' Bons von Hand aus ' + monat + ' gespeichert.');
     }).catch(function (err) { melden(err.message, true); });
+  });
+
+  // ---------- Tagessicherung: jeden Tag eine Datei auf dem Tablet (Ordner „Downloads“) ----------
+  // Läuft beim Antippen von „Start“ und sonst einmal nach Mitternacht; holt verpasste Tage nach (bis 7 Tage zurück).
+  var GESICHERT = 'rdw-gesichert';
+  var sichertGerade = false;
+  function tagSichern(tag, auchLeer) {
+    return api('GET', null, '?tag=' + tag).then(function (j) {
+      var n = (j.bestellungen || []).length + (j.handbons || []).length;
+      if (n || auchLeer) dateiSpeichern(csvText(j.bestellungen, j.handbons), 'Neusser-Tagessicherung-' + tag + '.csv');
+      return n;
+    });
+  }
+  function tageSichern() {
+    if (sichertGerade || !token) return;
+    var heute = new Date(), gestern = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() - 1);
+    var bis = isoTag(gestern), zuletzt = laden(GESICHERT, '');
+    if (!zuletzt) zuletzt = isoTag(new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() - 2));   // erstes Mal: nur gestern
+    if (zuletzt >= bis) return;
+    var tage = [];
+    for (var i = 7; i >= 1; i--) {
+      var t = isoTag(new Date(heute.getFullYear(), heute.getMonth(), heute.getDate() - i));
+      if (t > zuletzt) tage.push(t);
+    }
+    sichertGerade = true;
+    var anzahl = 0;
+    tage.reduce(function (kette, t) {
+      return kette.then(function () { return tagSichern(t, false); }).then(function (n) { anzahl += n; merken(GESICHERT, t); });
+    }, Promise.resolve()).then(function () {
+      if (anzahl) melden('Tagessicherung gespeichert (Ordner „Downloads“): ' + anzahl + ' Bestellungen/Bons.');
+    }).catch(function () { /* nächster Versuch beim nächsten Start */ }).then(function () { sichertGerade = false; });
+  }
+  setInterval(tageSichern, 15 * 60000);
+  $('[data-tag-sichern]').addEventListener('click', function () {
+    var tag = tagFeld.value;
+    tagSichern(tag, true).then(function (n) { melden('Tag ' + tag + ' gespeichert (' + n + ' Einträge, Ordner „Downloads“).'); },
+      function (err) { melden(err.message, true); });
   });
 
   // ---------- Beleg ansehen und nachdrucken ----------
@@ -661,20 +750,45 @@
     neuDlg.close();
     belegZeigen(b);
   });
+  // Speichern: einmal je Zusammenstellung – nochmal drucken legt keinen zweiten Bon an
+  var neuGespeichert = null;      // { schluessel, bon }
+  function neuDaten() {
+    var f = neuForm, ort = f.ort.value.trim();
+    return {
+      art: f.art.value, zahlung: f.zahlung.value, name: f.name.value.trim(), telefon: f.telefon.value.trim(),
+      strasse: f.strasse.value.trim(), plz: (ort.match(/^\d{5}/) || [''])[0], ort: ort.replace(/^\d{5}\s*/, ''),
+      bemerkung: f.bemerkung.value.trim(), liefergebuehr: zahlLesen(f.liefer.value) || 0,
+      positionen: neuZeilen.map(function (z) { return { name: z.name, groesse: z.groesse || '', menge: z.menge, stueck: z.stueck, anteil19: z.anteil19 }; })
+    };
+  }
+  function neuSpeichern() {
+    neuBestellung();                // prüft, ob überhaupt etwas drin ist
+    var daten = neuDaten(), schluessel = JSON.stringify(daten);
+    if (neuGespeichert && neuGespeichert.schluessel === schluessel) return Promise.resolve({ bon: neuGespeichert.bon, gespeichert: true });
+    return api('POST', { aktion: 'handbon', bon: daten }).then(function (j) {
+      neuGespeichert = { schluessel: schluessel, bon: j.bon };
+      return { bon: j.bon, gespeichert: true };
+    }, function (err) {
+      return { bon: neuBestellung(), gespeichert: false, fehler: err.message };
+    });
+  }
   document.querySelectorAll('[data-neubon-druck]').forEach(function (k) {
     k.addEventListener('click', function () {
-      try { var b = neuBestellung(); } catch (err) { neuMeldung(err.message, true); return; }
+      try { neuBestellung(); } catch (err) { neuMeldung(err.message, true); return; }
       if (druckt) { neuMeldung('Drucker ist gerade beschäftigt – gleich noch einmal.', true); return; }
       var arten = k.dataset.neubonDruck === 'beide' ? ['laden', 'kunde'] : [k.dataset.neubonDruck];
       druckt = true;
-      neuMeldung('Wird gedruckt …');
-      Bon.drucken(b, cfg, arten).then(function () {
-        lampe('drucker', true);
-        neuMeldung('Gedruckt.');
-        melden('Bon ' + kurz(b) + ' gedruckt.');
-      }, function (err) {
-        lampe('drucker', false);
-        neuMeldung(err.message, true);
+      neuMeldung('Wird gespeichert und gedruckt …');
+      neuSpeichern().then(function (e) {
+        var hinweis = e.gespeichert ? ' Im Archiv unter „Bons von Hand“.' : ' Achtung: nicht gespeichert (' + e.fehler + ').';
+        return Bon.drucken(e.bon, cfg, arten).then(function () {
+          lampe('drucker', true);
+          neuMeldung('Gedruckt.' + hinweis, !e.gespeichert);
+          melden('Bon ' + kurz(e.bon) + ' gedruckt.');
+        }, function (err) {
+          lampe('drucker', false);
+          neuMeldung(err.message + (e.gespeichert ? ' (Bon ist gespeichert – im Archiv nachdrucken.)' : ''), true);
+        });
       }).then(function () { druckt = false; });
     });
   });

@@ -76,10 +76,12 @@
         <input class="archiv__datum" type="date" data-tag>
         <button class="knopf knopf--zweit" type="button" data-tag-schritt="1" aria-label="Tag vor">▶</button>
         <button class="knopf knopf--leise" type="button" data-heute>Heute</button>
+        <button class="knopf knopf--zweit" type="button" data-tag-sichern>💾 Tag sichern</button>
         <button class="knopf knopf--zweit archiv__csv" type="button" data-csv>⬇ Monat als Tabelle (CSV)</button>
       </div>
       <div class="kacheln" data-summen></div>
       <div class="tabelle" data-tabelle></div>
+      <div class="tabelle tabelle--hand" data-hand></div>
     </section>
   </div>
 
@@ -87,7 +89,16 @@
   <dialog class="einstellungen" data-einstellungen>
     <form method="dialog">
       <h2>Einstellungen</h2>
-      <label class="feld"><span>IP-Adresse des Bondruckers</span><input name="ip" inputmode="decimal" placeholder="192.168.2.61" required></label>
+      <label class="feld feld--klein"><span>Verbindung zum Bondrucker</span>
+        <select name="verbindung"><option value="wlan">WLAN / Netzwerk (IP-Adresse)</option><option value="bluetooth">Bluetooth</option></select></label>
+      <div data-nur-wlan>
+        <label class="feld"><span>IP-Adresse des Bondruckers</span><input name="ip" inputmode="decimal" placeholder="192.168.2.61"></label>
+      </div>
+      <div data-nur-bt hidden>
+        <p class="klein">Den Drucker zuerst in den Android-Einstellungen unter <b>Bluetooth</b> koppeln (PIN meist <b>0000</b>),
+          dann hier einmal „Bluetooth-Drucker wählen“ antippen. Danach druckt das Tablet direkt per Bluetooth.</p>
+        <button class="knopf knopf--zweit" type="button" data-bt-waehlen>Bluetooth-Drucker wählen</button>
+      </div>
       <label class="haken"><input type="checkbox" name="autodruck"> <span>Neue Bestellungen automatisch drucken</span></label>
       <label class="feld feld--klein"><span>Bons pro Bestellung</span>
         <select name="belege"><option value="beide">2 Bons: Restaurant + Kunde</option><option value="laden">1 Bon: nur Restaurant</option></select></label>
@@ -95,9 +106,9 @@
         <select name="nachDruck"><option value="archiv">Direkt ins Archiv</option><option value="annehmen">In Arbeit (dann Fertig / Unterwegs)</option>
           <option value="">Unter „Neu“ lassen</option></select></label>
       <label class="haken"><input type="checkbox" name="ton"> <span>Klingeln bei neuen Bestellungen</span></label>
-      <label class="haken"><input type="checkbox" name="https"> <span>Sichere Verbindung zum Drucker (https)</span></label>
+      <label class="haken" data-nur-wlan><input type="checkbox" name="https"> <span>Sichere Verbindung zum Drucker (https)</span></label>
       <div class="einstellungen__knoepfe">
-        <button class="knopf knopf--zweit" type="button" data-freischalten>Drucker freischalten</button>
+        <button class="knopf knopf--zweit" type="button" data-freischalten data-nur-wlan>Drucker freischalten</button>
         <button class="knopf knopf--zweit" type="button" data-testdruck>Testdruck</button>
       </div>
       <p class="klein" data-druck-meldung aria-live="polite"></p>

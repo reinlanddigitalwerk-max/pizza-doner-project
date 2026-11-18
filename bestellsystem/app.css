@@ -231,3 +231,7 @@ h1, h2 { margin: 0; font-weight: 700; letter-spacing: -.01em; }
 .neubon__zeile input { width: 96px; min-height: 40px; padding: 0 8px; border: 1px solid var(--linie); border-radius: 8px; background: var(--flaeche); color: var(--text); font: inherit; text-align: right; }
 .neubon__zeile small { display: block; color: var(--leise); }
 .neubon__summe { font-size: 20px; font-weight: 700; margin: 0 0 4px; }
+[data-nur-wlan][hidden], [data-nur-bt][hidden] { display: none !important; }
+.tabelle--hand:empty { display: none; }
+.archiv__titel { margin: 22px 0 8px; font-size: 18px; }
+.archiv__titel small { color: var(--leise); font-weight: 600; margin-left: 8px; }

@@ -204,6 +204,9 @@
         }
       }
     }
+    return bytes;
+  }
+  function base64(bytes) {
     var s = '';
     for (var k = 0; k < bytes.length; k += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(k, k + 0x8000));
     return btoa(s);
@@ -214,12 +217,63 @@
     bilder.forEach(function (c) {
       for (var von = 0; von < c.height; von += 400) {        // in Streifen, damit der Druckerpuffer reicht
         var bis = Math.min(c.height, von + 400);
-        alles += '<image width="' + c.width + '" height="' + (bis - von) + '" color="color_1" mode="mono">' + raster(c, von, bis) + '</image>';
+        alles += '<image width="' + c.width + '" height="' + (bis - von) + '" color="color_1" mode="mono">' + base64(raster(c, von, bis)) + '</image>';
       }
       alles += '<feed line="3"/><cut type="feed"/>';
     });
     return '<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body>' +
       '<epos-print xmlns="http://www.epson-pos.com/schemas/2011/03/epos-print">' + alles + '</epos-print></s:Body></s:Envelope>';
+  }
+
+  // ---------- Bluetooth: dieselben Bilder als ESC/POS-Rasterdaten über Web Serial (Chrome, Drucker vorher koppeln) ----------
+  var SPP = '00001101-0000-1000-8000-00805f9b34fb';   // Bluetooth „Serial Port Profile“
+  function escpos(bilder) {
+    var teile = [new Uint8Array([0x1B, 0x40])];      // ESC @ – Drucker zurücksetzen
+    bilder.forEach(function (c) {
+      var wb = c.width / 8;
+      for (var von = 0; von < c.height; von += 240) {
+        var bis = Math.min(c.height, von + 240), h = bis - von;
+        teile.push(new Uint8Array([0x1D, 0x76, 0x30, 0x00, wb & 255, wb >> 8, h & 255, h >> 8]));   // GS v 0
+        teile.push(raster(c, von, bis));
+      }
+      teile.push(new Uint8Array([0x1B, 0x64, 0x03, 0x1D, 0x56, 0x42, 0x00]));   // 3 Zeilen vorschieben, abschneiden
+    });
+    return teile;
+  }
+  function btPort() {
+    if (!('serial' in navigator)) return Promise.reject(new Error('Bluetooth-Druck geht nur in Chrome auf Android (ab Version 138). Bitte Chrome aktualisieren.'));
+    return navigator.serial.getPorts().then(function (ports) {
+      var p = ports.filter(function (x) { return (x.getInfo().bluetoothServiceClassId || '') === SPP; })[0] || ports[0];
+      if (!p) throw new Error('Kein Bluetooth-Drucker gewählt. Einstellungen → „Bluetooth-Drucker wählen“.');
+      return p;
+    });
+  }
+  function btSenden(teile) {
+    var port, schreiber;
+    return btPort().then(function (p) {
+      port = p;
+      return port.open({ baudRate: 115200 }).catch(function (e) {
+        if (!(port.readable || port.writable)) throw e;     // schon offen → weiter
+      });
+    }).then(function () {
+      schreiber = port.writable.getWriter();
+      var kette = Promise.resolve();
+      teile.forEach(function (t) {
+        for (var i = 0; i < t.length; i += 1024) {
+          (function (stueck) { kette = kette.then(function () { return schreiber.ready; }).then(function () { return schreiber.write(stueck); }); })(t.subarray(i, i + 1024));
+        }
+      });
+      return kette;
+    }).then(function () {
+      return schreiber.close();
+    }).then(function () {
+      return port.close();
+    }, function (err) {
+      try { if (schreiber) schreiber.releaseLock(); } catch (e) { /* egal */ }
+      if (port) port.close().catch(function () {});
+      throw new Error('Bluetooth-Drucker nicht erreichbar: ' + (err && err.message ? err.message : err) +
+        '. Ist der Drucker an, mit dem Tablet gekoppelt und nicht mit einem anderen Gerät verbunden?');
+    });
   }
 
   var FEHLER = {
@@ -263,9 +317,16 @@
     // arten: ['laden', 'kunde'] – Standard nach Einstellung (beide Bons oder nur Restaurant)
     drucken: function (b, cfg, arten) {
       arten = arten || (cfg.belege === 'laden' ? ['laden'] : ['laden', 'kunde']);
-      return senden(epos(arten.map(function (a) { return zeichnen(b, a); })), cfg);
+      var bilder = arten.map(function (a) { return zeichnen(b, a); });
+      return cfg.verbindung === 'bluetooth' ? btSenden(escpos(bilder)) : senden(epos(bilder), cfg);
+    },
+    // Bluetooth-Drucker einmal auswählen (nur gekoppelte Geräte; braucht einen Fingertipp)
+    bluetoothWaehlen: function () {
+      if (!('serial' in navigator)) return Promise.reject(new Error('Bluetooth-Druck geht nur in Chrome auf Android (ab Version 138). Bitte Chrome aktualisieren.'));
+      return navigator.serial.requestPort({ filters: [{ bluetoothServiceClassId: SPP }], allowedBluetoothServiceClassIds: [SPP] });
     },
     pruefen: function (cfg) {   // fragt nur den Status ab, druckt nichts
+      if (cfg.verbindung === 'bluetooth') return btPort();
       return senden('<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body>' +
         '<epos-print xmlns="http://www.epson-pos.com/schemas/2011/03/epos-print"></epos-print></s:Body></s:Envelope>', cfg);
     },
