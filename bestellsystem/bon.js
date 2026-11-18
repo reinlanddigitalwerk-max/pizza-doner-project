@@ -243,7 +243,10 @@
       body: xml,
       signal: abbruch.signal
     }).then(function (r) { return r.text(); }, function () {
-      throw new Error('Drucker nicht erreichbar (' + cfg.ip + '). Ist er an und im selben WLAN? Unter Einstellungen „Drucker freischalten“ antippen.');
+      clearTimeout(uhrwerk);
+      throw new Error('Drucker nicht erreichbar (' + cfg.ip + '). Prüfen: 1) Tablet im selben WLAN wie der Drucker? ' +
+        '2) Einstellungen → „Drucker freischalten“ antippen und die Warnung bestätigen. ' +
+        '3) Chrome fragt „Zugriff auf Geräte im lokalen Netzwerk“ → Zulassen (sonst Schloss-Symbol → Berechtigungen).');
     }).then(function (t) {
       clearTimeout(uhrwerk);
       var ok = /success="true"/.test(t);
