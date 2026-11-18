@@ -113,6 +113,16 @@
          "aufpreis": 0.0
         }
        ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
       }
      ],
      "mwst_aufteilung": {
@@ -188,6 +198,16 @@
         },
         {
          "name": "Eistee",
+         "aufpreis": 0.0
+        }
+       ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
          "aufpreis": 0.0
         }
        ]
@@ -269,6 +289,16 @@
          "aufpreis": 0.0
         }
        ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
       }
      ],
      "mwst_aufteilung": {
@@ -330,6 +360,16 @@
         },
         {
          "name": "Eistee",
+         "aufpreis": 0.0
+        }
+       ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
          "aufpreis": 0.0
         }
        ]
@@ -1129,7 +1169,19 @@
      "aktiv": true,
      "preis": 7.0,
      "bild": "doener-sandwich",
-     "allergene": "A,G,12,2"
+     "allergene": "A,G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "159",
@@ -1138,7 +1190,23 @@
      "aktiv": true,
      "preis": 8.5,
      "bild": "doener-sandwich-extra-fleisch",
-     "allergene": "A,G,12,2"
+     "allergene": "A,G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "173",
@@ -1148,7 +1216,19 @@
      "preis": 8.0,
      "bild": "gemuese-doener",
      "neu": true,
-     "allergene": "A,G,12,2"
+     "allergene": "A,G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "123",
@@ -1158,7 +1238,19 @@
      "preis": 11.0,
      "bild": "dubbel-cheese-doener",
      "neu": true,
-     "allergene": "A,G,12,2"
+     "allergene": "A,G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "177",
@@ -1174,6 +1266,18 @@
      ],
      "ohne_optionen": [
       "Wähle deine Fleischsorte"
+     ],
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
      ]
     },
     {
@@ -1183,7 +1287,19 @@
      "aktiv": true,
      "preis": 8.0,
      "bild": "doener-wrap",
-     "allergene": "A,G,12,2"
+     "allergene": "A,G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "133",
@@ -1216,6 +1332,20 @@
         },
         {
          "name": "mit Reis",
+         "aufpreis": 0.0
+        }
+       ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Käse",
          "aufpreis": 0.0
         }
        ]
@@ -1893,6 +2023,16 @@
          "aufpreis": 0.0
         }
        ]
+      },
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
       }
      ]
     },
@@ -1903,7 +2043,19 @@
      "aktiv": true,
      "preis": 8.0,
      "bild": "lahmacun-falafel",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "17",
@@ -1912,7 +2064,19 @@
      "aktiv": true,
      "preis": 8.0,
      "bild": "lahmacun-gemuese",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1960,7 +2124,19 @@
      "aktiv": true,
      "preis": 7.0,
      "bild": "falafel-sandwich",
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "93",
@@ -1969,7 +2145,19 @@
      "aktiv": true,
      "preis": 8.0,
      "bild": "falafel-wrap",
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "96",
@@ -1978,7 +2166,19 @@
      "aktiv": true,
      "preis": 11.0,
      "bild": "falafel-teller",
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2013,7 +2213,19 @@
      "aktiv": true,
      "preis": 6.0,
      "bild": "salat-tasche",
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "61",
@@ -2022,7 +2234,19 @@
      "aktiv": true,
      "preis": 6.5,
      "bild": "salat-wrap",
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "69",
@@ -2032,7 +2256,19 @@
      "preis": 7.0,
      "bild": "gemuese-tasche",
      "neu": true,
-     "allergene": "A,2,G"
+     "allergene": "A,2,G",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2168,7 +2404,43 @@
      "aktiv": true,
      "preis": 6.5,
      "bild": "gemischter-salat",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Krautsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Kopfsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Peperoni",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "57",
@@ -2177,7 +2449,43 @@
      "aktiv": true,
      "preis": 10.5,
      "bild": "doener-salat",
-     "allergene": "G,12,2"
+     "allergene": "G,12,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Krautsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Kopfsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Peperoni",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "59",
@@ -2186,7 +2494,47 @@
      "aktiv": true,
      "preis": 9.5,
      "bild": "thunfisch-salat",
-     "allergene": "G,2,D,8"
+     "allergene": "G,2,D,8",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Krautsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Kopfsalat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Peperoni",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Oliven",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Goudakäse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "51",
@@ -2195,7 +2543,35 @@
      "aktiv": true,
      "preis": 9.0,
      "bild": "bauernsalat",
-     "allergene": "G,2,8"
+     "allergene": "G,2,8",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Oliven",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Peperoni",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Käse",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2265,7 +2641,35 @@
      "aktiv": true,
      "preis": 8.5,
      "bild": "hamburger",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "277",
@@ -2274,7 +2678,35 @@
      "aktiv": true,
      "preis": 9.5,
      "bild": "cheeseburger",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "263",
@@ -2283,7 +2715,39 @@
      "aktiv": true,
      "preis": 9.5,
      "bild": "chili-cheeseburger",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Jalapeños",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "222",
@@ -2291,7 +2755,39 @@
      "beschreibung": "mit 125 g Rindfleisch, Bacon, Back-Camembert, Tomaten, Gurken, Zwiebeln, Salat und Burgersauce",
      "aktiv": true,
      "preis": 11.0,
-     "bild": "neusser-burger"
+     "bild": "neusser-burger",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Bacon",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Gurken",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Zwiebeln",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "253",
@@ -2300,7 +2796,27 @@
      "aktiv": true,
      "preis": 8.5,
      "bild": "crispy-chickenburger",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     },
     {
      "nr": "265",
@@ -2309,7 +2825,27 @@
      "aktiv": true,
      "preis": 9.0,
      "bild": "crispy-cheeseburger",
-     "allergene": "G,2"
+     "allergene": "G,2",
+     "optionen": [
+      {
+       "titel": "Was möchtest du nicht?",
+       "mehrfach": true,
+       "auswahl": [
+        {
+         "name": "ohne Salat",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Tomaten",
+         "aufpreis": 0.0
+        },
+        {
+         "name": "ohne Burgersauce",
+         "aufpreis": 0.0
+        }
+       ]
+      }
+     ]
     }
    ]
   },

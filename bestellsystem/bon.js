@@ -114,7 +114,10 @@
       var kz = b.mwst ? ' ' + (KENNZ[p.mwst] || 'A') : '';
       zeile(name, gross, true, { rechts: euro(p.stueck * p.menge) + kz });
       if (p.beschreibung) zeile(p.beschreibung, klein, false, { einzug: 34 });   // genau wie auf der Speisekarte
-      (p.optionen || []).forEach(function (o) { zeile('+ ' + o, klein, false, { einzug: 34 }); });
+      (p.optionen || []).forEach(function (o) {
+        if (/^ohne /i.test(o)) zeile('– ' + o, klein, true, { einzug: 34 });   // Weglassen fett, damit die Küche es sieht
+        else zeile('+ ' + o, klein, false, { einzug: 34 });
+      });
       if (p.notiz) zeile('» ' + p.notiz, klein, true, { einzug: 34 });
       y += 6;
     });

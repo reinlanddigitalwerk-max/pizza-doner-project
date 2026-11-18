@@ -2,7 +2,7 @@
 // Speichert im Browser (localStorage), rechnet Zwischensumme, Rabatt, Liefergebühr und
 // Mindestbestellwert und zeichnet den Warenkorb in jedes Element mit [data-warenkorb].
 window.Warenkorb = (function () {
-  var KEY = 'neusser-warenkorb-v2';   // v2: ohne „Was möchtest du nicht?“ – alte Warenkörbe passen nicht mehr
+  var KEY = 'neusser-warenkorb-v3';   // v3: „Was möchtest du nicht?“ je Gericht nur mit seinen eigenen Zutaten
   var SHOP = window.SHOP || { zonen: [], mindestbestellwert: 0 };
   var DATA = window.NEUSSER || { oeffnungszeiten: {}, lieferzeiten: {}, angebote: [] };
   var TAGE = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
