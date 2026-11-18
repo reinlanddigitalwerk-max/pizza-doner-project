@@ -144,6 +144,7 @@
       zeile(b.zahlung === 'online' ? 'Bezahlt: online' : b.zahlung === 'karte' ? 'Zahlung: mit Karte bei Übergabe' : 'Zahlung: bar bei Übergabe', 26, true);
       y += 6;
       zeile(b.name, 26, false);
+      if (b.telefon) zeile('Tel. ' + b.telefon, 24, false);
       if (b.art === 'lieferung') zeile(b.strasse + ' ' + b.hausnr + ', ' + b.plz + ' ' + b.ort, 24, false);
       linie();
       zeile('Danke für deine Bestellung!', 30, true, { mitte: true });
