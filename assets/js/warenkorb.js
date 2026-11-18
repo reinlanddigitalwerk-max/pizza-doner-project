@@ -108,7 +108,7 @@ window.Warenkorb = (function () {
     var z = zone();
     // Liefergebühr je Zone, ab „gratis_ab“ kostenlos (gleich wie api/lib.php)
     var liefer = s.modus === 'lieferung' && z && !(z.gratis_ab && zw >= z.gratis_ab) ? z.gebuehr : 0;
-    var bisGratis = s.modus === 'lieferung' && z && liefer ? rund(z.gratis_ab - zw) : 0;
+    var bisGratis = s.modus === 'lieferung' && z && liefer && z.gratis_ab ? rund(z.gratis_ab - zw) : 0;
     var min = s.modus === 'lieferung' ? (z ? z.min : SHOP.mindestbestellwert) : 0;
     var fehlt = rund(Math.max(0, min - zw));
     var anzahl = s.pos.reduce(function (t, p) { return t + p.menge; }, 0);
@@ -152,7 +152,7 @@ window.Warenkorb = (function () {
     return '<option value="">Postleitzahl wählen …</option>' + SHOP.zonen.map(function (z) {
       return '<option value="' + esc(z.plz) + '"' + (z.plz === s.plz ? ' selected' : '') + '>' +
         esc(z.plz + ' ' + z.ort + (z.gebiet ? ' – ' + z.gebiet : '')) + ' · ' +
-        (z.gebuehr ? euro(z.gebuehr) + (z.gratis_ab ? ', gratis ab ' + euro(z.gratis_ab) : '') : 'gratis') + '</option>';
+        'ab ' + euro(z.min) + ' · Lieferung ' + (z.gebuehr ? euro(z.gebuehr) : 'gratis') + '</option>';
     }).join('');
   }
 
@@ -198,11 +198,11 @@ window.Warenkorb = (function () {
 
       if (s.modus === 'lieferung' && sm.fehlt > 0) {
         var pct = Math.min(100, Math.round(sm.zw / sm.min * 100));
-        html += '<div class="minbar"><div class="minbar__track"><span style="width:' + pct + '%"></span></div>' +
+        html += '<div class="minbar"><div class="minbar__track"><span data-breite="' + pct + '"></span></div>' +
           '<p>Noch <strong>' + euro(sm.fehlt) + '</strong> bis zum Mindestbestellwert von ' + euro(sm.min) + '.</p></div>';
       } else if (sm.bisGratis > 0) {
         var anteil = Math.min(100, Math.round(sm.zw / sm.zone.gratis_ab * 100));
-        html += '<div class="minbar"><div class="minbar__track"><span style="width:' + anteil + '%"></span></div>' +
+        html += '<div class="minbar"><div class="minbar__track"><span data-breite="' + anteil + '"></span></div>' +
           '<p>Noch <strong>' + euro(sm.bisGratis) + '</strong> bis zur kostenlosen Lieferung.</p></div>';
       }
     }
@@ -217,6 +217,8 @@ window.Warenkorb = (function () {
       if (sm.grund === 'zu') html += '<p class="basket__hint basket__hint--center">' + (s.modus === 'lieferung' ? 'Lieferung' : 'Abholung') + ' wieder ' + esc(oeffnungText(s.modus)) + '.</p>';
     }
     root.innerHTML = html;
+    // Breite der Fortschrittsbalken per JS (Inline-Styles verbietet die Sicherheitsregel CSP)
+    root.querySelectorAll('[data-breite]').forEach(function (e) { e.style.width = Math.max(0, Math.min(100, +e.dataset.breite || 0)) + '%'; });
   }
 
   function binden(root, opt) {

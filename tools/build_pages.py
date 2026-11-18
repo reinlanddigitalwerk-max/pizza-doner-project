@@ -470,7 +470,9 @@ print("geschrieben: data/angebote.json")
 
 menu_daten = {item_key(a, c): item_daten(a, c) for c in cats for a in c["artikel"] if a.get("aktiv", True)}
 gebuehren = sorted({z["gebuehr"] for z in gebiete["zonen"]})
-lieferspanne = euro(gebuehren[0]) + (" – " + euro(gebuehren[-1]) if len(gebuehren) > 1 else "")
+lieferspanne = ("gratis" if not gebuehren[0] else euro(gebuehren[0])) + (" – " + euro(gebuehren[-1]) if len(gebuehren) > 1 else "")
+mins = sorted({z["min"] for z in gebiete["zonen"]})
+minspanne = euro(mins[0]) + (" – " + euro(mins[-1]) if len(mins) > 1 else "")
 grenzen = sorted({z["gratis_ab"] for z in gebiete["zonen"] if z.get("gratis_ab")})
 gratisspanne = euro(grenzen[0]) + (" – " + euro(grenzen[-1]) if len(grenzen) > 1 else "") if grenzen else "–"
 SHOP_SCRIPTS = ('  <script src="assets/js/offers-data.js" defer></script>\n'
@@ -492,7 +494,7 @@ page(
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Lieferung ca. {shop["lieferung"]["bereit_in_min"]} Min.</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Abholung ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Liefergebühr {lieferspanne}</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Gratis ab {gratisspanne} Bestellwert</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Mindestbestellwert {minspanne}</li>
           </ul>
         </div>
       </div>
@@ -631,8 +633,8 @@ page(
         <ul class="order-facts">
           <li><strong>Abholung</strong> in ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
           <li><strong>Lieferung</strong> in ca. {shop["lieferung"]["bereit_in_min"]} Min., {shop["lieferzeiten"]["Dienstag"][0]}–{shop["lieferzeiten"]["Dienstag"][1]} Uhr</li>
-          <li><strong>Lieferung</strong> 1&nbsp;€, 2&nbsp;€ oder 3&nbsp;€ je nach PLZ – gratis ab 15&nbsp;€, 20&nbsp;€ bzw. 25&nbsp;€</li>
-          <li><strong>Bezahlen</strong> bar oder mit PayPal</li>
+          <li><strong>Lieferung</strong> je nach PLZ ab 15&nbsp;€ (gratis), 20&nbsp;€ (2&nbsp;€ Liefergebühr) oder 25&nbsp;€ (3&nbsp;€ Liefergebühr) Bestellwert</li>
+          <li><strong>Bezahlen</strong> online (Karte, Apple Pay, Google Pay) oder bar</li>
         </ul>
       </div>
     </section>
@@ -656,7 +658,7 @@ def zeiten_tabelle(z):
 about = "".join(f"<p>{esc(p)}</p>" for p in shop["ueber_uns"].split("\n") if p.strip())
 merkmale = "".join(f"<li>{esc(m)}</li>" for m in shop["merkmale"])
 zonen = "".join(
-    f'<tr><th scope="row">{esc(z["name"])}</th><td>{"kostenlos" if not z["liefergebuehr"] else euro(z["liefergebuehr"]) + " Liefergebühr"}{" · gratis ab " + euro(z["gratis_ab"]) if z.get("gratis_ab") else ""}</td></tr>'
+    f'<tr><th scope="row">{esc(z["name"])}</th><td>ab {euro(z["mindestbestellwert"])} Bestellwert · {"Lieferung gratis" if not z["liefergebuehr"] else euro(z["liefergebuehr"]) + " Liefergebühr"}</td></tr>'
     for z in shop["lieferung"]["zonen"])
 maps = "https://www.google.com/maps/search/?api=1&query=" + html.escape(f'{shop["name"]}, {adr["strasse"]}, {adr["plz"]} {adr["ort"]}').replace(" ", "+")
 osm = f'https://www.openstreetmap.org/?mlat={shop["koordinaten"]["lat"]}&mlon={shop["koordinaten"]["lng"]}#map=17/{shop["koordinaten"]["lat"]}/{shop["koordinaten"]["lng"]}'
