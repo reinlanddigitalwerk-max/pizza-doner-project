@@ -231,8 +231,8 @@
     var teile = [new Uint8Array([0x1B, 0x40])];      // ESC @ – Drucker zurücksetzen
     bilder.forEach(function (c) {
       var wb = c.width / 8;
-      for (var von = 0; von < c.height; von += 240) {
-        var bis = Math.min(c.height, von + 240), h = bis - von;
+      for (var von = 0; von < c.height; von += 48) {     // kleine Streifen: geht etwas verloren, trifft es nur einen Streifen
+        var bis = Math.min(c.height, von + 48), h = bis - von;
         teile.push(new Uint8Array([0x1D, 0x76, 0x30, 0x00, wb & 255, wb >> 8, h & 255, h >> 8]));   // GS v 0
         teile.push(raster(c, von, bis));
       }
@@ -257,13 +257,20 @@
       });
     }).then(function () {
       schreiber = port.writable.getWriter();
+      // Bluetooth ist langsamer als der Drucker-Puffer erwartet („receive buffer full“): kleine Stücke mit kurzer Pause
+      var STUECK = 256, PAUSE = 18;
+      var warte = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
       var kette = Promise.resolve();
       teile.forEach(function (t) {
-        for (var i = 0; i < t.length; i += 1024) {
-          (function (stueck) { kette = kette.then(function () { return schreiber.ready; }).then(function () { return schreiber.write(stueck); }); })(t.subarray(i, i + 1024));
+        for (var i = 0; i < t.length; i += STUECK) {
+          (function (stueck) {
+            kette = kette.then(function () { return schreiber.ready; })
+              .then(function () { return schreiber.write(stueck); })
+              .then(function () { return warte(PAUSE); });
+          })(t.subarray(i, i + STUECK));
         }
       });
-      return kette;
+      return kette.then(function () { return warte(400); });   // Rest im Funk-Puffer ankommen lassen, dann schließen
     }).then(function () {
       return schreiber.close();
     }).then(function () {
