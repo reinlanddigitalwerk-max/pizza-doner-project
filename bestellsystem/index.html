@@ -101,7 +101,7 @@
       </div>
       <label class="haken"><input type="checkbox" name="autodruck"> <span>Neue Bestellungen automatisch drucken</span></label>
       <label class="feld feld--klein"><span>Bons pro Bestellung</span>
-        <select name="belege"><option value="beide">2 Bons: Restaurant + Kunde</option><option value="laden">1 Bon: nur Restaurant</option></select></label>
+        <select name="belege"><option value="kunde">1 Bon: Kunden-Bon</option><option value="laden">1 Bon: nur Restaurant</option><option value="beide">2 Bons: Restaurant + Kunde</option></select></label>
       <label class="feld feld--klein"><span>Nach dem Druck</span>
         <select name="nachDruck"><option value="archiv">Direkt ins Archiv</option><option value="annehmen">In Arbeit (dann Fertig / Unterwegs)</option>
           <option value="">Unter „Neu“ lassen</option></select></label>
@@ -180,9 +180,8 @@
       <p class="neubon__summe" data-neubon-summe></p>
       <p class="klein" data-neubon-meldung aria-live="polite"></p>
       <div class="einstellungen__knoepfe">
-        <button class="knopf" type="button" data-neubon-druck="beide">🖨 Beide Bons</button>
-        <button class="knopf knopf--zweit" type="button" data-neubon-druck="kunde">🖨 Nur Kunden-Bon</button>
-        <button class="knopf knopf--zweit" type="button" data-neubon-druck="laden">🖨 Nur Restaurant-Bon</button>
+        <button class="knopf" type="button" data-neubon-druck="kunde">🖨 Drucken</button>
+        <button class="knopf knopf--zweit" type="button" data-neubon-druck="laden">🖨 Restaurant-Bon</button>
         <button class="knopf knopf--zweit" type="button" data-neubon-ansehen>👁 Ansehen</button>
       </div>
       <div class="einstellungen__fuss">

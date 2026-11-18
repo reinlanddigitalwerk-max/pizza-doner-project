@@ -7,7 +7,9 @@
   var $ = function (s) { return document.querySelector(s); };
 
   var DRUCKER_IP = '192.168.2.61';  // laut Netzwerk-Ausdruck des Bondruckers im Laden
-  var cfg = laden(EINST, { verbindung: 'wlan', ip: DRUCKER_IP, autodruck: true, belege: 'beide', nachDruck: 'archiv', ton: true, https: true });
+  var cfg = laden(EINST, { verbindung: 'wlan', ip: DRUCKER_IP, autodruck: true, belege: 'kunde', nachDruck: 'archiv', ton: true, https: true });
+  // Inhaber möchte nur noch einen Bon (den Kunden-Bon): alte Einstellung „beide“ einmalig umstellen
+  if (!cfg.einBon) { if (cfg.belege === 'beide') cfg.belege = 'kunde'; cfg.einBon = true; merken(EINST, cfg); }
   // alte Standard-Adresse auf dem Tablet gespeichert → einmalig auf die neue umstellen
   if (cfg.ip === '192.168.178.82') { cfg.ip = DRUCKER_IP; merken(EINST, cfg); }
   var token = laden(TOKEN, '');
@@ -345,7 +347,7 @@
   function uebernehmen() {
     cfg = { verbindung: form.verbindung.value === 'bluetooth' ? 'bluetooth' : 'wlan', ip: form.ip.value.trim(),
       autodruck: form.autodruck.checked, belege: form.belege.value, nachDruck: form.nachDruck.value,
-      ton: form.ton.checked, https: form.https.checked };
+      ton: form.ton.checked, https: form.https.checked, einBon: true };
     verbindungZeigen();
     merken(EINST, cfg);
     tonZeigen();

@@ -145,7 +145,11 @@
       y += 6;
       zeile(b.name, 26, false);
       if (b.telefon) zeile('Tel. ' + b.telefon, 24, false);
-      if (b.art === 'lieferung') zeile((b.strasse + ' ' + b.hausnr).trim() + ', ' + (b.plz + ' ' + b.ort).trim(), 24, false);
+      if (b.art === 'lieferung') {
+        if (b.firma) zeile(b.firma, 24, false);
+        zeile((b.strasse + ' ' + b.hausnr).trim() + ', ' + (b.plz + ' ' + b.ort).trim() + (b.etage ? ' · ' + b.etage : ''), 24, false);
+      }
+      if (b.bemerkung) { y += 4; zeile('Bemerkung: ' + b.bemerkung, 24, true); }
       linie();
       zeile('Danke für deine Bestellung!', 30, true, { mitte: true });
       zeile('Guten Appetit · neusser-doner-pizza.de', 22, false, { mitte: true });
@@ -321,9 +325,9 @@
 
   window.Bon = {
     zeichnen: zeichnen,
-    // arten: ['laden', 'kunde'] – Standard nach Einstellung (beide Bons oder nur Restaurant)
+    // arten: ['laden', 'kunde'] – Standard nach Einstellung (nur Kunden-Bon, nur Restaurant oder beide)
     drucken: function (b, cfg, arten) {
-      arten = arten || (cfg.belege === 'laden' ? ['laden'] : ['laden', 'kunde']);
+      arten = arten || ({ laden: ['laden'], kunde: ['kunde'] }[cfg.belege] || ['laden', 'kunde']);
       var bilder = arten.map(function (a) { return zeichnen(b, a); });
       return cfg.verbindung === 'bluetooth' ? btSenden(escpos(bilder)) : senden(epos(bilder), cfg);
     },
