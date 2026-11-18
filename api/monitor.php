@@ -85,7 +85,10 @@ if ($methode === 'GET') {
         $liste[] = $b;
     }
     usort($liste, fn ($a, $b) => strcmp($b['eingang'], $a['eingang']));
-    antwort(['bestellungen' => $liste, 'jetzt' => jetzt()->format('c'), 'pause' => pause_status()]);
+    // Stripe-Modus nur als Wort (Schlüssel selbst bleibt geheim): live = echte Zahlungen, test = nichts wird abgebucht
+    $sk = (string) (geheim()['stripe_secret'] ?? '');
+    $stripe = $sk === '' ? 'aus' : (str_starts_with($sk, 'sk_live_') || str_starts_with($sk, 'rk_live_') ? 'live' : 'test');
+    antwort(['bestellungen' => $liste, 'jetzt' => jetzt()->format('c'), 'pause' => pause_status(), 'stripe' => $stripe]);
 }
 
 if (($d['aktion'] ?? '') === 'pause') {
