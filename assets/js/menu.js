@@ -164,7 +164,7 @@
     var sm = W.summen();
     bar.hidden = !sm.anzahl;
     bar.querySelector('[data-anzahl]').textContent = sm.anzahl;
-    bar.querySelector('[data-summe]').textContent = euro(sm.gesamt);
+    bar.querySelector('[data-summe]').textContent = euro(sm.waren);
   }
   W.on(leiste);
   leiste();

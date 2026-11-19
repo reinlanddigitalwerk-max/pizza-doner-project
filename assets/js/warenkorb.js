@@ -121,6 +121,7 @@ window.Warenkorb = (function () {
     else if (!offen) grund = 'zu';
     return {
       zw: zw, rabatt: r, liefer: liefer, bisGratis: bisGratis, gesamt: rund(zw - (r ? r.betrag : 0) + liefer),
+      waren: rund(zw - (r ? r.betrag : 0)),   // ohne Liefergebühr – die steht nur auf der Kassen-Seite und dem Bon
       min: min, fehlt: fehlt, anzahl: anzahl, zone: z, offen: offen, bereit: !grund, grund: grund
     };
   }
@@ -201,10 +202,12 @@ window.Warenkorb = (function () {
           '<span class="line__price">' + euro(p.preis * p.menge) + '</span></li>';
       }).join('') + '</ul>';
 
-      html += '<dl class="sums"><div><dt>Zwischensumme</dt><dd>' + euro(sm.zw) + '</dd></div>' +
+      // Warenkorb auf der Speisekarte: ohne Liefergebühr. Kassen-Seite (vor dem Bestellknopf): mit Liefergebühr und Gesamtpreis.
+      var mitLieferung = !opt.bearbeiten;
+      html += '<dl class="sums">' + (mitLieferung || sm.rabatt ? '<div><dt>Zwischensumme</dt><dd>' + euro(sm.zw) + '</dd></div>' : '') +
         (sm.rabatt ? '<div class="sums__rabatt"><dt>' + esc(sm.rabatt.titel) + '</dt><dd>−' + euro(sm.rabatt.betrag) + '</dd></div>' : '') +
-        (s.modus === 'lieferung' ? '<div><dt>Liefergebühr</dt><dd>' + (sm.zone ? (sm.liefer ? euro(sm.liefer) : 'gratis') : '–') + '</dd></div>' : '') +
-        '<div class="sums__total"><dt>Gesamt</dt><dd>' + euro(sm.gesamt) + '</dd></div></dl>';
+        (mitLieferung && s.modus === 'lieferung' ? '<div><dt>Liefergebühr</dt><dd>' + (sm.zone ? (sm.liefer ? euro(sm.liefer) : 'gratis') : '–') + '</dd></div>' : '') +
+        '<div class="sums__total"><dt>' + (mitLieferung ? 'Gesamt' : 'Summe') + '</dt><dd>' + euro(mitLieferung ? sm.gesamt : sm.waren) + '</dd></div></dl>';
 
       if (s.modus === 'lieferung' && sm.fehlt > 0) {
         var pct = Math.min(100, Math.round(sm.zw / sm.min * 100));
@@ -219,7 +222,7 @@ window.Warenkorb = (function () {
 
     if (opt.kasse) {
       var label = { leer: 'Zur Kasse', plz: 'Erst Postleitzahl wählen', min: 'Mindestbestellwert nicht erreicht', zu: 'Gerade geschlossen', pause: 'Vorübergehend geschlossen' }[sm.grund] ||
-        'Zur Kasse · ' + euro(sm.gesamt);
+        'Zur Kasse · ' + euro(sm.waren);
       html += sm.bereit
         ? '<a class="btn btn--primary basket__go" href="kasse.html">' + label + '</a>'
         : '<button class="btn btn--primary basket__go" type="button" disabled>' + label + '</button>';
