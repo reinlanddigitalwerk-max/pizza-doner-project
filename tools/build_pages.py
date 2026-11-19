@@ -473,6 +473,14 @@ gebuehren = sorted({z["gebuehr"] for z in gebiete["zonen"]})
 lieferspanne = ("gratis" if not gebuehren[0] else euro(gebuehren[0])) + (" – " + euro(gebuehren[-1]) if len(gebuehren) > 1 else "")
 mins = sorted({z["min"] for z in gebiete["zonen"]})
 minspanne = euro(mins[0]) + (" – " + euro(mins[-1]) if len(mins) > 1 else "")
+# Eindeutig je Gebiet statt einer Spanne („gratis – 3 €“ las sich wie 3 € Lieferung)
+_gruppen = {}
+for z in gebiete["zonen"]:
+    _gruppen.setdefault((z["min"], z["gebuehr"]), []).append(z["plz"])
+_gruppen = sorted(_gruppen.items())
+(_min1, _geb1), _plz1 = _gruppen[0]
+liefer_erst = f'Lieferung {"gratis" if not _geb1 else euro(_geb1)} ab {euro(_min1)} (PLZ {", ".join(_plz1)})'
+liefer_rest = "Andere PLZ: " + " · ".join(f'ab {euro(m)}, {"gratis" if not g else "+" + euro(g)}' for (m, g), _ in _gruppen[1:])
 grenzen = sorted({z["gratis_ab"] for z in gebiete["zonen"] if z.get("gratis_ab")})
 gratisspanne = euro(grenzen[0]) + (" – " + euro(grenzen[-1]) if len(grenzen) > 1 else "") if grenzen else "–"
 SHOP_SCRIPTS = ('  <script src="assets/js/offers-data.js" defer></script>\n'
@@ -493,8 +501,8 @@ page(
             <li class="open-state" data-open-state>Öffnungszeiten siehe unten</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Lieferung ca. {shop["lieferung"]["bereit_in_min"]} Min.</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Abholung ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>Liefergebühr {lieferspanne}</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Mindestbestellwert {minspanne}</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>{esc(liefer_erst)}</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>{esc(liefer_rest)}</li>
           </ul>
         </div>
       </div>
