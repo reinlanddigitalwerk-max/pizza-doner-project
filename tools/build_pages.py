@@ -479,7 +479,7 @@ for z in gebiete["zonen"]:
     _gruppen.setdefault((z["min"], z["gebuehr"]), []).append(z["plz"])
 _gruppen = sorted(_gruppen.items())
 (_min1, _geb1), _plz1 = _gruppen[0]
-liefer_erst = f'Lieferung {"gratis" if not _geb1 else euro(_geb1)} ab {euro(_min1)} (PLZ {", ".join(_plz1)})'
+liefer_erst = f'Lieferung ab {euro(_min1)} Bestellwert'
 liefer_rest = "Andere PLZ: " + " · ".join(f'ab {euro(m)}, {"gratis" if not g else "+" + euro(g)}' for (m, g), _ in _gruppen[1:])
 grenzen = sorted({z["gratis_ab"] for z in gebiete["zonen"] if z.get("gratis_ab")})
 gratisspanne = euro(grenzen[0]) + (" – " + euro(grenzen[-1]) if len(grenzen) > 1 else "") if grenzen else "–"
@@ -640,7 +640,7 @@ page(
         <ul class="order-facts">
           <li><strong>Abholung</strong> in ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
           <li><strong>Lieferung</strong> in ca. {shop["lieferung"]["bereit_in_min"]} Min., {shop["lieferzeiten"]["Dienstag"][0]}–{shop["lieferzeiten"]["Dienstag"][1]} Uhr</li>
-          <li><strong>Lieferung</strong> je nach PLZ ab 15&nbsp;€ (gratis), 20&nbsp;€ (2&nbsp;€ Liefergebühr) oder 25&nbsp;€ (3&nbsp;€ Liefergebühr) Bestellwert</li>
+          <li><strong>Lieferung</strong> je nach PLZ ab 15&nbsp;€, 20&nbsp;€ oder 25&nbsp;€ Bestellwert</li>
           <li><strong>Bezahlen</strong> online (Karte, Apple Pay, Google Pay) oder bar</li>
         </ul>
       </div>
@@ -665,7 +665,7 @@ def zeiten_tabelle(z):
 about = "".join(f"<p>{esc(p)}</p>" for p in shop["ueber_uns"].split("\n") if p.strip())
 merkmale = "".join(f"<li>{esc(m)}</li>" for m in shop["merkmale"])
 zonen = "".join(
-    f'<tr><th scope="row">{esc(z["name"])}</th><td>ab {euro(z["mindestbestellwert"])} Bestellwert · {"Lieferung gratis" if not z["liefergebuehr"] else euro(z["liefergebuehr"]) + " Liefergebühr"}</td></tr>'
+    f'<tr><th scope="row">{esc(z["name"])}</th><td>ab {euro(z["mindestbestellwert"])} Bestellwert</td></tr>'
     for z in shop["lieferung"]["zonen"])
 maps = "https://www.google.com/maps/search/?api=1&query=" + html.escape(f'{shop["name"]}, {adr["strasse"]}, {adr["plz"]} {adr["ort"]}').replace(" ", "+")
 osm = f'https://www.openstreetmap.org/?mlat={shop["koordinaten"]["lat"]}&mlon={shop["koordinaten"]["lng"]}#map=17/{shop["koordinaten"]["lat"]}/{shop["koordinaten"]["lng"]}'

@@ -159,7 +159,7 @@ window.Warenkorb = (function () {
     return '<option value="">Postleitzahl wählen …</option>' + SHOP.zonen.map(function (z) {
       return '<option value="' + esc(z.plz) + '"' + (z.plz === s.plz ? ' selected' : '') + '>' +
         esc(z.plz + ' ' + z.ort + (z.gebiet ? ' – ' + z.gebiet : '')) + ' · ' +
-        'ab ' + euro(z.min) + ' · Lieferung ' + (z.gebuehr ? euro(z.gebuehr) : 'gratis') + '</option>';
+        'ab ' + euro(z.min) + ' Bestellwert</option>';
     }).join('');
   }
 
