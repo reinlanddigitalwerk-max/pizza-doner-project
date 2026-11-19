@@ -502,7 +502,6 @@ page(
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Lieferung ca. {shop["lieferung"]["bereit_in_min"]} Min.</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Abholung ca. {shop["lieferung"]["abholung_bereit_in_min"]} Min.</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg>{esc(liefer_erst)}</li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>{esc(liefer_rest)}</li>
           </ul>
         </div>
       </div>
@@ -554,7 +553,7 @@ page(
 page(
     "kasse.html",
     "Kasse – Neusser Döner & Pizza",
-    "Bestellung bei Neusser Döner & Pizza abschließen: Lieferung oder Abholung, Bezahlung bar oder mit Karte.",
+    "Bestellung bei Neusser Döner & Pizza abschließen: Lieferung oder Abholung, Bezahlung online oder bar.",
     f"""    <section class="shop-head shop-head--slim">
       <div class="container">
         <a class="back" href="speisekarte.html">← Zurück zur Speisekarte</a>
